@@ -2,7 +2,7 @@
 
 ## Mind-maps
 - [Why and how should I finish my bachelor's degree](https://orgpad.com/s/-UBJftb9jFR)
-- [Why, how and what of my thesis](https://orgpad.com/o/D2PTPAVatHo5osXanS08tR?token=CgovIGECVJtJxUvbfkkynY)
+- [Why, how and what of my thesis](https://orgpad.com/s/dGBbNV20_XY)
 - [Knowledge base mind-map](https://orgpad.com/o/D5KTsZbNRGfYaB0IHpRQVr?token=CQ7qarz0pKH7OO3sz8jiiF)
 
 
