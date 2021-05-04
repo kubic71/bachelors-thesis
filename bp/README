@@ -1,56 +1,57 @@
-Šablona pro sazbu bakalářské práce na MFF UK v LaTeXu
+A template for typesetting a bachelor thesis at MFF UK in LaTeX
 
-Autoři:
+Authors:
 
-	Martin Mareš <mj@ucw.cz> -- správce šablony
+	Martin Mareš <mj@ucw.cz> -- the current maintainer
 	Arnošt Komárek <komarek@karlin.mff.cuni.cz>
 	Michal Kulich <kulich@karlin.mff.cuni.cz>
 
-Tento balík souborů je povoleno libovolně šířit, používat a upravovat.
-Pokud máte jakékoliv připomínky nebo návrhy na vylepšení, dejte prosím vědět.
+This package can be freely distributed, used, and modified.
+If you have any bug report or comment, please tell us.
 --------------------------------------------------------------------------------
 
-Šablona existuje ve dvou verzích -- české (adresář cs) a anglické (en).
+There are two versions of the template -- Czech (directory "cs")
+and English ("en").
 
-Povinné náležitosti úpravy bakalářských prací jsou dány směrnicemi děkana
-č. 4/2019, 1/2015 a 7/2016 a opatřením rektora č. 72/2017. Mimo to existují
-ještě další doporučení -- ta najdete v souboru vzor.pdf. Tento formát pro LaTeX
-se jimi řídí a snaží se důležité věci připomínat komentáři. Přesto si ale celá
-pravidla přečtěte.
+Requirements on formatting of bachelor theses are given by Dean's directives
+4/2019, 1/2015, and 7/2016, and by the Rector's directive 72/2017. Other
+guidelines can be found in the example.pdf file. This LaTeX template follows
+the directives; it also tries to emphasize important points in comments. Still,
+we advise you to read the complete rules.
 
-Pokud LaTeX ještě neznáte, na webu naleznete mnoho úvodních textů.
-Nám se nejvíce osvědčil http://en.wikibooks.org/wiki/LaTeX.
+If you are not familiar with LaTeX yet, you can find numerous tutorials on
+the Web. One example we like is http://en.wikibooks.org/wiki/LaTeX.
 
-Základní nastavení sazby naleznete v souboru prace.tex, ten se také
-odkazuje na ostatní soubory s jednotlivými kapitolami práce. Pečlivě
-si hlavní soubor přečtěte a doplňte všechny chybějící údaje. Také je
-doplňte do metadatového souboru prace.xmpdata.
+Basic typographical settings can be found in thesis.tex, which also refers
+to all other files containing individual chapters. Please read the main file
+carefully and fill in the thesis name, author, and other identifiers. You also
+need to update the meta-data file thesis.xmpdata.
 
-Česká verze obsahuje komentáře a ukázkové kapitoly s popisem doporučené
-úpravy a různými radami pro sazbu v TeXu. Anglická verze má zatím pouze
-komentáře.
+The Czech version contains several example chapters with hints on typesetting
+of common expressions. There are not available in the English version yet,
+sorry.
 
-Elektronická podoba práce, kterou odevzdáváte do SISu, musí být povinně
-ve formátu PDF/A-1a nebo -2u. Tato šablona vytváří PDF/A-2u pomocí balíčku
-pdfx (https://www.ctan.org/tex-archive/macros/latex/contrib/pdfx). Pozor,
-v mnoha instalacích TeXu je tento balíček buď zastaralý nebo nefunkční,
-takže si ho raději stáhněte samostatně a rozbalte do adresáře tex/pdfx/.
+The electronic version of your thesis must be submitted to SIS. It must
+conform to the PDF/A-1a or -2u standard. This template produces PDF/A-2u
+using the pdfx LaTeX package (https://www.ctan.org/tex-archive/macros/latex/contrib/pdfx).
+Please note that many installations of TeX have this package either obsolete
+or broken. So we advise to download the current version of the package and
+unpack it to tex/pdfx/.
 
-Další instrukce k přípravě PDF/A naleznete v ukázkových kapitolách
-a na http://mj.ucw.cz/vyuka/bc/pdfaq.html.
+Our FAQ on producing PDF/A is currently available in Czech only, but if you
+encounter any problems, please ask Martin Mareš for advice.
 
-Upozorňujeme, že MikTeX pod Windows má problémy s některými (obzvláště
-matematickými) fonty a vytváří pak nekorektní PDF/A. Doporučujeme místo
-něj použít distribuci TeXlive.
+If you are using Windows, beware that MikTeX contains old versions of some
+(mostly mathematical) fonts, which leads to improper PDF/A output. We have
+much better experience with the TeXlive distribution.
 
-Pokud pracujete na Unixovém systému, může se vám hodit ukázkový Makefile --
-stačí spustit program "make" a ten už se postará o přeložení všech souborů
-TeXem.
+If you are using a UNIX system, you might want to use our example Makefile --
+just run "make" to process all files by TeX.
 
-TeX také můžete spouštět ručně. V tom případě je potřeba překládat pdfTeXem
-a spustit bibTeX na vygenerování bibliografie. (Ideálně takto: pdflatex, bibtex,
-a pak 2x pdflatex pro dopočítání referencí. Případně využít latexmk.)
+You can also run TeX manually. In this case, you should use pdfTeX and also
+BibTeX for generating bibliography. (The usual order is: pdflatex, bibtex,
+and then pdflatex twice to get cross-references right. Alternatively, you
+can use latexmk.)
 
-Další materiály o psaní bakalářských prací a odborných textů vůbec najdete
-na http://mj.ucw.cz/vyuka/bc/. Tamtéž se nachází aktuální vývojová verze této
-šablony.
+The current development version of this template and other hints on writing
+theses can be found at http://mj.ucw.cz/vyuka/bc/.
