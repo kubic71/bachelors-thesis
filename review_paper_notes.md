@@ -2,6 +2,8 @@
 
 - 2020, 108 citations
 
+I hope I can turn these notes into the *Preliminaries* thesis section 
+
 ### Vulnerable networks
 - CNN
 - FC DNN
@@ -87,13 +89,41 @@ Given classifier $C$ (model $F$), victim sample $(x, y)$, synthesize fake image 
 - $\lVert \cdot \rVert$ usually $l_p$ norm
 
 ### [Biggio's attack](https://link.springer.com/chapter/10.1007/978-3-642-40994-3_25)
+- [ECML](https://ecmlpkdd.org/) 2013
 - adversarial examples on MNIST targeting SVMs and 3-layer FC DNNs
 - inspired studies on safety of deep learning
 
 ### Szegedy's limited-memory BFGS (L-BFGS) 
+- Dec 2013
 - first to attack image classifiers
 - find minimally distorted adversarial example $x'$ by solving:
     - $\min \lVert x - x' \rVert_2^2,$ s.t. $C(x') = t$ and $x' \in [0, 1]^m$
-- Szegedy et al. 
+- loss function:
+  - $\min c\lVert x - x' \rVert^2_2 + \mathcal L(\theta, x', t)$, s.t. $x' \in [0, 1]^m$ 
+- by increasing constant $c$ throughout the optimization, while keeping the adversarial example outside of the correct decision boundary, we can approximately find adversarial example with minimal pertubation
 
+### Fast gradient sign method (FGSM)
+- Dec 2014, Goodfellow et al.
+- **non-target**
+  - $x' = x + \epsilon \text{sgn}(\nabla_x \mathcal{L}(\theta, x, y))$
+  - maximise loss of correct classification
+- **target**
+  - $x' = x - \epsilon \text{sgn}(\nabla_x \mathcal{L}(\theta, x, t))$
+  - minimize loss of target class
+- For targeted attack setting, this can be framed as one-step 1-bit-precision gradient descent to solve:
+  - $\min \mathcal{L}(\theta, x', t)$ s.t. $\lVert x' - x \rVert_{\infty} \leq \epsilon$ and $x' \in [0, 1]^m$
+  - resulting $x'$ is vertex (extreme point) of $\epsilon$ hypercube around $x$
+- only one backprop, very fast
+- used for producing samples for adversarial training
 
+### Deep Fool
+- Nov 2015
+- hyperplane of decision boundary
+  - $f(x) = F(x)_y - F(x)_t = 0$
+- they linearize this hyperplane using Taylor expansion
+  - $f'(x) \approx f(x_0) + \langle \nabla_x f(x_0), (x-x_0) \rangle = 0$
+- they find orthogonal vector $\omega$ from $x_0$ to the hyperplane and move along its direction
+- for instance LeNet can be fooled on over 90% test samples with $l_{\infty} \leq 0.1$
+
+### Jacobian-based saliency map attack (JSMA)
+- Nov 2015, Papernot et al.
