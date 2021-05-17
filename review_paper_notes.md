@@ -95,6 +95,7 @@ Given classifier $C$ (model $F$), victim sample $(x, y)$, synthesize fake image 
 
 ### Szegedy's limited-memory BFGS (L-BFGS) 
 - Dec 2013
+- L-BFGS is an optimization algorithm, that leverages estimates of second order partial derivates information
 - first to attack image classifiers
 - find minimally distorted adversarial example $x'$ by solving:
     - $\min \lVert x - x' \rVert_2^2,$ s.t. $C(x') = t$ and $x' \in [0, 1]^m$
@@ -106,7 +107,8 @@ Given classifier $C$ (model $F$), victim sample $(x, y)$, synthesize fake image 
 - Dec 2014, Goodfellow et al.
 - **non-target**
   - $x' = x + \epsilon \text{sgn}(\nabla_x \mathcal{L}(\theta, x, y))$
-  - maximise loss of correct classification
+  - maximises loss of correct classification
+  - note that $x' = x - \epsilon \text{sgn}(\nabla_x \mathcal{L}(\theta, x, y_{least-likely}))$ is also valid, it's would be the first step of the iterative [Least-likely class method](https://arxiv.org/pdf/1607.02533.pdf)
 - **target**
   - $x' = x - \epsilon \text{sgn}(\nabla_x \mathcal{L}(\theta, x, t))$
   - minimize loss of target class
@@ -114,7 +116,7 @@ Given classifier $C$ (model $F$), victim sample $(x, y)$, synthesize fake image 
   - $\min \mathcal{L}(\theta, x', t)$ s.t. $\lVert x' - x \rVert_{\infty} \leq \epsilon$ and $x' \in [0, 1]^m$
   - resulting $x'$ is vertex (extreme point) of $\epsilon$ hypercube around $x$
 - only one backprop, very fast
-- used for producing samples for adversarial training
+- used for producing train samples for adversarial training
 
 ### Deep Fool
 - Nov 2015
@@ -127,3 +129,109 @@ Given classifier $C$ (model $F$), victim sample $(x, y)$, synthesize fake image 
 
 ### Jacobian-based saliency map attack (JSMA)
 - Nov 2015, Papernot et al.
+- They go a step backwards in the network, and instead of tracking loss $\mathcal{L}(x)$ they track gradients of all class outputs $\nabla F_j(x)$
+- at each step single pixel is pertubed
+- it is the one, that:
+  - increases $F_t(x)$, must satisfy $\frac{\partial F_t(x)}{x_i} \gt 0$
+  - decreases $\underset{j \neq t}{\sum}F_j(x)$
+
+### Basic iterative method (BIM) / Projected gradient descent (PGD) attack
+- iterative version of **FGSM**
+  - $x_0 = x; \quad x^{t+1} = Clip_{x,\epsilon}(x^t + \alpha \text{sgn}(\nabla_x \mathcal{L}(\theta, x^t, y))).$
+- $Clip_{x, \epsilon}(x')$ projects $x'$ to the surface of $\epsilon$-neighborhood ball $B_{\epsilon}(x)$ centered at $x$ 
+- $B_{\epsilon}(x): {x': \lVert x' - x \rVert_\infty \leq \epsilon } .$
+- step size $\alpha$ is set relatively small
+- number of iterations set, such that the border can be reached (e.g., $iter = \frac{\epsilon}{\alpha} + 10$)
+- **PGD** = BIM + random initialization
+- BIM (PGD) searches for the *most-adversarial* example in the $l_{\infty}$ ball $B_\epsilon(x)$, that is the example most likely to fool the target model
+
+
+### Carlini & Wagner's attack
+- attack against "**defensive distilation**"
+  - FGSM and L-BFGS not strong-enough against the distilation defense, gradients are orders of magnitude smaller
+- They reframe the optimization problem as:
+  - $\min \lVert x - x' \rVert^2_2 + c \cdot f(x', t)$, s.t. $x' \in [0, 1]^m$
+  - where $f(x', t) = (max_{i \neq t} Z(x')_i - Z(x')_t)^+$
+    - maximizes classification for t and minimizes classification for all other classes
+    - so called **"margin loss"**
+    - there are many different ways to define valid loss function, but margin loss seems to work the best (probably)
+  - only difference in formulation is that L-BFGS  uses **cross-entropy** instead of **margin loss**
+    - this formulation has a nice property, that when $C(x') = t$, then $f(x', t) = 0$, and the algorithm switches to optimizing only the **distance part of the objective**
+    - efficient for finding the minimally distorted adversarial example
+- quite very strong attack, useful for benchmarking
+
+
+### Ground truth attack
+- attempt to rigorously test DNN robustness, to prove something mathematically
+  - attempt to find **"provable strongest attack"**
+- **ground truth adversarial example** - the closest adversarial example
+- the attack is reframed as a satisfiability decision problem and solved by relevant  solver
+  - inefficient, doesn't scale to larger networks
+    
+
+
+## Other $l_p$ attacks
+- previous attacks - $l_2$ or $l_{\infty}$
+
+
+### One-pixel attack
+- **$l_0$ norm** - number of pixels changed
+- VGG16 on CIFAR10 can be attacked (63.5% of test samples) by changing only **one pixel**
+- demonstrates the poor robustness of DNNs
+
+### EAD: **E**lastic-net **A**ttack (on **D**eep NNs)
+- combines $l_1$ and $l_2$ norm
+- some strong models robust to $l_{\infty}$ and $l_2$ are still vulnerable to $l_1$
+
+
+### Universal attack
+- one universal pertubation, that misleads classifier on large number of test images
+- find pertubation $\delta$ satisfying:
+  1. $\lVert \delta \rVert_p < \epsilon$
+  2. $\underset{x \sim D(x)}{\mathbb P} (C(x + \delta) \neq C(x)) \geq 1 - \sigma$
+- the pertubation looks similar TREMBA decoder output
+- successfully attack 85% ImageNet test samples under ResNet 152
+
+
+### Spatially transformed attack
+- translation, rotation, distortion, while keeping the semantics intact, such that the pertubation invisible to a human
+
+
+### Unrestricted adversarial examples
+- not restricted by a fixed $l_p$ metric
+- similarly to *Spatiaally transformed attack*, changes to the original image aren't made in the pixel space, but in some other latent space
+  - $l_p$ norm can change a lot, while the semantics can remain almost the same
+- pretrained **AC-GAN** (auxiliary classifier generative adversarial network)
+  - we find $z_0$ s.t. $\mathcal{G}(z_0) = x$
+  - then we search for the adversarial example in the latent space neighbourhood of $z_0$
+  - successful, if $C(\mathcal{G}(z_0 + \delta)) \neq C(\mathcal{G}(z_0))$ 
+
+
+
+## Physical world attacks
+- stickers on the road surface, on the road signs
+- surprisinngly, adversarial images crafted using FGSM (not so much by BIM, it overfits) are quite robust to natural transformations (different viewpoints, lighting, noise, distortion, etc.)
+
+
+### Eykholt's sticker attack on road signs
+- use $l_1$ attack to roughly find salient places for stickers
+- use  $l_2$ attack to optimize the color of the stickers
+- TODO: Why $l_1$ and then $l_2$? What property those attacks have, which is useful here?
+
+
+### Athalye's 3D adversarial object
+- the famous real-life 3D printed **turtle-rifle**
+- optimize the 3D structure and texture, such that the object is adversarial from any viewpoint, under any lighting, camera distance, rotation, background
+
+
+## Black-box attacks 
+### Substitute model
+- different DNNs share similar weaknesses, 2 CNNs trained on slightly different datasets will share a lot of adversarial examples
+- we can take a substitute model with similar architecture, trained on similar dataset, use classic white-box approach to craft an adversarial example, and then use this adversarial image to attack the target model
+  - if the target is also fooled by the same example as the substitute model, we say that this adversarial example is **transferable**
+- the trick is to construct good "replica" synthetic training set
+- we can also train a diverse ensemble of different models with different architectures and parameters
+  - this further helps transferaability, examples are more general
+
+
+
