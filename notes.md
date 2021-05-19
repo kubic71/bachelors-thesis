@@ -20,7 +20,7 @@ Dobre obhajit a zmerit, odargumentovat, co bakalarka prinasi noveho, ze se oprav
 ### Schema bakalarky 
 Abstrakt - cela bakarka smrskla do 6 vet
 Introduction
-Background
+Background (Preliminaries)
 Exploze, muj novy prinos, veliky 1mm
 Results, co nejvic obrazku
 Discussion
@@ -33,7 +33,7 @@ Psat jedine v TeX !!!
 MJ template, git, bib 
 
 V jakem poradi psat bakalarku:
-Co nejdrive psat Introduction, Background, to lze uz ted, pokud priblizne vim, kam mirim a smeruju.
+Co nejdrive psat Preliminaries, Background, to lze uz ted, pokud priblizne vim, kam mirim a smeruju.
 Take lze psat program hned, zabere hodne casu, treba debugovat, trva
 
 Jako predposledni  pisu intro:
