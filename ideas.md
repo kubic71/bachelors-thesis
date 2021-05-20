@@ -24,20 +24,20 @@ The idea is to map the problem of attacking a cloud-based black-box classifier w
 ### Map 
 
 
-## Model-stealing to train a substitute model
+## Model-stealing to train a surrogate model
 Use model-stealing techniques to efficiently train a subtitute model. Transfer adversarial examples crafted on the obtained subsitute.
+
+Has this been done before? Is this better than current SoTA surrogate transfer approaches?
 
 ### Model-stealing
 - [CloudLeak](https://www.semanticscholar.org/paper/CloudLeak%3A-Large-Scale-Deep-Learning-Models-Through-Yu-Yang/4d548fd21aad60e3052455e22b7a57cc1f06e3c3)
     - Authors test their algorithm on Microsoft, Face++, IBM, Google and Clarifai MLaaS platforms
 
-### 
 
 
-
-## Multiple-examples adversarial attack
+## Multiple source-example adversarial attack
 ### Problem statement
-Given a set of original examples, produce one successful adversarial example with the fewest number of queries to the target that is being attacked.
+Given a set of original examples (probably of the same semantic class), produce one successful adversarial example with the fewest number of queries to the victim target black-box.
 
 The hypothesis is, that when we are given multiple possible starting points, we have another degree of freedom in the adversarial attack search space, which should make the task of finding one adversarial example easier.
 
@@ -66,7 +66,6 @@ We can add another degree of freedom by having multiple toolset of adversarial a
 In the case of transfer-attacks, We can maybe have a better chance of finding transferable adversarial pertubation by optimizing the sum loss on all images in the set, to which the same pertubation will be applied. 
 
 
-
-
 ## Initialize iterative attack by the output of transfer-based attack algorithm 
+- TREMBA actually does something similar to that
 
