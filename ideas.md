@@ -19,19 +19,28 @@ Create versatile modular pipeline, that would stack different attack algorithms 
 
 
 
-## Map GVision outputted image captions to ImageNet labels
+## Map general GVision outputted image captions to some narrower and simpler image classification task 
 The idea is to map the problem of attacking a cloud-based black-box classifier with tens of thousands of possible labels to 
-### Map 
+Some language model would be probably needed.
+
+### Map to ImageNet labels
+- This would nicely unify the API of available pretrained CNNs, that are usually tested in adversarial black-box attack papers
+
+### Map GVision output to some easy Binary classification task
+- Animal/Not-an-animal classifier
+    - ImageNet has many animal classes in its dataset, could be a good balanced split
+This would make it much easier for the different tested attacks and different attacked platforms to intergrate together
 
 
-## Model-stealing to train a surrogate model
+## Using Model-stealing techniques to train a surrogate model
 Use model-stealing techniques to efficiently train a subtitute model. Transfer adversarial examples crafted on the obtained subsitute.
 
-Has this been done before? Is this better than current SoTA surrogate transfer approaches?
+Has this been done before? Is this better than current SOTA surrogate transfer approaches?
 
 ### Model-stealing
 - [CloudLeak](https://www.semanticscholar.org/paper/CloudLeak%3A-Large-Scale-Deep-Learning-Models-Through-Yu-Yang/4d548fd21aad60e3052455e22b7a57cc1f06e3c3)
-    - Authors test their algorithm on Microsoft, Face++, IBM, Google and Clarifai MLaaS platforms
+    - Authors test their algorithm on Microsoft, Face++, IBM, Google and Clarifai MLaaS platforms, but I think they stole narrow-task model
+    - The question is how many queries would be neccessary to reasonably clone fully general image labelling model
 
 
 
