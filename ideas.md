@@ -20,7 +20,8 @@ Create versatile modular pipeline, that would stack different attack algorithms 
 
 
 ## Map general GVision outputted image captions to some narrower and simpler image classification task 
-The idea is to map the problem of attacking a cloud-based black-box classifier with tens of thousands of possible labels to 
+The idea is to map the problem of attacking a cloud-based black-box classifier with tens of thousands of possible labels to the fixed categories of classical CNN classifier.
+
 Some language model would be probably needed.
 
 ### Map to ImageNet labels
