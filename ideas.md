@@ -59,7 +59,7 @@ The question of course is, how best to select it. Maybe train a classifier on da
 
 
 ### Parallel-scheduling iterative approach
-In the case of iterative attacks, we can add on top another meta-algorithm, that will execute one step of optimization one image from the set. It will observe the black-box output, that will guide the following decisions of allocating the remaining budget of queries.
+In the case of iterative attacks, we can add on top another meta-algorithm, that will execute one step of optimization on one image from the set. It will observe the black-box output, that will guide the following decisions of allocating the remaining budget of queries.
 
 This can be framed as a bandit RL problem.
 
