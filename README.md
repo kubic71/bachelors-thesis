@@ -1,5 +1,12 @@
 # Exploring the vulnerabilities of commercial AI systems against adversarial attacks
-My bachelor's TeX thesis and other related materials
+My bachelor's TeX thesis and other related materials.
+
+## AdvPipe
+I set out to explore current state-of-the-art black-box adversarial attacks and how they fare in practical attack scenarios. I want to test out adversarial robustness of some commercial MLaaS cloud services like Google Vision API, Amazon Rekognition, Clarifai, Microsoft Azure AI etc.
+
+Different black-box AI models have different APIs, and so do different attack algorithms. On top of that, I have some ideas how to tweak/change current attacks to better suit the APIs of different MLaaS threat models. AdvPipe is intended to be a modular pipeline, that would incorporate various attack regimes, target models and attack algorithms into single framework.
+
+More on this [here](adv-pipe.md)
 
 
 To get a sense of what this complicated title means in practice, checkout some of my other repos with [PoC](https://en.wikipedia.org/wiki/Proof_of_concept) adversarial attacks on Google Vision API:
