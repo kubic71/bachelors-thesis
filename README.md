@@ -9,6 +9,19 @@ Different black-box AI models have different APIs, and so do different attack al
 More on this [here](adv-pipe.md)
 
 
+## Installation
+
+### Language model
+Install nltk python library for wordnet hypernym testing
+`pip install nltk`
+
+Install huggingface transformers for zero-shot classification in case wordnet doesn't know the exact label phrase
+`pip install transformers`
+
+
+
+
+
 To get a sense of what this complicated title means in practice, checkout some of my other repos with [PoC](https://en.wikipedia.org/wiki/Proof_of_concept) adversarial attacks on Google Vision API:
 - [Square attack](https://github.com/kubic71/square-attack)
 - [TREMBA](https://github.com/kubic71/TREMBA)
