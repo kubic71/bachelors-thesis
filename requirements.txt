@@ -1,0 +1,6 @@
+pytest
+transformers
+nltk
+torch
+tensorflow
+
