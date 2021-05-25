@@ -15,8 +15,9 @@ Create versatile modular pipeline, that would stack different attack algorithms 
 - given a set of original examples, choose the one that will most likely result in a successful attack
 - could potentially safe valuable queries
     - attack less likely to be detected 
-- could this be defended by adversarial example detector?
-
+- could this be defended by adversarial example detector? Isn't adversarial example detector actually this thing?
+- todo: research the detection of adversarial attacks
+    - adversarial example, that is the least suspicious of adversiality could be the best to submit
 
 
 ## Map general GVision outputted image captions to some narrower and simpler image classification task 
@@ -61,7 +62,7 @@ The question of course is, how best to select it. Maybe train a classifier on da
 ### Parallel-scheduling iterative approach
 In the case of iterative attacks, we can add on top another meta-algorithm, that will execute one step of optimization on one image from the set. It will observe the black-box output, that will guide the following decisions of allocating the remaining budget of queries.
 
-This can be framed as a bandit RL problem.
+This can be framed as a bandit RL problem. RL agent can be trained on simulated local attacks. Can be attack-specific or attack-agnostic.
 
 If the attack algorithm is stochastic and if the initial set contains copies of the original image, we would be effectively searching the pertubation space in parallel, prioritizing the more successful random initializations.
 
