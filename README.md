@@ -11,17 +11,30 @@ More on this [here](adv-pipe.md)
 
 ## Setup
 
+### Installing tensorflow-gpu and pytorch-gpu in the same conda environment
+I had to specify 'pytorch' channel, otherwise conda always the cpu pytorch version 
+```
+$ conda create -n advpipe python=3.7 
+$ conda install pytorch torchvision cudatoolkit tensorflow-gpu -c pytorch
+```
+
 ### Language model
 Nltk python library for wordnet label hypernyms
 
 ```
-$ pip install nltk
+$ conda install -c anaconda nltk 
 ```
 
 Huggingface transformers for zero-shot classification in case wordnet doesn't know the exact label phrase
 
 ```
-$ pip install transformers
+$ conda install -c huggingface transformers  
+```
+
+### Other dependencies and packages installed throught the development process
+Not all packages are required dependencies.
+```
+conda install pytest pylint
 ```
 
 
