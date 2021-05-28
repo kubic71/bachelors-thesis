@@ -1,0 +1,10 @@
+---
+name: simple-iterative-attack  # simple-attack
+algorithm_name: rays
+max_iter: 100
+
+dataset_config:
+
+  # if path is not absolute, path is taken relative to advpipe package
+  data_dir: datasets/pig_dog_computer  
+

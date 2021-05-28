@@ -34,7 +34,7 @@ $ conda install -c huggingface transformers
 ### Other dependencies and packages installed throught the development process
 Not all packages are required dependencies.
 ```
-conda install pytest pylint
+conda install pytest pylint pyyaml munch
 ```
 
 

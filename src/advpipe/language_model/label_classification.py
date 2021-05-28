@@ -3,7 +3,8 @@ import os
 from os import path
 import sys
 import re
-import logging
+from advpipe.log import logger
+
 
 print("Loading wordnet")
 nltk.download("wordnet")
@@ -79,7 +80,7 @@ class OrganismLabelClassifier:
         """At least one synset is an organism"""
         for synset in synsets:
             for lch in synset.lowest_common_hypernyms(self.wn_organism_synset):
-                logging.debug(
+                logger.debug(
                     f"synset: {synset.name()}, lowest common hypernym: {lch.name()}"
                 )
                 if lch.name() == self.wn_organism_synset.name():
@@ -90,7 +91,7 @@ class OrganismLabelClassifier:
         """At least one synset is an object"""
         for synset in synsets:
             for lch in synset.lowest_common_hypernyms(self.wn_organism_synset):
-                logging.debug(
+                logger.debug(
                     f"synset: {synset.name()}, lowest common hypernym: {lch.name()}"
                 )
                 if lch.name() != self.wn_organism_synset.name():
@@ -108,11 +109,11 @@ class OrganismLabelClassifier:
         """
         label_synsets = wn.wordnet.synsets(label)
 
-        logging.debug(f"is_organism executed with label {label}")
+        logger.debug(f"is_organism executed with label {label}")
 
         # When wordnet fails, use transformer language model as a backup
         if label_synsets == []:
-            logging.debug(
+            logger.debug(
                 f"label {label} not found in wordnet, falling back on transformer zero-shot"
             )
             top_label = self._transformer_classify(label)
@@ -135,7 +136,7 @@ class OrganismLabelClassifier:
         result = self.classifier(label, self.zeroshot_categories)
         labels, scores = result["labels"], result["scores"]
 
-        logging.debug(
+        logger.debug(
             f"label {label} transformer classification:\nlabels:\t {labels}\nscores:\t{scores}"
         )
 
