@@ -1,4 +1,7 @@
 import nltk
+import os
+from os import path
+import sys
 import re
 import logging
 
@@ -6,8 +9,7 @@ print("Loading wordnet")
 nltk.download("wordnet")
 from nltk import wordnet as wn
 
-print("Loading hugginnface transformer module")
-from transformers import pipeline
+
 
 from functools import lru_cache
 
@@ -35,7 +37,29 @@ class OrganismLabelClassifier:
     organism_categories = ["animal", "species"]
 
     wn_organism_synset = wn.wordnet.synsets("organism")[0]
-    classifier = pipeline("zero-shot-classification")
+
+    _transformer_classifier = None
+
+    @property
+    def classifier(self):
+        # Lazy-load the transformer, because it's HUGE (1.52 GB) and loads slowly
+        if OrganismLabelClassifier._transformer_classifier is None:
+            print("Loading hugginnface transformer model")
+            from transformers import pipeline
+
+            script_dir = path.dirname(path.abspath(__file__))
+            model_path = path.join(script_dir, "transformer_pretrained") 
+            if not path.exists(path.join(script_dir, "transformer_pretrained")):
+                # Download the transformer model and save it locally
+                os.mkdir(model_path)
+                OrganismLabelClassifier._transformer_classifier = pipeline("zero-shot-classification")
+                OrganismLabelClassifier._transformer_classifier.save_pretrained(model_path)
+            else:
+                # load the downloaded pretrained model
+                OrganismLabelClassifier._transformer_classifier = pipeline("zero-shot-classification", model=model_path, tokenizer=model_path)
+
+        return OrganismLabelClassifier._transformer_classifier
+
 
     def __init__(self):
         pass
