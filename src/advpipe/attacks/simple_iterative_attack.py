@@ -31,6 +31,8 @@ class SimpleIterativeAttack(Attack):
             self.iterative_algorithm = BlackBoxIterativeAlgorithm.createBlackBoxAttackInstance(self.config.algorithm_name, np_img)
             loss = self.target_blackbox.loss(np_img)
 
+            logger.debug(f"np_img shape after first forward pass: {np_img.shape}")
+
             for i in range(self.config.max_iter):
                 pertubed_img = np_img + self.iterative_algorithm.pertubation
 

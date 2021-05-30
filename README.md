@@ -12,7 +12,7 @@ More on this [here](adv-pipe.md)
 ## Setup
 
 ### Installing tensorflow-gpu and pytorch-gpu in the same conda environment
-I had to specify 'pytorch' channel, otherwise conda always the cpu pytorch version 
+I had to specify 'pytorch' channel, otherwise conda always installs the cpu pytorch version 
 ```
 $ conda create -n advpipe python=3.7 
 $ conda install pytorch torchvision cudatoolkit tensorflow-gpu -c pytorch
@@ -34,7 +34,7 @@ $ conda install -c huggingface transformers
 ### Other dependencies and packages installed throught the development process
 Not all packages are required dependencies.
 ```
-conda install pytest pylint pyyaml munch
+conda install pytest pylint pyyaml munch pillow scikit-image
 ```
 
 

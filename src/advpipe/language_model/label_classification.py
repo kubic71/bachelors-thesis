@@ -74,6 +74,8 @@ class OrganismLabelClassifier:
 
         offset = synset_id[1:]
         synset = wn.wordnet.synset_from_pos_and_offset('n', int(offset))
+        if self._can_be_organism([synset]) and self._can_be_object([synset]):
+            raise Exception(f"cannot classify synset {synset_id}, can be an organism and but also an object")
         return self._can_be_organism([synset])
 
     def _can_be_organism(self, synsets):
@@ -132,6 +134,7 @@ class OrganismLabelClassifier:
 
     def _transformer_classify(self, label):
         """Use huggingface zero-shot classifier for label classification"""
+
 
         result = self.classifier(label, self.zeroshot_categories)
         labels, scores = result["labels"], result["scores"]

@@ -1,10 +1,14 @@
 from advpipe.blackbox import TargetBlackBox
 import numpy as np
-
+from .imagenet_utils import get_organism_indeces, get_object_indeces, get_label
 from torchvision import models
+from advpipe.log import logger
 import torch
 
 
+#-----------Local Model----------
+# - wraps different types of Local white-box models
+# - actual white-box model instances are singletons to save memory
 
 class LocalModel():
     """
@@ -20,44 +24,85 @@ class LocalModel():
         # Override in Pytorch/Tensorflow/Other Model class
         pass
 
-
-class LocalBlackBox(TargetBlackBox):
-    """Pretrained ImageNet model"""
-    local_model : LocalModel
-
-    def __init__(self, blackbox_config):
-        super().__init__(blackbox_config)
-
-    def loss(self, pertubed_image):
-        probs = self.local_model([pertubed_image], )
-
-    @staticmethod
-    def getPytorchResnet18(blackbox_config):
-        return PytorchResnet18(blackbox_config)
-
-    
 class PytorchModel(LocalModel):
     """Wrapper around pytorch ImageNet models"""
 
-    def __init__(self, pytorch_model):
-        super().__init__()
-        self.pytorch_model = pytorch_model
+    def __init__(self, pytorch_model : torch.nn.Module, cuda=True):
+        self.model = pytorch_model
+        self.cuda = cuda
+        if cuda:
+            self.model.cuda()
+        self.model.eval()
 
     def __call__(self, np_img):
-        np_img = self._preprocess(np_img)
-        return np.array(self.pytorch_model([np_img])[0])
+        img_tensor = self._preprocess(np_img)
+        logger.debug(f"img tensor shape: {img_tensor.shape}")
+        logger.debug(f"img tensor dtype: {img_tensor.dtype}")
+        return self.model(img_tensor).cpu().detach().numpy()[0]
 
     def _preprocess(self, np_img):
-        # TODO
-        return np_img
+        logger.debug(f"preprocessing np_img - shape={np_img.shape}")
+        np_img = np_img.transpose(2, 0, 1)
+        tensor = torch.from_numpy(np_img).float().unsqueeze(0)
+        if self.cuda:
+            tensor = tensor.cuda()
+        return tensor
 
 
-class PytorchResnet18(LocalBlackBox):
-    local_model = PytorchModel(models.resnet18(pretrained=True))
-    def __init__(self, blackbox_config):
+
+class PytorchResnet18(PytorchModel):
+    # keep only one instance of Resnet-18 in memory
+    _resnet18 = models.resnet18(pretrained=True)
+    def __init__(self):
+        super().__init__(self._resnet18)
+
+
+class PytorchResnet50(PytorchModel):
+    # keep only one instance of Resnet-50 in memory
+    _resnet50 = models.resnet50(pretrained=True)
+    def __init__(self):
+        super().__init__(self._resnet50)
+
+
+
+
+#------------Local BlackBox------------
+# - BlackBox wrapping around LocalModel
+
+class LocalBlackBox(TargetBlackBox):
+    """Pretrained ImageNet model"""
+
+    def __init__(self, blackbox_config, local_model : LocalModel):
         super().__init__(blackbox_config)
+        self.local_model = local_model
 
-class PytorchResnet50(LocalBlackBox):
-    local_model = PytorchModel(models.resnet50(pretrained=True))
+    def loss(self, pertubed_image):
+        probs = self.local_model(pertubed_image)
+
+        organims_probs = probs.copy()
+        object_probs = probs.copy()
+        organims_probs[get_object_indeces()] = -np.inf
+        object_probs[get_organism_indeces()] = -np.inf
+
+        logger.debug(f"top-1 organism label: {get_label(np.argmax(organims_probs))}, prob: {np.max(organims_probs)}")
+        logger.debug(f"top-1 object label: {get_label(np.argmax(object_probs))}, prob: {np.max(object_probs)}")
+
+        return np.max(probs[get_organism_indeces()]) - np.max(probs[get_object_indeces()])
+
+
+
+
+class PytorchBlackBoxResnet18(LocalBlackBox):
     def __init__(self, blackbox_config):
-        super().__init__(blackbox_config)
+        super().__init__(blackbox_config, PytorchResnet18())
+
+
+class PytorchBlackBoxResnet50(LocalBlackBox):
+    def __init__(self, blackbox_config):
+        super().__init__(blackbox_config, PytorchResnet50())
+
+
+LOCAL_BLACKBOXES = {
+    "resnet18": PytorchBlackBoxResnet18,
+    "resnet50": PytorchBlackBoxResnet50
+}
