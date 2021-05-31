@@ -36,12 +36,9 @@ class PytorchModel(LocalModel):
 
     def __call__(self, np_img):
         img_tensor = self._preprocess(np_img)
-        logger.debug(f"img tensor shape: {img_tensor.shape}")
-        logger.debug(f"img tensor dtype: {img_tensor.dtype}")
         return self.model(img_tensor).cpu().detach().numpy()[0]
 
     def _preprocess(self, np_img):
-        logger.debug(f"preprocessing np_img - shape={np_img.shape}")
         np_img = np_img.transpose(2, 0, 1)
         tensor = torch.from_numpy(np_img).float().unsqueeze(0)
         if self.cuda:
