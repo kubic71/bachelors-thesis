@@ -1,5 +1,6 @@
 from advpipe.blackbox import TargetBlackBox
 from advpipe.config_datamodel import AdvPipeConfig
+from advpipe.log import logger
 import numpy as np
 
 
@@ -15,10 +16,13 @@ class LossCallCounter:
         self.i = 0
 
     def __call__(self, pertubed_image):
+        print("loss call")
         if self.i >= self.max_calls:
-            raise MaxFunctionCallsExceededException(
-                f"Max number of function calls exceeded (max_calls={self.max_calls})"
-            )
+            msg = f"Max number of function calls exceeded (max_calls={self.max_calls})"
+            logger.info(f"LossCallCounter: {msg}")
+            raise MaxFunctionCallsExceededException(msg)
+
+        self.i += 1
         self.last_loss_val = self.loss_fn(pertubed_image)
         return self.last_loss_val
 

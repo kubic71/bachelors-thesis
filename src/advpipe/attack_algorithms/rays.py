@@ -5,53 +5,34 @@ from advpipe.log import logger
 from advpipe import utils
 
 
-# TODO
-
 class RaySAttackAlgorithm(BlackBoxIterativeAlgorithm):
-    def __init__(self, image, loss_fn, epsilon=0.3, order=np.inf, max_iters=1000, early_stopping=True):
+    def __init__(self,
+                 image,
+                 loss_fn,
+                 epsilon=0.05,
+                 order=np.inf,
+                 early_stopping=True):
         super().__init__(image, loss_fn)
         self.pertubation = np.zeros_like(image)
-        self.best_loss = self.loss_fn(image)
+
         self.epsilon = epsilon
         self.order = order
-        self.max_iters = max_iters
         self.early_stopping = early_stopping
 
-        self.min_boundary = np.clip(image - self.epsilon*np.ones_like(image), 0, 1)
-        self.max_boundary = np.clip(image + self.epsilon*np.ones_like(image), 0, 1)
-    
         self.sgn_t = None
         self.d_t = None
         self.x_final = None
         self.lin_search_rad = 10
         self.pre_set = {1, -1}
 
-    def run(self):
-        for i in range(self.max_iters):
-            self.new_pertubation = self.pertubation + np.random.normal(size=self.image.shape)*self.epsilon/3
-            pertubed_img = np.clip(self.image + self.new_pertubation, self.min_boundary, self.max_boundary)
-
-            loss_val = self.loss_fn(pertubed_img)
-            if loss_val < self.best_loss:
-                self.pertubation = np.clip(self.new_pertubation, -self.epsilon, self.epsilon)
-
-            inf_dist = utils.l_inf(self.image, self.image + self.pertubation)
-            logger.info(f"l_inf dist: {inf_dist}")
-            yield self.pertubation
-
-
-class RayS(object):
 
     def get_xadv(self, x, v, d, lb=0., rb=1.):
         out = x + d * v
         return torch.clamp(out, lb, rb)
 
-    def attack_hard_label(self, x, y, target_label=None, query_limit=10000, seed=None):
-        """ Attack the original image and return adversarial example.
-            model: (pytorch model)
-            (x, y): original image
-        """
-        x = x.cuda()
+    def run(self, seed=42):
+
+        x = torch.from_numpy(self.image)
         shape = list(x.shape)
         dim = np.prod(shape[1:])
         if seed is not None:
@@ -59,26 +40,30 @@ class RayS(object):
 
         self.queries = 0
         self.d_t = np.inf
-        self.sgn_t = torch.sign(torch.ones(shape)).cuda()
-        self.x_final = self.get_xadv(x, self.sgn_t, self.d_t)
+        self.sgn_t = torch.sign(torch.ones(shape))
+        self.x_final = x
+        
+
         dist = torch.tensor(np.inf)
         block_level = 0
         block_ind = 0
 
-        for i in range(query_limit):
+        # Number of iterations is set to a large number, because attack termination is handled upstream
+        for i in range(1000000): 
 
-            block_num = 2 ** block_level
+            block_num = 2**block_level
             block_size = int(np.ceil(dim / block_num))
-            start, end = block_ind * block_size, min(dim, (block_ind + 1) * block_size)
+            start, end = block_ind * block_size, min(dim, (block_ind + 1) *
+                                                     block_size)
 
             attempt = self.sgn_t.clone().view(shape[0], dim)
             attempt[:, start:end] *= -1.
             attempt = attempt.view(shape)
 
-            self.binary_search(x, y, target_label, attempt)
+            yield from self.binary_search(x, attempt)
 
             block_ind += 1
-            if block_ind == 2 ** block_level or end == dim:
+            if block_ind == 2**block_level or end == dim:
                 block_level += 1
                 block_ind = 0
 
@@ -86,42 +71,52 @@ class RayS(object):
             if self.early_stopping and (dist <= self.epsilon):
                 break
 
-            if self.queries >= query_limit:
+            if self.queries >= self.max_iters:
                 print('out of queries')
                 break
 
-            if i % 10 == 0:
-                print("Iter %3d d_t %.8f dist %.8f queries %d" % (i + 1, self.d_t, dist, self.queries))
+            if i % 1 == 0:
+                pass
+                print(f"Iter: {i}, Queries: {self.queries} d_t {self.d_t:.8f} dist {dist:.8f}")
 
-        print("Iter %3d d_t %.6f dist %.6f queries %d" % (i + 1, self.d_t, dist, self.queries))
-        return self.x_final, self.queries, dist, (dist <= self.epsilon).float()
+        print("Iter %3d d_t %.6f dist %.6f queries %d" %
+              (i + 1, self.d_t, dist, self.queries))
+        # return self.x_final, self.queries, dist, (dist <= self.epsilon).float()
 
-    def search_succ(self, x, y, target):
+    def is_adversarial(self, img):
+        loss_val = self.loss_fn(img.detach().cpu().numpy())
+        # yield evey time loss_fn is evaluated, so that the attack manager can retake the execution control
+        yield self.x_final.detach().cpu().numpy()
+
+        return loss_val < 0
+
+    def search_succ(self, x):
+        print("search_succ")
         self.queries += 1
-        if target:
-            return self.model.predict_label(x) == target
-        else:
-            return self.model.predict_label(x) != y
+        ret = yield from self.is_adversarial(x)
+        return ret
 
-    def lin_search(self, x, y, target, sgn):
+    def lin_search(self, x, sgn):
         d_end = np.inf
         for d in range(1, self.lin_search_rad + 1):
-            if self.search_succ(self.get_xadv(x, sgn, d), y, target):
+            succ = yield from self.search_succ(self.get_xadv(x, sgn, d))
+            if succ:
                 d_end = d
                 break
         return d_end
 
-    def binary_search(self, x, y, target, sgn, tol=1e-3):
+    def binary_search(self, x, sgn, tol=1e-3):
         sgn_unit = sgn / torch.norm(sgn)
         sgn_norm = torch.norm(sgn)
 
         d_start = 0
         if np.inf > self.d_t:  # already have current result
-            if not self.search_succ(self.get_xadv(x, sgn_unit, self.d_t), y, target):
+            succ = yield from self.search_succ(self.get_xadv(x, sgn_unit, self.d_t))
+            if not succ:
                 return False
             d_end = self.d_t
         else:  # init run, try to find boundary distance
-            d = self.lin_search(x, y, target, sgn)
+            d = yield from self.lin_search(x, sgn)
             if d < np.inf:
                 d_end = d * sgn_norm
             else:
@@ -129,7 +124,8 @@ class RayS(object):
 
         while (d_end - d_start) > tol:
             d_mid = (d_start + d_end) / 2.0
-            if self.search_succ(self.get_xadv(x, sgn_unit, d_mid), y, target):
+            succ = yield from self.search_succ(self.get_xadv(x, sgn_unit, d_mid))
+            if succ:
                 d_end = d_mid
             else:
                 d_start = d_mid
@@ -140,6 +136,3 @@ class RayS(object):
             return True
         else:
             return False
-
-    def __call__(self, data, label, target=None, seed=None, query_limit=10000):
-        return self.attack_hard_label(data, label, target_label=target, seed=seed, query_limit=query_limit)

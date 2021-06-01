@@ -23,4 +23,4 @@ class RandomAttackAlgorithm(BlackBoxIterativeAlgorithm):
 
             inf_dist = utils.l_inf(self.image, self.image + self.pertubation)
             logger.info(f"l_inf dist: {inf_dist}")
-            yield self.pertubation
+            yield self.image + self.pertubation

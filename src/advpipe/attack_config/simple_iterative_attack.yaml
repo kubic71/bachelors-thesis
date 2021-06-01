@@ -2,7 +2,7 @@
 
 attack_regime:
   name : simple-iterative-attack
-  algorithm_name: random
+  algorithm_name: rays
   max_iter: 100
 
   dataset_config:
