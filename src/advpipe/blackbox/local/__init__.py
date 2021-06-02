@@ -1,4 +1,3 @@
-from advpipe.blackbox import TargetBlackBox
 import numpy as np
 from .imagenet_utils import get_organism_indeces, get_object_indeces, get_label
 from torchvision import models
@@ -40,7 +39,7 @@ class PytorchModel(LocalModel):
 
     def _preprocess(self, np_img):
         np_img = np_img.transpose(2, 0, 1)
-        tensor = torch.from_numpy(np_img).float().unsqueeze(0)
+        tensor = torch.from_numpy(np_img).float().unsqueeze(0) # pylint: disable=no-member
         if self.cuda:
             tensor = tensor.cuda()
         return tensor
@@ -66,6 +65,7 @@ class PytorchResnet50(PytorchModel):
 #------------Local BlackBox------------
 # - BlackBox wrapping around LocalModel
 
+from advpipe.blackbox import TargetBlackBox
 class LocalBlackBox(TargetBlackBox):
     """Pretrained ImageNet model"""
 

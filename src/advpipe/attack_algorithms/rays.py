@@ -30,7 +30,7 @@ class RaySAttackAlgorithm(BlackBoxIterativeAlgorithm):
         out = x + d * v
         return torch.clamp(out, lb, rb)
 
-    def run(self, seed=42):
+    def run(self, seed=None):
 
         x = torch.from_numpy(self.image)
         shape = list(x.shape)
@@ -71,9 +71,9 @@ class RaySAttackAlgorithm(BlackBoxIterativeAlgorithm):
             if self.early_stopping and (dist <= self.epsilon):
                 break
 
-            if self.queries >= self.max_iters:
-                print('out of queries')
-                break
+            # if self.queries >= self.max_iters:
+                # print('out of queries')
+                # break
 
             if i % 1 == 0:
                 pass

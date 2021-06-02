@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+from abc import ABC, abstractmethod
+
 
 class DatasetConfig:
     def __init__(self, dataset_config_yaml):
@@ -6,23 +8,28 @@ class DatasetConfig:
 
 
 
-from advpipe.blackbox import TargetBlackBox
-from advpipe.blackbox.local import LOCAL_BLACKBOXES, LocalBlackBox
 
 class AdvPipeConfig:
     def __init__(self, yaml_config):
         # TODO - parse and check attack_regime data config
         self.attack_regime = yaml_config.attack_regime
         self.attack_regime.dataset_config = DatasetConfig(self.attack_regime.dataset_config)
-        self.attack_regime.target_blackbox_config = TargetBlackBoxConfig.loadFromConfig(self.attack_regime.target_blackbox_config)
+        self.attack_regime.target_blackbox_config = TargetBlackBoxConfig.loadFromYamlConfig(self.attack_regime.target_blackbox_config)
 
-@dataclass
-class TargetBlackBoxConfig:
-    blackbox_type: str
-    class_ref: TargetBlackBox
+
+class TargetBlackBoxConfig():
+
+    def __init__(self, blackbox_name, blackbox_class_ref):
+        self.name = blackbox_name
+        self.blackbox_class_ref = blackbox_class_ref
+
 
     @staticmethod
-    def loadFromConfig(target_blackbox_config):
+    def loadFromYamlConfig(target_blackbox_config):
+        """Factory method for TargetBlackBoxConfig
+
+        returns: either LocalBlackBoxConfig or CloudBlackBoxConfig depending on blackbox_type YAML field
+        """
         assert target_blackbox_config.blackbox_type in TARGET_BLACKBOX_TYPES
 
         if target_blackbox_config.blackbox_type == "local":
@@ -31,32 +38,26 @@ class TargetBlackBoxConfig:
         elif target_blackbox_config.blackbox_type == "cloud":
             return CloudBlackBoxConfig(target_blackbox_config)
 
-    def getBlackBoxInstance(self) -> TargetBlackBox:
-        return self.class_ref(self)
+    def getBlackBoxInstance(self):
+        return self.blackbox_class_ref(blackbox_config = self)
 
-@dataclass
+from advpipe.blackbox.local import LOCAL_BLACKBOXES
 class LocalBlackBoxConfig(TargetBlackBoxConfig):
     blackbox_type = "local"
-    name: str
-    class_ref: LocalBlackBox
-
     def __init__(self, local_blackbox_config):
-        assert local_blackbox_config.name in LOCAL_BLACKBOXES
-
-        self.name = local_blackbox_config.name
-        self.class_ref = LOCAL_BLACKBOXES[self.name]
+        class_ref = LOCAL_BLACKBOXES[local_blackbox_config.name]
+        super().__init__(blackbox_name = local_blackbox_config.name, blackbox_class_ref = class_ref)
 
 
+from advpipe.blackbox.cloud import CLOUD_BLACKBOXES
 @dataclass
 class CloudBlackBoxConfig(TargetBlackBoxConfig):
     blackbox_type = "cloud"
-    name: str
 
     def __init__(self, cloud_blackbox_config):
-        raise NotImplementedError
+        class_ref = CLOUD_BLACKBOXES[cloud_blackbox_config.name]
+        super().__init__(blackbox_name = cloud_blackbox_config.name, blackbox_class_ref = class_ref)
 
 
+from advpipe.blackbox import TargetBlackBox
 from advpipe.blackbox import TARGET_BLACKBOX_TYPES
-        
-
-

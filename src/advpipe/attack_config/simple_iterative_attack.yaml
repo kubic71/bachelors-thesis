@@ -3,7 +3,7 @@
 attack_regime:
   name : simple-iterative-attack
   algorithm_name: rays
-  max_iter: 100
+  max_iter: 300
 
   dataset_config:
   # if path is not absolute, path is taken relative to advpipe package
@@ -11,5 +11,5 @@ attack_regime:
 
 
   target_blackbox_config:
-    blackbox_type: local
-    name: resnet18
+    blackbox_type: cloud 
+    name: gvision 

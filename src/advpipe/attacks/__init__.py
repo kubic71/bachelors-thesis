@@ -1,4 +1,3 @@
-from advpipe.blackbox import TargetBlackBox
 from advpipe.config_datamodel import AdvPipeConfig
 from advpipe.log import logger
 import numpy as np
@@ -27,7 +26,7 @@ class LossCallCounter:
         return self.last_loss_val
 
 
-
+from advpipe.blackbox import TargetBlackBox
 class Attack:
     target_blackbox: TargetBlackBox
 
@@ -35,8 +34,7 @@ class Attack:
         self.config = attack_regime_config
 
         # Initialize the connection to the target blackbox
-        self.target_blackbox = self.config.target_blackbox_config.getBlackBoxInstance(
-        )
+        self.target_blackbox = self.config.target_blackbox_config.getBlackBoxInstance()
 
     @staticmethod
     def from_config(config):

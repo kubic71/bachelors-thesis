@@ -34,7 +34,8 @@ $ conda install -c huggingface transformers
 ### Other dependencies and packages installed throught the development process
 Not all packages are required dependencies.
 ```
-conda install pytest pylint pyyaml munch pillow scikit-image matplotlib
+conda install pytest pylint pyyaml munch pillow scikit-image matplotlib 
+pip install google-cloud-vision
 ```
 
 

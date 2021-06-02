@@ -8,7 +8,7 @@ from advpipe.log import logger
 
 print("Loading wordnet")
 nltk.download("wordnet")
-from nltk import wordnet as wn
+from nltk import wordnet as wn  # pylint: disable=no-name-in-module
 
 
 
@@ -135,8 +135,8 @@ class OrganismLabelClassifier:
     def _transformer_classify(self, label):
         """Use huggingface zero-shot classifier for label classification"""
 
+        result = self.classifier(label, self.zeroshot_categories) # pylint: disable=not-callable
 
-        result = self.classifier(label, self.zeroshot_categories)
         labels, scores = result["labels"], result["scores"]
 
         logger.debug(
