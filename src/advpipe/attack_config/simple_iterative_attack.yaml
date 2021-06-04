@@ -3,13 +3,19 @@
 attack_regime:
   name : simple-iterative-attack
   algorithm_name: rays
-  max_iter: 300
+  max_iter: 10000
+  epsilon: 0.01
+
 
   dataset_config:
   # if path is not absolute, path is taken relative to advpipe package
-    data_dir: datasets/pig_dog_computer  
+    data_dir: datasets/pig_dog_computer
 
 
   target_blackbox_config:
-    blackbox_type: cloud 
-    name: gvision 
+    blackbox_type: local
+    name: resnet50
+
+    loss:
+      name: margin_loss
+      margin: 0.5

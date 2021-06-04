@@ -28,8 +28,8 @@ class BlackBoxIterativeAlgorithm(BlackBoxAlgorithm):
         super().__init__(image, loss_fn)
 
     @staticmethod
-    def createBlackBoxAttackInstance(algorithm_name, image, loss_fn):
-        return blackbox_iterative_algorithms[algorithm_name](image, loss_fn)
+    def createBlackBoxAttackInstance(algorithm_name, image, loss_fn, epsilon):
+        return blackbox_iterative_algorithms[algorithm_name](image, loss_fn, epsilon)
 
 
 from .random_attack import RandomAttackAlgorithm

@@ -66,6 +66,7 @@ class PytorchResnet50(PytorchModel):
 # - BlackBox wrapping around LocalModel
 
 from advpipe.blackbox import TargetBlackBox
+from advpipe.blackbox.loss import LOSS_FUNCTIONS 
 class LocalBlackBox(TargetBlackBox):
     """Pretrained ImageNet model"""
 
@@ -84,7 +85,15 @@ class LocalBlackBox(TargetBlackBox):
         logger.debug(f"top-1 organism label: {get_label(np.argmax(organims_probs))}, prob: {np.max(organims_probs)}")
         logger.debug(f"top-1 object label: {get_label(np.argmax(object_probs))}, prob: {np.max(object_probs)}")
 
-        return np.max(probs[get_organism_indeces()]) - np.max(probs[get_object_indeces()])
+        if self.blackbox_config.loss.name == "margin_loss":
+            loss_val = np.max(probs[get_organism_indeces()]) - np.max(probs[get_object_indeces()])
+            margin_loss_val =  LOSS_FUNCTIONS["margin_loss"](loss_val, self.blackbox_config.loss.margin)
+            return margin_loss_val
+        else:
+            raise NotImplementedError(f"Loss {self.blackbox_config.loss.name} is not implemented")
+
+
+            
 
 
 

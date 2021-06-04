@@ -11,11 +11,11 @@ class LossCallCounter:
     def __init__(self, loss_fn, max_calls):
         self.loss_fn = loss_fn
         self.last_loss_val = np.inf
+        self.last_img = None
         self.max_calls = max_calls
         self.i = 0
 
     def __call__(self, pertubed_image):
-        print("loss call")
         if self.i >= self.max_calls:
             msg = f"Max number of function calls exceeded (max_calls={self.max_calls})"
             logger.info(f"LossCallCounter: {msg}")
@@ -23,6 +23,7 @@ class LossCallCounter:
 
         self.i += 1
         self.last_loss_val = self.loss_fn(pertubed_image)
+        self.last_img = pertubed_image
         return self.last_loss_val
 
 

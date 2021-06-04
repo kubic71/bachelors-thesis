@@ -17,6 +17,8 @@ class TargetBlackBox(ABC):
         # In case of Local blackbox, pass split the ImageNet categories using imagenet_utils.py
         pass
 
+        
+
 
 
 from .local import LocalBlackBox
@@ -27,8 +29,4 @@ TARGET_BLACKBOX_TYPES = {"local":LocalBlackBox,
 }
 
 
-def margin_loss():
-    raise NotImplementedError
-
-loss_function = {"margin_loss": margin_loss}
 

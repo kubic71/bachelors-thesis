@@ -28,11 +28,11 @@ class RaySAttackAlgorithm(BlackBoxIterativeAlgorithm):
 
     def get_xadv(self, x, v, d, lb=0., rb=1.):
         out = x + d * v
-        return torch.clamp(out, lb, rb)
+        return torch.clamp(out, lb, rb) # pylint: disable=no-member
 
     def run(self, seed=None):
 
-        x = torch.from_numpy(self.image)
+        x = torch.from_numpy(self.image) # pylint: disable=no-member
         shape = list(x.shape)
         dim = np.prod(shape[1:])
         if seed is not None:
@@ -40,11 +40,11 @@ class RaySAttackAlgorithm(BlackBoxIterativeAlgorithm):
 
         self.queries = 0
         self.d_t = np.inf
-        self.sgn_t = torch.sign(torch.ones(shape))
+        self.sgn_t = torch.sign(torch.ones(shape)) # pylint: disable=no-member
         self.x_final = x
         
 
-        dist = torch.tensor(np.inf)
+        dist = torch.tensor(np.inf) # pylint: disable=not-callable
         block_level = 0
         block_ind = 0
 
@@ -68,16 +68,13 @@ class RaySAttackAlgorithm(BlackBoxIterativeAlgorithm):
                 block_ind = 0
 
             dist = torch.norm(self.x_final - x, self.order)
-            if self.early_stopping and (dist <= self.epsilon):
-                break
-
-            # if self.queries >= self.max_iters:
-                # print('out of queries')
-                # break
 
             if i % 1 == 0:
-                pass
-                print(f"Iter: {i}, Queries: {self.queries} d_t {self.d_t:.8f} dist {dist:.8f}")
+                logger.debug(f"Rays iteration: {i}, Queries: {self.queries} d_t {self.d_t:.8f} dist {dist:.8f}")
+
+            if self.early_stopping and (dist <= self.epsilon):
+                logger.info(f"Rays early stopping. dist: {dist} <= {self.epsilon}")
+                break
 
         print("Iter %3d d_t %.6f dist %.6f queries %d" %
               (i + 1, self.d_t, dist, self.queries))
@@ -88,10 +85,9 @@ class RaySAttackAlgorithm(BlackBoxIterativeAlgorithm):
         # yield evey time loss_fn is evaluated, so that the attack manager can retake the execution control
         yield self.x_final.detach().cpu().numpy()
 
-        return loss_val < 0
+        return loss_val <= 0
 
     def search_succ(self, x):
-        print("search_succ")
         self.queries += 1
         ret = yield from self.is_adversarial(x)
         return ret

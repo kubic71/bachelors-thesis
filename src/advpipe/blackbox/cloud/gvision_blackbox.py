@@ -48,4 +48,6 @@ class GVisionBlackBox(CloudBlackBox):
         response = client.label_detection(image=image, max_results=100) # pylint: disable=no-member
         
         result = [(annotation.description, annotation.score) for annotation in response.label_annotations]
+        logger.save_cloud_labels(result, img_filename)
+
         return result

@@ -17,11 +17,13 @@ class AdvPipeConfig:
         self.attack_regime.target_blackbox_config = TargetBlackBoxConfig.loadFromYamlConfig(self.attack_regime.target_blackbox_config)
 
 
-class TargetBlackBoxConfig():
 
-    def __init__(self, blackbox_name, blackbox_class_ref):
+class TargetBlackBoxConfig:
+
+    def __init__(self, blackbox_name, loss_config, blackbox_class_ref):
         self.name = blackbox_name
         self.blackbox_class_ref = blackbox_class_ref
+        self.loss = loss_config
 
 
     @staticmethod
@@ -46,7 +48,7 @@ class LocalBlackBoxConfig(TargetBlackBoxConfig):
     blackbox_type = "local"
     def __init__(self, local_blackbox_config):
         class_ref = LOCAL_BLACKBOXES[local_blackbox_config.name]
-        super().__init__(blackbox_name = local_blackbox_config.name, blackbox_class_ref = class_ref)
+        super().__init__(blackbox_name = local_blackbox_config.name, loss_config = local_blackbox_config.loss, blackbox_class_ref = class_ref)
 
 
 from advpipe.blackbox.cloud import CLOUD_BLACKBOXES
@@ -56,7 +58,7 @@ class CloudBlackBoxConfig(TargetBlackBoxConfig):
 
     def __init__(self, cloud_blackbox_config):
         class_ref = CLOUD_BLACKBOXES[cloud_blackbox_config.name]
-        super().__init__(blackbox_name = cloud_blackbox_config.name, blackbox_class_ref = class_ref)
+        super().__init__(blackbox_name = cloud_blackbox_config.name, loss_config = cloud_blackbox_config.loss, blackbox_class_ref = class_ref)
 
 
 from advpipe.blackbox import TargetBlackBox
