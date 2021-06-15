@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 idx_to_label = {
  0: 'tench',
  1: 'goldfish',
@@ -1000,15 +1002,6 @@ idx_to_label = {
  998: 'ear',
  999: 'toilet_tissue'
  }
-
-
-
-
-
-
-
-
-
 
 
 idx_to_synset = {
@@ -3019,28 +3012,29 @@ organism_category_split = {
 }
 
 
-
 def get_label(idx):
     return idx_to_label[idx]
+
 
 def get_synset(idx):
     return idx_to_synset[idx]
 
+
 def is_organism(idx):
     return organism_category_split[idx]
 
-from functools import lru_cache
 
 @lru_cache(maxsize=None)
 def get_organism_indeces():
     return [idx for idx in range(1000) if organism_category_split[idx]]
+
 
 @lru_cache(maxsize=None)
 def get_object_indeces():
     return [idx for idx in range(1000) if not organism_category_split[idx]]
 
 
-# Precompute animate/inanimate category split  
+# Precompute animate/inanimate category split
 def _create_organism_category_split():
     import os
     from advpipe import utils
