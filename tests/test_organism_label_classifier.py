@@ -1,3 +1,4 @@
+# mypy: allow-untyped-defs, no-strict-optional
 import pytest
 
 from advpipe.language_model.label_classification import OrganismLabelClassifier

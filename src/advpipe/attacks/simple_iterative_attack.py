@@ -1,40 +1,34 @@
-from advpipe.attacks import Attack, MaxFunctionCallsExceededException, LossCallCounter
+from __future__ import annotations
+from advpipe.attacks import Attack
+from advpipe.utils import MaxFunctionCallsExceededException, LossCallCounter
 from advpipe.log import logger
-from typing import Union
-from advpipe.attack_algorithms import BlackBoxIterativeAlgorithm
-from advpipe.data_loader import DataLoader
 from advpipe import utils
 import numpy as np
 from os import path
 
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from advpipe.config_datamodel import AttackRegimeConfig
+
 
 class SimpleIterativeAttack(Attack):
-    iterative_algorithm: BlackBoxIterativeAlgorithm
-    dataloader: DataLoader
-
-    def __init__(self, config):
+    def __init__(self, attack_regime_config: AttackRegimeConfig):
         # Initialize the black-box
-        super().__init__(config)
-        self.dataloader = DataLoader(config.dataset_config)
+        super().__init__(attack_regime_config)
 
-    def run(self):
+    def run(self) -> None:
         super().run()
 
-        logger.info(
-            f"running Simple iterative attack for {len(self.dataloader)} images"
-        )
+        logger.info(f"running Simple iterative attack for {len(self.dataloader)} images")
 
-        for img_path, np_img in self.dataloader:
+        for img_path, np_img, label in self.dataloader:
             logger.info(f"Running Simple iterative attack for {img_path}")
-            _, img_fn = path.split(img_path)  # get image file name
+            _, img_fn = path.split(img_path)    # get image file name
 
-            blackbox_loss = LossCallCounter(self.target_blackbox.loss,
-                                            self.config.max_iter)
-            self.iterative_algorithm = BlackBoxIterativeAlgorithm.createBlackBoxAttackInstance(
-                self.config.algorithm_name,
-                image=np_img.copy(),
-                loss_fn=blackbox_loss,
-                epsilon=self.config.epsilon)
+            blackbox_loss = LossCallCounter(self.target_blackbox.loss, self.regime_config.max_iter)
+
+            self.iterative_algorithm = self.regime_config.attack_algorithm_config.getAttackAlgorithmInstance(
+                np_img.copy(), blackbox_loss)
 
             running_attack = self.iterative_algorithm.run()
 
@@ -45,18 +39,18 @@ class SimpleIterativeAttack(Attack):
             i = 1
             while True:
                 try:
-                    adv_img = next(running_attack)
+                    _ = next(running_attack)
                     dist = np.max(np.abs(blackbox_loss.last_img - np_img))
                     logger.debug(
-                        f"Manager: Img: {img_fn}\t\tIter: {i}\tdist:{dist}\tloss: {blackbox_loss.last_loss_val}"
-                    )
+                        f"Manager: Img: {img_fn}\t\tIter: {i}\tdist:{dist}\tloss: {blackbox_loss.last_loss_val}")
 
                     if blackbox_loss.last_loss_val == 0 and dist < best_dist:
                         best_loss = 0
                         best_dist = dist
                         best_img = blackbox_loss.last_img
                         # utils.show_img(best_img)
-                        logger.info(f"New best img: {img_fn}\t\tQuery: {i}\tdist:{dist}\tloss: {blackbox_loss.last_loss_val}")
+                        logger.info(
+                            f"New best img: {img_fn}\t\tQuery: {i}\tdist:{dist}\tloss: {blackbox_loss.last_loss_val}")
 
                     i += 1
                 except (MaxFunctionCallsExceededException, StopIteration):

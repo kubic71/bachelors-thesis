@@ -2,9 +2,16 @@
 
 attack_regime:
   name : simple-iterative-attack
-  algorithm_name: rays
+
+  attack_algorithm: 
+    name: rays
+    early_stopping: True
+
   max_iter: 10000
+
+  # How attack manager chooses valid adversarial images
   epsilon: 0.01
+  norm: linf    # l0, l1, l2, linf
 
 
   dataset_config:
@@ -13,9 +20,11 @@ attack_regime:
 
 
   target_blackbox_config:
-    blackbox_type: local
-    name: resnet50
+    blackbox_type: cloud
+    name: gvision
 
     loss:
       name: margin_loss
       margin: 0.5
+
+

@@ -1,3 +1,4 @@
+from __future__ import annotations
 from functools import lru_cache
 
 idx_to_label = {
@@ -3012,30 +3013,34 @@ organism_category_split = {
 }
 
 
-def get_label(idx):
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from typing import Sequence, Dict
+
+def get_label(idx: int) -> str:
     return idx_to_label[idx]
 
 
-def get_synset(idx):
+def get_synset(idx: int) -> str:
     return idx_to_synset[idx]
 
 
-def is_organism(idx):
+def is_organism(idx: int) -> bool:
     return organism_category_split[idx]
 
 
 @lru_cache(maxsize=None)
-def get_organism_indeces():
+def get_organism_indeces() -> Sequence[int]:
     return [idx for idx in range(1000) if organism_category_split[idx]]
 
 
 @lru_cache(maxsize=None)
-def get_object_indeces():
+def get_object_indeces() -> Sequence[int]:
     return [idx for idx in range(1000) if not organism_category_split[idx]]
 
 
 # Precompute animate/inanimate category split
-def _create_organism_category_split():
+def _create_organism_category_split() -> Dict[int, bool]:
     import os
     from advpipe import utils
     from advpipe.language_model.label_classification import OrganismLabelClassifier

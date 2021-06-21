@@ -28,14 +28,14 @@ $ conda install -c anaconda nltk
 Huggingface transformers for zero-shot classification in case wordnet doesn't know the exact label phrase
 
 ```
-$ conda install -c huggingface transformers  
+$ pip install transformers  
 ```
 
 ### Other dependencies and packages installed throught the development process
 Not all packages are required dependencies.
 ```
 conda install pytest pylint pyyaml munch pillow scikit-image matplotlib 
-pip install google-cloud-vision
+pip install google-cloud-vision opencv-python jedi neovim seaborn pre-commit eagerpy
 ```
 
 

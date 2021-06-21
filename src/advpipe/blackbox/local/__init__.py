@@ -1,81 +1,90 @@
+from __future__ import annotations
+from abc import abstractmethod
+
 import numpy as np
-from .imagenet_utils import get_organism_indeces, get_object_indeces, get_label
-from torchvision import models
-from advpipe.log import logger
 import torch
+from advpipe.blackbox.loss import margin_loss
+from advpipe.log import logger
+from torchvision import models
+import eagerpy as ep
+
+from advpipe.imagenet_utils import get_label, get_object_indeces, get_organism_indeces
+from advpipe.blackbox import TargetBlackBox
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from advpipe.config_datamodel import LocalBlackBoxConfig
 
 
-#-----------Local Model----------
+# -----------Local Model----------
 # - wraps different types of Local white-box models
 # - actual white-box model instances are singletons to save memory
-
 class LocalModel():
     """
     Wrapper around different types of local models
-    This wrapping is neccessary, because tensorflow nad pytorch models differ for example in the order of channels for images
-
+    This wrapping is neccessary, because tensorflow and pytorch models differ
+    for example in the order of channels for images
     """
-    def __init__(self):
-        pass
 
-    def __call__(self, np_img):
+    @abstractmethod
+    def __call__(self, np_img: np.ndarray) -> ep.types.NativeTensor:
         """Take [W, H, C] numpy image in any resolution and return probabilities over ImageNet categories"""
         # Override in Pytorch/Tensorflow/Other Model class
-        pass
+
 
 class PytorchModel(LocalModel):
+    model: torch.nn.Module
+    cuda: bool
     """Wrapper around pytorch ImageNet models"""
-
-    def __init__(self, pytorch_model : torch.nn.Module, cuda=True):
+    def __init__(self, pytorch_model: torch.nn.Module, cuda: bool =True):
         self.model = pytorch_model
         self.cuda = cuda
         if cuda:
             self.model.cuda()
         self.model.eval()
 
-    def __call__(self, np_img):
+    def __call__(self, np_img: np.ndarray) -> ep.types.NativeTensor:
         img_tensor = self._preprocess(np_img)
-        return self.model(img_tensor).cpu().detach().numpy()[0]
+        return ep.astensor(self.model(img_tensor)[0])
 
-    def _preprocess(self, np_img):
+    def _preprocess(self, np_img: np.ndarray) -> torch.Tensor:
         np_img = np_img.transpose(2, 0, 1)
-        tensor = torch.from_numpy(np_img).float().unsqueeze(0) # pylint: disable=no-member
+        tensor = torch.from_numpy(np_img).float().unsqueeze(0)
         if self.cuda:
             tensor = tensor.cuda()
         return tensor
 
 
-
 class PytorchResnet18(PytorchModel):
     # keep only one instance of Resnet-18 in memory
-    _resnet18 = models.resnet18(pretrained=True)
-    def __init__(self):
-        super().__init__(self._resnet18)
+    _resnet18: torch.nn.Module = models.resnet18(pretrained=True)
+
+    def __init__(self) -> None:
+        super().__init__(PytorchResnet18._resnet18)
 
 
 class PytorchResnet50(PytorchModel):
     # keep only one instance of Resnet-50 in memory
-    _resnet50 = models.resnet50(pretrained=True)
-    def __init__(self):
-        super().__init__(self._resnet50)
+    _resnet50: torch.nn.Module = models.resnet50(pretrained=True)
+
+    def __init__(self) -> None:
+        super().__init__(PytorchResnet50._resnet50)
 
 
-
-
-#------------Local BlackBox------------
+# ------------Local BlackBox------------
 # - BlackBox wrapping around LocalModel
-
-from advpipe.blackbox import TargetBlackBox
-from advpipe.blackbox.loss import LOSS_FUNCTIONS 
 class LocalBlackBox(TargetBlackBox):
     """Pretrained ImageNet model"""
+    local_model: LocalModel
 
-    def __init__(self, blackbox_config, local_model : LocalModel):
+    def __init__(self, blackbox_config: LocalBlackBoxConfig, local_model: LocalModel):
         super().__init__(blackbox_config)
         self.local_model = local_model
 
-    def loss(self, pertubed_image):
+    def loss(self, pertubed_image: np.ndarray) -> float:
         probs = self.local_model(pertubed_image)
+        probs = probs.numpy()
+
 
         organims_probs = probs.copy()
         object_probs = probs.copy()
@@ -87,28 +96,20 @@ class LocalBlackBox(TargetBlackBox):
 
         if self.blackbox_config.loss.name == "margin_loss":
             loss_val = np.max(probs[get_organism_indeces()]) - np.max(probs[get_object_indeces()])
-            margin_loss_val =  LOSS_FUNCTIONS["margin_loss"](loss_val, self.blackbox_config.loss.margin)
+            margin_loss_val = margin_loss(loss_val, self.blackbox_config.loss.margin)
             return margin_loss_val
         else:
             raise NotImplementedError(f"Loss {self.blackbox_config.loss.name} is not implemented")
 
 
-            
-
-
-
-
 class PytorchBlackBoxResnet18(LocalBlackBox):
-    def __init__(self, blackbox_config):
+    def __init__(self, blackbox_config: LocalBlackBoxConfig):
         super().__init__(blackbox_config, PytorchResnet18())
 
 
 class PytorchBlackBoxResnet50(LocalBlackBox):
-    def __init__(self, blackbox_config):
+    def __init__(self, blackbox_config: LocalBlackBoxConfig):
         super().__init__(blackbox_config, PytorchResnet50())
 
 
-LOCAL_BLACKBOXES = {
-    "resnet18": PytorchBlackBoxResnet18,
-    "resnet50": PytorchBlackBoxResnet50
-}
+LOCAL_BLACKBOXES = {"resnet18": PytorchBlackBoxResnet18, "resnet50": PytorchBlackBoxResnet50}

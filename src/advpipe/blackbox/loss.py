@@ -1,6 +1,2 @@
-
-def margin_loss(loss_val, margin):
-    return max(loss_val + margin, 0)
-
-
-LOSS_FUNCTIONS = {"margin_loss":margin_loss}
+def margin_loss(loss_val: float, margin: float) -> float:
+    return loss_val + margin

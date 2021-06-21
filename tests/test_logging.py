@@ -1,3 +1,4 @@
+# mypy: allow-untyped-defs, no-strict-optional
 from advpipe.log import logger
 
 
