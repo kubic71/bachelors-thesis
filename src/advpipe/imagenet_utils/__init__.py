@@ -1,5 +1,6 @@
 from __future__ import annotations
 from functools import lru_cache
+from advpipe import utils
 
 idx_to_label = {
  0: 'tench',
@@ -3017,7 +3018,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from typing import Sequence, Dict
 
-def get_label(idx: int) -> str:
+def get_human_readable_label(idx: int) -> str:
     return idx_to_label[idx]
 
 
@@ -3042,7 +3043,6 @@ def get_object_indeces() -> Sequence[int]:
 # Precompute animate/inanimate category split
 def _create_organism_category_split() -> Dict[int, bool]:
     import os
-    from advpipe import utils
     from advpipe.language_model.label_classification import OrganismLabelClassifier
     classifier = OrganismLabelClassifier()
 
@@ -3056,3 +3056,14 @@ def _create_organism_category_split() -> Dict[int, bool]:
         f.write(str(is_organism_dict))
 
     return is_organism_dict
+
+
+imagenet_val_labels = {}
+with open(utils.rel_to_abs_path("val_labels.txt"), "r") as f:
+    for line in f.read().strip().split("\n"):
+        fn, idx = line.split()
+        imagenet_val_labels[fn] = int(idx)
+
+def get_imagenet_validation_label(val_img_fn: str) -> int:
+    val_img_fn = val_img_fn.strip().lower().replace(".png", "").replace(".jpeg", "")
+    return imagenet_val_labels[val_img_fn]

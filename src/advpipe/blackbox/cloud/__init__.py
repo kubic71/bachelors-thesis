@@ -48,6 +48,4 @@ class CloudBlackBox(TargetBlackBox):
             raise NotImplementedError(f"loss '{self.blackbox_config.loss.name}' not implemented!")
 
 
-from .gvision_blackbox import GVisionBlackBox    # noqa: 402
-
-CLOUD_BLACKBOXES = {"gvision": GVisionBlackBox}
+from .gvision_blackbox import GVisionBlackBox

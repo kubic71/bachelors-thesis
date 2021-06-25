@@ -29,7 +29,7 @@ class CloudDataLogger:
         img_full_path = path.join(self.img_log_path, img_filename)
         imageio.imwrite(img_full_path, np_img)
 
-        utils.show_img(np_img)
+        # utils.show_img(np_img)
 
         return img_full_path
 
@@ -61,6 +61,6 @@ log_file_path = path.join(path.dirname(path.abspath(__file__)), 'logging.conf')
 logging.config.fileConfig(log_file_path)
 
 # create logger
-logger = CustomLogger(logging.getLogger('root'))
+logger = CustomLogger(logging.getLogger('advpipe'))
 
 from advpipe import utils    # noqa: 402

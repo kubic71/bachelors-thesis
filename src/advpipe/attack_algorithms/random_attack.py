@@ -26,4 +26,4 @@ class RandomAttackAlgorithm(BlackBoxIterativeAlgorithm):
             if loss_val < self.best_loss:
                 self.pertubation = np.clip(self.new_pertubation, -self.epsilon, self.epsilon)
 
-            yield self.image + self.pertubation
+            yield self.pertubation

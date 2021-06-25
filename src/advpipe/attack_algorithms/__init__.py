@@ -1,4 +1,5 @@
 from __future__ import annotations
+from abc import ABC, abstractmethod
 from advpipe.log import logger
 import numpy as np
 import eagerpy as ep
@@ -6,7 +7,7 @@ import eagerpy as ep
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from advpipe.utils import LossCallCounter
-    from typing import Iterator
+    from typing import Generator
 
 
 class Norm:
@@ -14,30 +15,44 @@ class Norm:
 
     def __init__(self, norm_order: str):
         assert norm_order in self._supported_norms
+        self._name = norm_order
         self._norm = self._supported_norms[norm_order]
 
     def __call__(self, img: ep.types.NativeTensor) -> float:
         return float(self._norm(ep.astensor(img)).numpy())
 
+    @property
+    def name(self) -> str:
+        return self._name
 
-class BlackBoxAlgorithm:
+
+class BlackBoxAlgorithm(ABC):
     image: np.ndarray
-    loss_fn: LossCallCounter
     pertubation: np.ndarray
 
-    def __init__(self, image: np.ndarray, loss_fn: LossCallCounter):
+    def __init__(self, image: np.ndarray):
         self.image = image
-        self.loss_fn = loss_fn
         self.pertubation = np.zeros_like(self.image)
 
-    def run(self) -> Iterator[np.ndarray]:
-        for i in range(100):
-            logger.info(f"i: {i}, blackbox-loss: {self.loss_fn(self.image + self.pertubation)}")
-
-            # Algoritm should yield to the attack manager the current pertubation
-            yield self.pertubation
+    # Algoritm should yield to the attack manager the current pertubation
+    # transfer attacks yield only once and then StopIteration
+    @abstractmethod
+    def run(self) -> Generator[np.ndarray, None, None]:
+        ...
 
 
 class BlackBoxIterativeAlgorithm(BlackBoxAlgorithm):
+    loss_fn: LossCallCounter
+
     def __init__(self, image: np.ndarray, loss_fn: LossCallCounter):
-        super().__init__(image, loss_fn)
+        super().__init__(image)
+        self.loss_fn = loss_fn
+
+
+class BlackBoxTransferAlgorithm(BlackBoxAlgorithm):
+    def __init__(self, image: np.ndarray):
+        super().__init__(image)
+
+
+from .rays import RaySAttackAlgorithm
+from .passthrough_attack import PassthroughTransferAttackAlgorithm

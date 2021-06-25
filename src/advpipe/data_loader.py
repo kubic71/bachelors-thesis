@@ -2,25 +2,27 @@ from __future__ import annotations
 import os
 import skimage.transform
 from advpipe import utils
-from advpipe.imagenet_utils import is_organism
+from advpipe.imagenet_utils import is_organism, get_human_readable_label, get_imagenet_validation_label
+from advpipe.log import logger
 import functools
+import numpy as np
 
 # Typing and stuff
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from advpipe.config_datamodel import DatasetConfig    # noqa: 402
-    from typing import Dict, Tuple, Sequence
+    from advpipe.config_datamodel import DatasetConfig, ImageNetValidationDatasetConfig
+    from typing import Dict, Tuple, Sequence, Optional
     from numpy import np
 
 
 class DataLoader:
     """Data iterator that returns all images from dataset directory as numpy tensors"""
 
-    resize: Tuple[int, int] | None
+    resize: Optional[Tuple[int, int]]
     dataset_config: DatasetConfig
     dataset_list: Sequence[str]
 
-    def __init__(self, dataset_config: DatasetConfig, resize: Tuple[int, int] | None = (224, 224)):
+    def __init__(self, dataset_config: DatasetConfig, resize: Optional[Tuple[int, int]] = (224, 224)):
         self.dataset_config = dataset_config
         self.resize = resize
 
@@ -30,12 +32,14 @@ class DataLoader:
                 list(filter(utils.is_img_filename, os.listdir(self.dataset_config.full_path))),
             ))
 
+        self.dataset_list.sort()
+
         self.index = 0
 
     def __iter__(self) -> DataLoader:
         return self
 
-    def __next__(self) -> Tuple[str, np.ndarray, int | None]:
+    def __next__(self) -> Tuple[str, np.ndarray, Optional[int]]:
         """Return (img_path, numpy_img, label)
         label == 0 -> object
         label == 1 -> organism
@@ -44,8 +48,11 @@ class DataLoader:
         """
 
         try:
+            if self.dataset_config.size_limit is not None and self.index >= self.dataset_config.size_limit:
+                raise StopIteration
             img_path = self.dataset_list[self.index]
             np_img = self._transform(utils.load_image_to_numpy(img_path))
+
         except IndexError:
             raise StopIteration
         self.index += 1
@@ -53,32 +60,46 @@ class DataLoader:
 
     def _transform(self, np_img: np.ndarray) -> np.ndarray:
         if self.resize:
-            np_img = skimage.transform.resize(np_img, output_shape=self.resize)
+            np_img = np.asarray(skimage.transform.resize(np_img, output_shape=self.resize, preserve_range=True),
+                                dtype=np.uint8)
         return np_img
 
     def __len__(self) -> int:
         return len(self.dataset_list)
 
 
-class DAmageNetDatasetLoader(DataLoader):
-    labels: Dict[str, int]
+class ImageNetValidationDataloader(DataLoader):
+    dataset_config: ImageNetValidationDatasetConfig
 
-    def __init__(self, dataset_config: DatasetConfig):
+    # Some images can be filtered out, so index isn't enough to keep track of total returned images
+    image_counter: int = 0
+
+    def __init__(self, dataset_config: ImageNetValidationDatasetConfig):
         super().__init__(dataset_config, resize=None)
 
-        self.labels = {}
-        with open(os.path.join(dataset_config.full_path, "val_damagenet.txt"), "r") as f:
-            for line in f.read().strip().split("\n"):
-                img_fn, imagenet_label = line.split()
-                self.labels[img_fn] = int(is_organism(int(imagenet_label)))
-
-    def __next__(self) -> Tuple[str, np.ndarray, int | None]:
+    def __next__(self) -> Tuple[str, np.ndarray, Optional[int]]:
         try:
-            img_path = self.dataset_list[self.index]
-            np_img = utils.load_image_to_numpy(img_path)
-            label = self.labels[os.path.basename(img_path)]
+            while True:
+                if self.dataset_config.size_limit is not None and self.image_counter >= self.dataset_config.size_limit:
+                    raise StopIteration
+                img_path = self.dataset_list[self.index]
+                img_fn = os.path.basename(img_path)
+
+                np_img = utils.load_image_to_numpy(img_path)
+
+                imagenet_id = get_imagenet_validation_label(img_fn)
+                organism_label = int(is_organism(imagenet_id))
+                human_readable = get_human_readable_label(imagenet_id)
+                self.index += 1
+
+                # organism_label == 0 is an object label, == 1 is an organism
+                if self.dataset_config.load_only_organisms and organism_label == 0:
+                    continue
+                else:
+                    logger.debug(
+                        f"ImageNetValidationDataset loader: {img_fn}, label: {human_readable}  is_organism: {organism_label == 1}"
+                    )
+                    self.image_counter += 1
+                    return (img_path, np_img, organism_label)
         except IndexError:
             raise StopIteration
-        self.index += 1
-
-        return (img_path, np_img, label)

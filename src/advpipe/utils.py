@@ -31,9 +31,9 @@ def is_img_filename(img_fn: str) -> bool:
 
 
 def load_image_to_numpy(img_path: str) -> np.ndarray:
-    image = Image.open(img_path)
+    image = Image.open(img_path).convert("RGB")
     # convert image to numpy array
-    np_img = np.asarray(image)
+    np_img = np.asarray(image, dtype=np.uint8)
     return np_img
 
 
@@ -64,10 +64,16 @@ def labels_and_scores_to_str(labels_and_scores: Sequence[Tuple[str, float]]) -> 
     return "\n".join(list(map(lambda l_s: l_s[0] + ": " + str(l_s[1]), labels_and_scores)))
 
 
+# deprecated
 def clip_linf(orig_img: np.ndarray, pertubed_img: np.ndarray, epsilon: float = 0.05) -> np.ndarray:
     min_boundary = np.clip(orig_img - epsilon * np.ones_like(orig_img), 0, 1)
     max_boundary = np.clip(orig_img + epsilon * np.ones_like(orig_img), 0, 1)
     return np.clip(pertubed_img, min_boundary, max_boundary)
+
+
+def convert_to_uint8(image: np.ndarray) -> np.ndarray:
+    zero_shifted = image - image.min()
+    return zero_shifted / zero_shifted.max()
 
 
 def load_yaml(yaml_filename: str) -> Munch:
@@ -107,3 +113,13 @@ class LossCallCounter:
         self.last_loss_val = self.loss_fn(pertubed_image)
         self.last_img = pertubed_image
         return self.last_loss_val
+
+
+def get_config_attr(conf: Munch, attr_name: str, default_val: Any) -> Any:
+    """Returns config attribute value if it exists, otherwise returns default value"""
+    val = default_val
+    try:
+        val = conf.__getattr__(attr_name)
+    except AttributeError:
+        pass
+    return val

@@ -1,7 +1,7 @@
 ---
 
 attack_regime:
-  name : simple-iterative-attack
+  name : iterative-regime 
 
   attack_algorithm: 
     name: rays

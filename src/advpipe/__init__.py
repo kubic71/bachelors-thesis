@@ -5,4 +5,4 @@ import advpipe.blackbox
 import advpipe.blackbox.local
 import advpipe.blackbox.cloud
 import advpipe.config_datamodel
-import advpipe.attacks
+import advpipe.attack_regimes

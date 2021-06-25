@@ -1,5 +1,5 @@
 from __future__ import annotations
-from advpipe.attacks import Attack
+from advpipe.attack_regimes import AttackRegime
 from advpipe.utils import MaxFunctionCallsExceededException, LossCallCounter
 from advpipe.log import logger
 from advpipe import utils
@@ -8,11 +8,13 @@ from os import path
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from advpipe.config_datamodel import AttackRegimeConfig
+    from advpipe.config_datamodel import IterativeRegimeConfig
 
 
-class SimpleIterativeAttack(Attack):
-    def __init__(self, attack_regime_config: AttackRegimeConfig):
+class SimpleIterativeRegime(AttackRegime):
+    regime_config: IterativeRegimeConfig
+
+    def __init__(self, attack_regime_config: IterativeRegimeConfig):
         # Initialize the black-box
         super().__init__(attack_regime_config)
 

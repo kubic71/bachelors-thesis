@@ -8,7 +8,7 @@ if __name__ == "__main__":
     parser.add_argument('-c',
                         '--config',
                         type=str,
-                        default=utils.rel_to_abs_path("attack_config/simple_iterative_attack.yaml"),
+                        default=utils.rel_to_abs_path("attack_config/imagenet_val_baseline_gvision.yaml"),
                         help='AdvPipe attack YAML config file')
     args = parser.parse_args()
 

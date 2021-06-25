@@ -1,0 +1,31 @@
+---
+
+attack_regime:
+  name : transfer-regime 
+  show_images : False
+  skip_already_adversarial: False
+
+  attack_algorithm: 
+    name: passthrough 
+
+  epsilon: 0.0
+  norm: linf 
+
+
+  dataset_config:
+  # if path is not absolute, path is taken relative to advpipe package
+    data_dir: datasets/imagenet_val
+    dataset_type: imagenet-validation
+    load_only_organism: True
+
+
+  target_blackbox_config:
+    blackbox_type: local
+    name: resnet50
+    resize_and_center_crop: True
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+
+

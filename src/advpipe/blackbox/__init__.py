@@ -1,5 +1,5 @@
 from __future__ import annotations
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, abstractproperty
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
