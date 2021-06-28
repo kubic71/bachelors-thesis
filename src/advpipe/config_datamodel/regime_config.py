@@ -19,12 +19,15 @@ class AttackRegimeConfig:
     dataset_config: DatasetConfig
     target_blackbox_config: TargetBlackBoxConfig
     attack_algorithm_config: AttackAlgorithmConfig
-    results_dir: str = "results/default_results_dir"
+    results_dir: str
+    config_filename:str
 
     _unparsed_config: Munch
 
     def __init__(self, attack_regime_config: Munch):
         self._unparsed_config = attack_regime_config
+
+        self.config_filename = os.path.basename(attack_regime_config.config_filename)
 
         self.name = attack_regime_config.name
         self.skip_already_adversarial = utils.get_config_attr(attack_regime_config, "skip_already_adversarial",
@@ -40,8 +43,9 @@ class AttackRegimeConfig:
         self.attack_algorithm_config = AttackAlgorithmConfig.loadFromYamlConfig(attack_regime_config,
                                                                                 attack_regime_config.attack_algorithm)
 
+        default_exp_name = self.config_filename.split(".")[0]
         self.results_dir = utils.convert_to_absolute_path(
-            utils.get_config_attr(attack_regime_config, "results_dir", IterativeRegimeConfig.results_dir))
+            utils.get_config_attr(attack_regime_config, "results_dir", "results/" + default_exp_name))
 
         self.save_only_successful_images = utils.get_config_attr(attack_regime_config, "save_only_successful_examples", AttackRegimeConfig.save_only_successful_examples)
         # log destination includes information about the whole attack regime

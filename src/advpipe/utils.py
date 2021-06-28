@@ -33,7 +33,7 @@ def mkdir_p(dir_path: str) -> None:
     pathlib.Path(dir_path).mkdir(parents=True, exist_ok=True)
 
 
-def show_img(np_img: np.ndarray, method: str = "PIL") -> None:
+def show_img(np_img: np.ndarray, method: str = "pyplot") -> None:
     if method == "PIL":
         convert_to_pillow(np_img).show()
     elif method == "opencv":

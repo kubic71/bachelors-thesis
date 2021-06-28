@@ -57,7 +57,9 @@ class ImageNetValidationDatasetConfig(DatasetConfig):
 
 
 class AdvPipeConfig:
-    def __init__(self, advpipe_config: Munch):
+    def __init__(self, advpipe_config_fn: str):
+        advpipe_config = utils.load_yaml(advpipe_config_fn)
+        advpipe_config.attack_regime.config_filename = advpipe_config_fn
         self.attack_regime_config = AttackRegimeConfig.loadFromYamlConfig(advpipe_config.attack_regime)
 
     def getAttackInstance(self) -> AttackRegime:

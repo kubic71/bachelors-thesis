@@ -2,9 +2,8 @@
 
 attack_regime:
   name : transfer-regime 
-  show_images : True
+  show_images : False
   skip_already_adversarial: False
-  results_dir: results/square_attack_transfer_resnet18_to_gvision
 
   attack_algorithm: 
     name: passthrough 

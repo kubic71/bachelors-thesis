@@ -1,0 +1,18 @@
+attack_algorithm:
+  name: passthrough
+config_filename: /home/kubik/school/thesis/bachelors-thesis/src/advpipe/attack_config/square_attack_transfer_resnet50_to_resnet18.yaml
+dataset_config:
+  data_dir: results/square_attack_resnet50/adv_examples
+  dataset_type: imagenet-validation
+  load_only_organism: true
+epsilon: 0.0
+name: transfer-regime
+norm: linf
+show_images: false
+skip_already_adversarial: false
+target_blackbox_config:
+  blackbox_type: local
+  loss:
+    margin: 0.0
+    name: margin_loss
+  name: resnet18

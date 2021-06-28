@@ -8,11 +8,11 @@ if __name__ == "__main__":
     parser.add_argument('-c',
                         '--config',
                         type=str,
-                        default=utils.convert_to_absolute_path("attack_config/square_attack_transfer_resnet18_to_gvision.yaml"),
+                        default=utils.convert_to_absolute_path("attack_config/square_attack_transfer_resnet50_to_resnet18.yaml"),
                         help='AdvPipe attack YAML config file')
     args = parser.parse_args()
 
-    advpipe_config = AdvPipeConfig(utils.load_yaml(args.config))
+    advpipe_config = AdvPipeConfig(args.config)
     attack = advpipe_config.getAttackInstance()
 
     attack.run()

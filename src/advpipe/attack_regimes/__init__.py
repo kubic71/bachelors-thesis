@@ -58,7 +58,7 @@ class AttackRegime(ABC):
 
     def copy_config_to_results_dir(self) -> None:
         unmunched = munch.unmunchify(self.regime_config._unparsed_config)
-        with open(self.regime_config.results_dir + "/config.yaml", "w") as f:
+        with open(self.regime_config.results_dir + "/" + self.regime_config.config_filename, "w") as f:
             yaml.dump(unmunched, stream=f)
 
 

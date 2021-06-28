@@ -9,18 +9,20 @@ attack_regime:
     name: passthrough 
 
   epsilon: 0.0
-  norm: linf
+  norm: linf 
 
   dataset_config:
-    data_dir: datasets/imagenet_val_256_rescaled
+    data_dir: results/square_attack_resnet50/adv_examples
     dataset_type: imagenet-validation
     load_only_organism: True
 
   target_blackbox_config:
     blackbox_type: local
-    name: resnet50
+    name: resnet18
     resize_and_center_crop: True
 
     loss:
       name: margin_loss
       margin: 0.0
+
+

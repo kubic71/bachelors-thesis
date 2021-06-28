@@ -9,6 +9,7 @@ from os import path
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from advpipe.config_datamodel import TransferRegimeConfig
+    from typing import Optional
 
 
 # TODO
@@ -41,6 +42,7 @@ class SimpleTransferRegime(AttackRegime):
             # Set max_loss_count to 10, such that MaxCall exception isn't raised
             blackbox_loss = LossCallCounter(self.target_blackbox.loss, 10)
 
+
             self.transfer_algorithm = self.regime_config.attack_algorithm_config.getAttackAlgorithmInstance(
                 np_img.copy(), blackbox_loss)
 
@@ -63,6 +65,8 @@ class SimpleTransferRegime(AttackRegime):
             norm = self.regime_config.attack_algorithm_config.norm
             dist = norm(pertubation)
 
+            self.write_result_to_file(img_fn, human_readable_label, loss)
+
             if loss < 0:
                 n_successful += 1
                 success = True
@@ -74,3 +78,21 @@ class SimpleTransferRegime(AttackRegime):
 
             if self.regime_config.show_images:
                 utils.show_img(x_adv)
+        
+        self.write_summary(n_successful, total)
+
+
+    def write_result_to_file(self, img_fn: str, human_readable_label: Optional[str],
+                             loss_val: float) -> None:
+
+        results_file = self.regime_config.results_dir + "/blackbox_query_results.txt"
+        with open(results_file, "a") as f:
+            label_str = "label-NA" if human_readable_label is None else human_readable_label
+            f.write(f"{img_fn} {label_str} {loss_val:.5f}\n")
+
+
+    def write_summary(self, n_successful: int, n_total: int) -> None:
+        with open(self.regime_config.results_dir + "/summary.txt", "w") as f:
+            f.write(f"successfully transferred / total = {n_successful}/{n_total} = {(n_successful/n_total*100):.2f}%")
+
+
