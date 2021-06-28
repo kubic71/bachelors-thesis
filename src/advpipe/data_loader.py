@@ -22,7 +22,7 @@ class DataLoader:
     dataset_config: DatasetConfig
     dataset_list: Sequence[str]
 
-    def __init__(self, dataset_config: DatasetConfig, resize: Optional[Tuple[int, int]] = (224, 224)):
+    def __init__(self, dataset_config: DatasetConfig, resize: Optional[Tuple[int, int]] = None):
         self.dataset_config = dataset_config
         self.resize = resize
 
@@ -39,7 +39,7 @@ class DataLoader:
     def __iter__(self) -> DataLoader:
         return self
 
-    def __next__(self) -> Tuple[str, np.ndarray, Optional[int]]:
+    def __next__(self) -> Tuple[str, np.ndarray, Optional[int], Optional[str]]:
         """Return (img_path, numpy_img, label)
         label == 0 -> object
         label == 1 -> organism
@@ -56,7 +56,7 @@ class DataLoader:
         except IndexError:
             raise StopIteration
         self.index += 1
-        return (img_path, np_img, None)
+        return (img_path, np_img, None, None)
 
     def _transform(self, np_img: np.ndarray) -> np.ndarray:
         if self.resize:
@@ -77,7 +77,7 @@ class ImageNetValidationDataloader(DataLoader):
     def __init__(self, dataset_config: ImageNetValidationDatasetConfig):
         super().__init__(dataset_config, resize=None)
 
-    def __next__(self) -> Tuple[str, np.ndarray, Optional[int]]:
+    def __next__(self) -> Tuple[str, np.ndarray, Optional[int], Optional[str]]:
         try:
             while True:
                 if self.dataset_config.size_limit is not None and self.image_counter >= self.dataset_config.size_limit:
@@ -100,6 +100,6 @@ class ImageNetValidationDataloader(DataLoader):
                         f"ImageNetValidationDataset loader: {img_fn}, label: {human_readable}  is_organism: {organism_label == 1}"
                     )
                     self.image_counter += 1
-                    return (img_path, np_img, organism_label)
+                    return (img_path, np_img, organism_label, human_readable)
         except IndexError:
             raise StopIteration

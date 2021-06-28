@@ -46,8 +46,9 @@ class PytorchModel(LocalModel):
         self.model.eval()
 
     def __call__(self, np_img: np.ndarray) -> ep.types.NativeTensor:
-        img_tensor = self._preprocess(np_img)
-        return ep.astensor(self.model(img_tensor)[0])
+        with torch.no_grad():    # type: ignore
+            img_tensor = self._preprocess(np_img)
+            return ep.astensor(self.model(img_tensor)[0])
 
     def _preprocess(self, np_img: np.ndarray) -> torch.Tensor:
         np_img = np_img.transpose(2, 0, 1)
@@ -87,7 +88,8 @@ class LocalBlackBox(TargetBlackBox):
     def _preprocess(self, image: np.ndarray) -> np.ndarray:
         # expecting dtype=np.uint8 or dtype=np.float32
         # blackbox precision is limited to uint8, which is realistic assumption for real-world attacks
-        pil_img = Image.fromarray(np.asarray(image, dtype=np.uint8))
+
+        pil_img = utils.convert_to_pillow(image)
 
         # standard imagenet normalization
         # conversion from numpy -> PIL Image -> torch.Tensor -> back to numpy is totally unnecessary and slow, but who cares if it works

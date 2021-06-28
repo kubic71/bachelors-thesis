@@ -1,11 +1,12 @@
 from __future__ import annotations
 from os import path
 from typing import Sequence, Tuple, Any
-from munch import Munch
+from munch import Munch, unmunchify
 import inspect
 import yaml
 import matplotlib.pyplot as plt
 import numpy as np
+import pathlib
 from PIL import Image, ImageDraw
 import cv2
 from advpipe.log import logger
@@ -15,13 +16,34 @@ if TYPE_CHECKING:
     from typing import Callable, Optional
 
 
-def show_img(np_img: np.ndarray, use_opencv: bool = False) -> None:
-    if use_opencv:
+def scale_img(img: Image, target_size: int) -> Image:
+    """Re-scale image while preserving its aspect ratio"""
+    x, y = img.size
+
+    # the shorter side will be scaled to the target_size
+    if x < y:
+        scale_ratio = target_size / x
+    else:
+        scale_ratio = target_size / y
+
+    return img.resize((int(x * scale_ratio), int(y * scale_ratio)))
+
+
+def mkdir_p(dir_path: str) -> None:
+    pathlib.Path(dir_path).mkdir(parents=True, exist_ok=True)
+
+
+def show_img(np_img: np.ndarray, method: str = "PIL") -> None:
+    if method == "PIL":
+        convert_to_pillow(np_img).show()
+    elif method == "opencv":
         cv2.imshow("", np_img[..., ::-1])
         cv2.waitKey(0)
-    else:
+    elif method == "pyplot":
         plt.imshow(np_img, interpolation="bicubic")
         plt.show()
+    else:
+        raise ValueError("utils.show_img: Unsupported method")
 
 
 def is_img_filename(img_fn: str) -> bool:
@@ -33,7 +55,7 @@ def is_img_filename(img_fn: str) -> bool:
 def load_image_to_numpy(img_path: str) -> np.ndarray:
     image = Image.open(img_path).convert("RGB")
     # convert image to numpy array
-    np_img = np.asarray(image, dtype=np.uint8)
+    np_img = np.asarray(image, dtype=np.float32) / 255
     return np_img
 
 
@@ -56,6 +78,14 @@ def write_text_to_img(img: Image, text: str, max_lines: int = 20) -> Image:
 
 
 def convert_to_pillow(np_img: np.ndarray) -> Image:
+    if np_img.dtype != np.uint8:
+        if np_img.min() >= 0 and np_img.max() <= 1:
+            np_img = np.asarray(np_img * 255, dtype=np.uint8)
+        elif np_img.min() >= 0 and np_img.max() <= 255:
+            np_img = np.asarray(np_img, dtype=np.uint8)
+        else:
+            raise ValueError("Cannot convert numpy array to PIL image: unsupported image format")
+
     return Image.fromarray(np_img)
 
 
@@ -71,20 +101,21 @@ def clip_linf(orig_img: np.ndarray, pertubed_img: np.ndarray, epsilon: float = 0
     return np.clip(pertubed_img, min_boundary, max_boundary)
 
 
-def convert_to_uint8(image: np.ndarray) -> np.ndarray:
-    zero_shifted = image - image.min()
-    return zero_shifted / zero_shifted.max()
-
-
 def load_yaml(yaml_filename: str) -> Munch:
     with open(yaml_filename, 'r') as stream:
         return Munch.fromDict(yaml.safe_load(stream))
 
 
+# TODO: this is quite a bad fuction name
 def rel_to_abs_path(relative_path: str) -> str:
     """convert caller's relative path to absolute path"""
     callers_path = inspect.stack()[1].filename
     return path.normpath(path.join(path.dirname(path.abspath(callers_path)), relative_path))
+
+
+def convert_to_absolute_path(module_relative_path: str) -> str:
+    """Convert path relative to advpipe's module root directory to its absolute variant"""
+    return path.join(get_abs_module_path(), module_relative_path)
 
 
 def get_abs_module_path() -> str:
@@ -123,3 +154,8 @@ def get_config_attr(conf: Munch, attr_name: str, default_val: Any) -> Any:
     except AttributeError:
         pass
     return val
+
+
+def serialize_config(conf: Munch) -> str:
+    unmunched = unmunchify(conf)
+    return yaml.dump(unmunched) # type: ignore

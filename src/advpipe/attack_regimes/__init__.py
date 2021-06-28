@@ -1,11 +1,18 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
+from advpipe import utils
+import numpy as np
+from os import path
+import munch
+import yaml
+
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from advpipe.config_datamodel import AttackRegimeConfig
     from advpipe.blackbox import TargetBlackBox
     from advpipe.data_loader import DataLoader
+    import numpy as np
 
 
 class AttackRegime(ABC):
@@ -20,9 +27,39 @@ class AttackRegime(ABC):
         # Initialize the connection to the target blackbox
         self.target_blackbox = self.regime_config.target_blackbox_config.getBlackBoxInstance()
 
+        self.create_results_dir()
+        self.create_adv_img_dir()
+        self.copy_config_to_results_dir()
+
+
     @abstractmethod
     def run(self) -> None:
         ...
+
+    def create_adv_img_dir(self) -> None:
+        self.adv_img_dir = self.regime_config.results_dir + "/adv_examples"
+        utils.mkdir_p(self.adv_img_dir)
+
+    def save_adv_img(self, x_adv: np.ndarray, img_fn: str) -> None:
+        """Saves successful adversarial image to results directory"""
+        img_fn = img_fn.split(".")[0] + ".png"
+        pil_img = utils.convert_to_pillow(x_adv)
+        pil_img.save(self.adv_img_dir + "/" + img_fn)
+
+
+    def create_results_dir(self) -> None:
+        if path.exists(self.regime_config.results_dir):
+            print(f"Results directory {self.regime_config.results_dir} already exists!")
+            choice = input("Do you want to overwrite the results? (y/n):")
+            if choice != 'y':
+                raise KeyboardInterrupt
+        utils.mkdir_p(self.regime_config.results_dir)
+
+
+    def copy_config_to_results_dir(self) -> None:
+        unmunched = munch.unmunchify(self.regime_config._unparsed_config)
+        with open(self.regime_config.results_dir + "/config.yaml", "w") as f:
+            yaml.dump(unmunched, stream=f)
 
 
 from .simple_iterative_regime import SimpleIterativeRegime

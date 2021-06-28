@@ -26,7 +26,7 @@ class SimpleTransferRegime(AttackRegime):
 
         n_successful = 0
         total = 0
-        for img_path, np_img, label in self.dataloader:
+        for img_path, np_img, label, human_readable_label in self.dataloader:
             logger.info(f"Running transfer attack algorithm for {img_path}")
             _, img_fn = path.split(img_path)    # get image file name
 
@@ -45,7 +45,7 @@ class SimpleTransferRegime(AttackRegime):
                 np_img.copy(), blackbox_loss)
 
             running_attack = self.transfer_algorithm.run()
-            pertubation = next(running_attack)
+            x_adv = next(running_attack)
 
             # check that attack algorithm is used in transfer mode
             transfer_mode = False
@@ -56,9 +56,8 @@ class SimpleTransferRegime(AttackRegime):
 
             assert transfer_mode, f"Attack algorithm {self.regime_config.attack_algorithm_config.name} isn't used in transfer mode, because it returned more than one pertubation"
 
-
-            
-            x_adv = np_img + pertubation
+            success = False
+            pertubation = x_adv - np_img 
             loss = blackbox_loss(x_adv)
             img_name = path.basename(img_fn)
             norm = self.regime_config.attack_algorithm_config.norm
@@ -66,6 +65,10 @@ class SimpleTransferRegime(AttackRegime):
 
             if loss < 0:
                 n_successful += 1
+                success = True
+
+            if (not self.regime_config.save_only_successful_images) or success:
+                self.save_adv_img(x_adv, img_fn)
 
             logger.debug(f"Img: {img_name}\t{norm.name} pertubation norm:{dist}\tloss: {loss}\tsuccess_rate: {n_successful}/{total} = {(n_successful/total*100):.2f}%")
 

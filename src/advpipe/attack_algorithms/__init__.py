@@ -31,6 +31,7 @@ class BlackBoxAlgorithm(ABC):
     pertubation: np.ndarray
 
     def __init__(self, image: np.ndarray):
+        # Image should have [H, W, C] shape with values in [0, 1.0] range
         self.image = image
         self.pertubation = np.zeros_like(self.image)
 
@@ -56,3 +57,4 @@ class BlackBoxTransferAlgorithm(BlackBoxAlgorithm):
 
 from .rays import RaySAttackAlgorithm
 from .passthrough_attack import PassthroughTransferAttackAlgorithm
+from .square_attack import SquareL2AttackAlgorithm

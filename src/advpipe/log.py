@@ -6,6 +6,9 @@ import imageio
 from datetime import datetime
 import pathlib
 
+# TODO: cyclic dependency
+# from advpipe import utils
+
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from advpipe.blackbox.cloud import CloudLabels
