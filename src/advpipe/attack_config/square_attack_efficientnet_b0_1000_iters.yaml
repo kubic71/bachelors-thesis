@@ -5,7 +5,7 @@ attack_regime:
 
   attack_algorithm: 
     name: square_attack
-    n_iters: 300
+    n_iters: 1000
     p_init: 0.3
 
   max_iter: 1500
@@ -15,16 +15,16 @@ attack_regime:
   norm: l2 # l0, l1, l2, linf
 
   dataset_config:
-    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped
+    data_dir: datasets/imagenet_val_256_rescaled
     dataset_type: imagenet-validation
     load_only_organism: True
-    size_limit: 500
+    size_limit: 2000
 
   target_blackbox_config:
     blackbox_type: local
-    name: resnet18
-    resize_and_center_crop: False
+    name: efficientnet-b0
+    resize_and_center_crop: True
 
     loss:
       name: margin_loss
-      margin: 0.0
+      margin: 0.5

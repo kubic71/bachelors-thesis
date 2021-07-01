@@ -19,6 +19,8 @@ class SimpleIterativeRegime(AttackRegime):
         # Initialize the black-box
         super().__init__(attack_regime_config)
 
+        self.create_results_file()
+
     def run(self) -> None:
         super().run()
 
@@ -72,10 +74,13 @@ class SimpleIterativeRegime(AttackRegime):
 
             total += 1
 
+            loss_val = self.target_blackbox.loss(best_img)
+            labels = self.target_blackbox.last_query_result
+
             logger.info(
-                f"Img {img_fn} attack result: dist:{dist} best_loss: {best_loss} success_rate: {n_successful}/{total} = {(n_successful/total*100):.2f}%"
+                f"Img {img_fn} attack result: dist:{dist} best_loss: {loss_val} success_rate: {n_successful}/{total} = {(n_successful/total*100):.2f}%"
             )
-            self.write_result_to_file(img_fn, human_readable_label, n_queries_needed)
+            self.write_result_to_file(img_fn, human_readable_label, loss_val, n_queries_needed, labels.get_top_organism()[0], labels.get_top_object()[0], dist)
 
             if (not self.regime_config.save_only_successful_images) or success:
                 self.save_adv_img(best_img, img_fn)
@@ -85,11 +90,17 @@ class SimpleIterativeRegime(AttackRegime):
 
 
 
-    def write_result_to_file(self, img_fn: str, human_readable_label: Optional[str],
-                             n_queries_needed: Optional[int]) -> None:
+    def write_result_to_file(self, img_fn: str, human_readable_label: Optional[str], loss_val: float,
+                             n_queries_needed: Optional[int], top_organism_label: str, top_object_label: str, dist: float) -> None:
 
-        results_file = self.regime_config.results_dir + "/n_queries_needed.txt"
+        results_file = self.regime_config.results_dir + "/iterative_attack_results.csv"
         with open(results_file, "a") as f:
             label_str = "label-NA" if human_readable_label is None else human_readable_label
             n_queries_str = "inf" if n_queries_needed is None else str(n_queries_needed)
-            f.write(f"{img_fn} {label_str} {n_queries_str}\n")
+            f.write(f"{img_fn}\t{label_str}\t{loss_val:.5f}\t{n_queries_str}\t{top_organism_label}\t{top_object_label}\t{dist:.5f}\n")
+
+    def create_results_file(self) -> None:
+        self.results_file = self.regime_config.results_dir + "/iterative_attack_results.csv"
+        # write header
+        with open(self.results_file, "w") as f:
+            f.write("img_fn\thuman_readable_label\tloss_val\tn_queries\ttop_organism_label\ttop_object_label\tdist\n")

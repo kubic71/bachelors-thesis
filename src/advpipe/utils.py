@@ -88,12 +88,6 @@ def convert_to_pillow(np_img: np.ndarray) -> Image:
 
     return Image.fromarray(np_img)
 
-
-def labels_and_scores_to_str(labels_and_scores: Sequence[Tuple[str, float]]) -> str:
-    """Convert labels and scores tuple-list to pretty-printable string"""
-    return "\n".join(list(map(lambda l_s: l_s[0] + ": " + str(l_s[1]), labels_and_scores)))
-
-
 # deprecated
 def clip_linf(orig_img: np.ndarray, pertubed_img: np.ndarray, epsilon: float = 0.05) -> np.ndarray:
     min_boundary = np.clip(orig_img - epsilon * np.ones_like(orig_img), 0, 1)
@@ -129,8 +123,10 @@ class MaxFunctionCallsExceededException(Exception):
 class LossCallCounter:
     def __init__(self, loss_fn: Callable[[np.ndarray], float], max_calls: int):
         self.loss_fn: Callable[[np.ndarray], float] = loss_fn
+
         self.last_loss_val: float = np.inf
         self.last_img: Optional[np.ndarray] = None
+
         self.max_calls: int = max_calls    # test comment
         self.i = 0
 

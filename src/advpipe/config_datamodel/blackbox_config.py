@@ -1,5 +1,4 @@
 from __future__ import annotations
-from advpipe.blackbox.local import PytorchBlackBoxResnet18, PytorchBlackBoxResnet50
 from advpipe.blackbox.cloud import GVisionBlackBox
 from advpipe.log import CloudDataLogger
 from typing_extensions import Literal
@@ -52,22 +51,15 @@ class LocalBlackBoxConfig(TargetBlackBoxConfig):
 
     # taken from: https://jhui.github.io/2018/02/09/PyTorch-Data-loading-preprocess_torchvision/
     # standard ImageNet Resize(256) and CenterCrop(224)
-    resize_and_center_crop: bool = True
-
-    # standard ImageNet normalization for the CNNs
-    normalize: Optional[Tuple[Tuple[float, float, float], Tuple[float, float,
-                                                       float]]] = ((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+    resize_and_center_crop: bool = False
 
     def __init__(self, local_blackbox_config: Munch):
         super().__init__(local_blackbox_config)
         self.resize_and_center_crop = utils.get_config_attr(local_blackbox_config, "resize_and_center_crop",
                                                             self.resize_and_center_crop)
 
-        if not utils.get_config_attr(local_blackbox_config, "normalize", True):
-            self.normalize = None
-
     def getBlackBoxInstance(self) -> LocalBlackBox:
-        return LOCAL_BLACKBOXES[self.name](self)
+        return LocalBlackBox(self)
 
 
 class CloudBlackBoxConfig(TargetBlackBoxConfig):
@@ -85,8 +77,6 @@ class CloudBlackBoxConfig(TargetBlackBoxConfig):
         return CLOUD_BLACKBOXES[self.name](self)
 
 
-LOCAL_BLACKBOXES = {
-    PytorchBlackBoxResnet18.name: PytorchBlackBoxResnet18,
-    PytorchBlackBoxResnet50.name: PytorchBlackBoxResnet50
-}
+from advpipe.blackbox.local import LocalBlackBox
+
 CLOUD_BLACKBOXES = {GVisionBlackBox.name: GVisionBlackBox}

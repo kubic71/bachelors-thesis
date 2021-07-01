@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 from os import path
+import pathlib
 import matplotlib.pyplot as plt
 from PIL import Image
 
@@ -16,18 +17,23 @@ if TYPE_CHECKING:
 def plot_n_queries(queries_log_file_path: Sequence[str],
                    plot_fn: Optional[str],
                    title: str = "Number of queries needed to craft successful adversarial example",
-                   type: Literal["histogram", "quantiles"] = "histogram",
-                   query_limit: int = 200,
-                   x_adv_limit: int = 50000
+                   query_limit: int = 300,
+                   x_adv_limit: int = 50000,
+                   show_plot:bool = False                    
                    ) -> None:
+    print(f"Generating plot: {title}")
+
+
     if plot_fn is None:
         if len(queries_log_file_path) != 1:
             raise Exception("Plot filename is None, but multiple log_files were given")
         plot_fn = path.dirname(queries_log_file_path[0]) + "/n_queries_plot.png"
 
+    pathlib.Path(path.dirname(plot_fn)).mkdir(parents=True, exist_ok=True)
+
     dataframes: pd.Dataframe = []
     for queries_fn in queries_log_file_path:
-        df = pd.read_csv(queries_fn, delimiter=" ", names=["img_fn", "label", "n_queries"])
+        df = pd.read_csv(queries_fn, delimiter="\t")
 
         # take the parent directory as the experiment name
         exp_name = path.basename(path.dirname(queries_fn))
@@ -41,22 +47,17 @@ def plot_n_queries(queries_log_file_path: Sequence[str],
     # otherwise seaborn refuses to plot the cumulative distribution graph
     data.loc[data['n_queries'] == float('inf'), 'n_queries'] = query_limit
 
-    dist_plot = sns.displot(data=data, x="n_queries", hue="exp_name", kind="ecdf")
-    dist_plot.set(xlabel="Number of queries", ylabel="Percent of successful adversarial examples")
+    sns.set_theme(style="darkgrid")
+    dist_plot = sns.displot(data=data, x="n_queries", hue="exp_name", kind="ecdf", aspect=1.5)
+    dist_plot.set(xlabel="Number of queries", ylabel="Percentage of successful adversarial examples")
+    dist_plot.ax.set_title(title)
+    dist_plot.tight_layout()
+
+    print(f"Saving exported plot to: {plot_fn}\n")
     dist_plot.savefig(plot_fn)
-    plt.show()
 
-    # queries = df["n_queries"]
-    # quantiles = queries.quantile(np.array(range(100)) / 100)
-    # plot_fn = os.path.dirname(queries_log_file_path) + "/n_queries.png"
-    # title = os.path.basename(queries_log_file_path) if title is None else title
-    # plt.plot(list(quantiles), quantiles.index)
-
-    # plt.title(title)
-    # plt.xlabel()
-    # plt.ylabel()
-
-    # plt.savefig(plot_fn)
+    if show_plot:
+        plt.show()
 
 
 
@@ -65,14 +66,16 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", "--queries_log_files", nargs="+", required=True, type=str)
-    parser.add_argument("-o", "--output_plot_filename", required=False, type=str, default=None)
+    parser.add_argument("-o", "--plot_fn", required=False, type=str, default=None)
     parser.add_argument("--title", required=False, type=str, default="Number of queries needed to craft successful adversarial example")
-    parser.add_argument("--query_limit", required=False, type=int, default=200)
+    parser.add_argument("--query_limit", required=False, type=int, default=300)
     parser.add_argument("--x_adv_limit", required=False, type=int, default=50000)
+    parser.add_argument("--show_plot", action="store_true", default=False)
+
     args = parser.parse_args()
 
 
-    if args.output_plot_filename is None and len(args.queries_log_files) == 1:
-        args.output_plot_filename = path.dirname(args.queries_log_files[0]) + "/n_queries_plot.png"
+    if args.plot_fn is None and len(args.queries_log_files) == 1:
+        args.plot_fn = path.dirname(args.queries_log_files[0]) + "/n_queries_plot.png"
 
-    plot_n_queries(args.queries_log_files, args.output_plot_filename, args.title, query_limit=args.query_limit, x_adv_limit=args.x_adv_limit)
+    plot_n_queries(args.queries_log_files, args.plot_fn, args.title, query_limit=args.query_limit, x_adv_limit=args.x_adv_limit, show_plot=args.show_plot)

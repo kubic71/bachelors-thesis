@@ -21,11 +21,7 @@ class GVisionBlackBox(CloudBlackBox):
     def __init__(self, blackbox_config: CloudBlackBoxConfig):
         super().__init__(blackbox_config)
 
-    def loss(self, pertubed_image: np.ndarray) -> float:
-        labels_and_scores = self._gvision_classify(pertubed_image)
-        return self._loss(labels_and_scores)
-
-    def _gvision_classify(self, img: np.ndarray) -> CloudLabels:
+    def classify(self, img: np.ndarray) -> CloudLabels:
         """Return the labels and scores by calling the cloud API"""
         img_filename = self.cloud_data_logger.save_img(img, "")
 
@@ -41,7 +37,7 @@ class GVisionBlackBox(CloudBlackBox):
         # Performs label detection on the image file
         response = client.label_detection(image=image, max_results=100)
 
-        result = CloudLabels([(annotation.description, annotation.score) for annotation in response.label_annotations])
-        self.cloud_data_logger.save_cloud_labels(result, img_filename)
+        self.last_query_result = CloudLabels([(annotation.description, annotation.score) for annotation in response.label_annotations])
+        self.cloud_data_logger.save_cloud_labels(self.last_query_result, img_filename)
 
-        return result
+        return self.last_query_result

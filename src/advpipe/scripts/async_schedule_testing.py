@@ -21,8 +21,6 @@ class Worker:
             # wait to be scheduled
             print("worker_subroutine - waiting to be scheduled")
 
-            raise Exception("This is my pee")
-
             print("self.scheduled_event.is_set(): ", self.scheduled_event.is_set())
             print(id(self.scheduled_event))
 

@@ -1,0 +1,13 @@
+,time,batch_size,model
+0,0.017824232578277588,1,efficientnet-b0_cuda_
+1,0.013768265247344971,2,efficientnet-b0_cuda_
+2,0.013303778171539306,3,efficientnet-b0_cuda_
+3,0.01258535385131836,4,efficientnet-b0_cuda_
+4,0.012421433925628661,6,efficientnet-b0_cuda_
+5,0.012214508056640625,8,efficientnet-b0_cuda_
+6,0.011445574760437012,10,efficientnet-b0_cuda_
+7,0.012939076423645019,12,efficientnet-b0_cuda_
+8,0.01253340244293213,14,efficientnet-b0_cuda_
+9,0.012513272762298584,16,efficientnet-b0_cuda_
+10,0.010761752128601074,20,efficientnet-b0_cuda_
+11,0.012041988372802735,26,efficientnet-b0_cuda_

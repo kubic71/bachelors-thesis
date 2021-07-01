@@ -1,0 +1,13 @@
+,time,batch_size,model
+0,0.025115811824798585,1,efficientnet-b1_cuda_adv_train
+1,0.01969609975814819,2,efficientnet-b1_cuda_adv_train
+2,0.019038782119750977,3,efficientnet-b1_cuda_adv_train
+3,0.017932748794555663,4,efficientnet-b1_cuda_adv_train
+4,0.017780184745788574,6,efficientnet-b1_cuda_adv_train
+5,0.01746727228164673,8,efficientnet-b1_cuda_adv_train
+6,0.016360561847686767,10,efficientnet-b1_cuda_adv_train
+7,0.01842916965484619,12,efficientnet-b1_cuda_adv_train
+8,0.017613086700439453,14,efficientnet-b1_cuda_adv_train
+9,0.017468044757843016,16,efficientnet-b1_cuda_adv_train
+10,0.015078117847442627,20,efficientnet-b1_cuda_adv_train
+11,0.017065048217773438,26,efficientnet-b1_cuda_adv_train

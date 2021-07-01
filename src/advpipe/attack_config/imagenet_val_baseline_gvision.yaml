@@ -9,24 +9,18 @@ attack_regime:
     name: passthrough 
 
   epsilon: 0.0
-  norm: linf 
-
+  norm: linf
 
   dataset_config:
-  # if path is not absolute, path is taken relative to advpipe package
-    data_dir: datasets/imagenet_val
+    data_dir: datasets/imagenet_val_256_rescaled
     dataset_type: imagenet-validation
     load_only_organism: True
     size_limit: 2000
-
 
   target_blackbox_config:
     blackbox_type: cloud 
     name: gvision
 
-
     loss:
       name: margin_loss
       margin: 0.0
-
-

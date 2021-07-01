@@ -93,7 +93,7 @@ class SquareL2AttackAlgorithm(BlackBoxIterativeAlgorithm):
 
     def run(self) -> Generator[np.ndarray, None, None]:
         """ The L2 square attack """
-        np.random.seed(0)
+        # np.random.seed(0)
         x = np.array([self.image.transpose(2, 0, 1)], dtype=np.float64)
 
         min_val, max_val = 0, 1

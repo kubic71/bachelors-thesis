@@ -12,11 +12,11 @@ for img_path in sys.argv[1:]:
     print("Img:", img_path)
 
     np_img = utils.load_image_to_numpy(img_path)
-    labels_and_scores = gvision._gvision_classify(np_img)
+    cloud_labels = gvision.classify(np_img)
 
     pil_img = utils.convert_to_pillow(np_img)
-    img_with_descs = utils.write_text_to_img(pil_img, utils.labels_and_scores_to_str(labels_and_scores))
+    img_with_descs = utils.write_text_to_img(pil_img, str(cloud_labels))
 
-    utils.show_img(np.array(img_with_descs), use_opencv=True)
+    utils.show_img(np.array(img_with_descs))
 
 

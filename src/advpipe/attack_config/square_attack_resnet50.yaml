@@ -1,31 +1,30 @@
 ---
-
 attack_regime:
   name: iterative-regime 
   show_images: False
-  results_dir: results/square_attack_resnet50
 
   attack_algorithm: 
     name: square_attack
-    n_iters: 200
+    n_iters: 500
     p_init: 0.3
 
-  max_iter: 1000
+  max_iter: 1500
 
   # How attack manager chooses valid adversarial images
   epsilon: 20
   norm: l2 # l0, l1, l2, linf
 
   dataset_config:
-    data_dir: datasets/imagenet_val_256_rescaled
+    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped
     dataset_type: imagenet-validation
     load_only_organism: True
+    size_limit: 500
 
   target_blackbox_config:
     blackbox_type: local
     name: resnet50
-    resize_and_center_crop: True
+    resize_and_center_crop: False
 
     loss:
       name: margin_loss
-      margin: 0.5
+      margin: 0.0

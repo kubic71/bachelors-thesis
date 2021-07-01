@@ -2,9 +2,11 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from advpipe import utils
 import numpy as np
+import shutil
 from os import path
 import munch
 import yaml
+import imageio
 
 
 from typing import TYPE_CHECKING
@@ -43,8 +45,7 @@ class AttackRegime(ABC):
     def save_adv_img(self, x_adv: np.ndarray, img_fn: str) -> None:
         """Saves successful adversarial image to results directory"""
         img_fn = img_fn.split(".")[0] + ".png"
-        pil_img = utils.convert_to_pillow(x_adv)
-        pil_img.save(self.adv_img_dir + "/" + img_fn)
+        imageio.imwrite(self.adv_img_dir + "/" + img_fn, x_adv)
 
 
     def create_results_dir(self) -> None:
@@ -53,6 +54,10 @@ class AttackRegime(ABC):
             choice = input("Do you want to overwrite the results? (y/n):")
             if choice != 'y':
                 raise KeyboardInterrupt
+
+            # delete the old results dir
+            shutil.rmtree(self.regime_config.results_dir)
+
         utils.mkdir_p(self.regime_config.results_dir)
 
 

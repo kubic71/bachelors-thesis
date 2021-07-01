@@ -15,10 +15,14 @@ if TYPE_CHECKING:
 # TODO
 class SimpleTransferRegime(AttackRegime):
     regime_config: TransferRegimeConfig
+    results_file: str
 
     def __init__(self, attack_regime_config: TransferRegimeConfig):
         # Initialize the black-box
         super().__init__(attack_regime_config)
+
+        self.create_results_file()
+        
 
     def run(self) -> None:
         super().run()
@@ -60,12 +64,13 @@ class SimpleTransferRegime(AttackRegime):
 
             success = False
             pertubation = x_adv - np_img 
-            loss = blackbox_loss(x_adv)
-            img_name = path.basename(img_fn)
+
+            loss = self.target_blackbox.loss(x_adv)
+            labels = self.target_blackbox.last_query_result
             norm = self.regime_config.attack_algorithm_config.norm
             dist = norm(pertubation)
 
-            self.write_result_to_file(img_fn, human_readable_label, loss)
+            self.write_result_to_file(img_fn, human_readable_label, loss, labels.get_top_organism()[0], labels.get_top_object()[0], dist)
 
             if loss < 0:
                 n_successful += 1
@@ -74,25 +79,29 @@ class SimpleTransferRegime(AttackRegime):
             if (not self.regime_config.save_only_successful_images) or success:
                 self.save_adv_img(x_adv, img_fn)
 
-            logger.debug(f"Img: {img_name}\t{norm.name} pertubation norm:{dist}\tloss: {loss}\tsuccess_rate: {n_successful}/{total} = {(n_successful/total*100):.2f}%")
+            logger.debug(f"Img: {img_fn}\t{norm.name} pertubation norm:{dist}\tloss: {loss}\tsuccess_rate: {n_successful}/{total} = {(n_successful/total*100):.2f}%")
 
             if self.regime_config.show_images:
                 utils.show_img(x_adv)
         
         self.write_summary(n_successful, total)
 
+    def create_results_file(self) -> None:
+        self.results_file = self.regime_config.results_dir + "/transfer_attack_results.csv"
+        # write header
+        with open(self.results_file, "w") as f:
+            f.write("img_fn\thuman_readable_label\tloss_val\ttop_organism_label\ttop_object_label\tdist\n")
 
     def write_result_to_file(self, img_fn: str, human_readable_label: Optional[str],
-                             loss_val: float) -> None:
+                             loss_val: float, top_organism_label: str, top_object_label: str, dist: float) -> None:
 
-        results_file = self.regime_config.results_dir + "/blackbox_query_results.txt"
-        with open(results_file, "a") as f:
+        with open(self.results_file, "a") as f:
             label_str = "label-NA" if human_readable_label is None else human_readable_label
-            f.write(f"{img_fn} {label_str} {loss_val:.5f}\n")
+            f.write(f"{img_fn}\t{label_str}\t{loss_val:.5f}\t{top_organism_label}\t{top_object_label}\t{dist:.5f}\n")
 
 
     def write_summary(self, n_successful: int, n_total: int) -> None:
         with open(self.regime_config.results_dir + "/summary.txt", "w") as f:
-            f.write(f"successfully transferred / total = {n_successful}/{n_total} = {(n_successful/n_total*100):.2f}%")
+            f.write(f"successfully transferred / total = {n_successful}/{n_total} = {(n_successful/n_total*100):.2f}%\n")
 
 
