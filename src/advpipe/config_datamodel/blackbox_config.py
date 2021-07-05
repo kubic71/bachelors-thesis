@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from advpipe.blackbox.cloud import CloudBlackBox
     from advpipe.blackbox import TargetBlackBox
     from munch import Munch
-    from typing import Type, Dict, Optional, Tuple
+    from typing import Type, Dict, Optional, Tuple, Text
 
 BLACKBOX_TYPE = Literal["cloud", "local"]
 
@@ -62,6 +62,21 @@ class LocalBlackBoxConfig(TargetBlackBoxConfig):
         return LocalBlackBox(self)
 
 
+class WhiteBoxSurrogateConfig():
+    name: str
+    loss: str = "cw"
+
+    def __init__(self, surrogate_config: Munch):
+        self.name = surrogate_config.name
+        self.loss = utils.get_config_attr(surrogate_config, "loss", WhiteBoxSurrogateConfig.loss)
+
+    def getSurrogateInstance(self) -> WhiteBoxSurrogate:
+        model = LocalModel.getLocalModel(self.name, False)
+        return WhiteBoxSurrogate(model, self.loss)
+
+
+
+
 class CloudBlackBoxConfig(TargetBlackBoxConfig):
     blackbox_type: BLACKBOX_TYPE = "cloud"
     cloud_data_logger: CloudDataLogger
@@ -77,6 +92,6 @@ class CloudBlackBoxConfig(TargetBlackBoxConfig):
         return CLOUD_BLACKBOXES[self.name](self)
 
 
-from advpipe.blackbox.local import LocalBlackBox
+from advpipe.blackbox.local import LocalBlackBox, WhiteBoxSurrogate, LocalModel
 
 CLOUD_BLACKBOXES = {GVisionBlackBox.name: GVisionBlackBox}

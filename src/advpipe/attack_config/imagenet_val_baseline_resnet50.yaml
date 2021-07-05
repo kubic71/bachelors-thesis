@@ -12,14 +12,15 @@ attack_regime:
   norm: linf
 
   dataset_config:
-    data_dir: datasets/imagenet_val_256_rescaled
+    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped
     dataset_type: imagenet-validation
     load_only_organism: True
+    size_limit: 10000
 
   target_blackbox_config:
     blackbox_type: local
     name: resnet50
-    resize_and_center_crop: True
+    resize_and_center_crop: False
 
     loss:
       name: margin_loss

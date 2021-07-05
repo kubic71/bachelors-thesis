@@ -1,38 +1,27 @@
-#@  def get_config_parameters():
-#@      for epsilon in [0.01, 0.02, 0.05, 0.1, 0.2]:
-#@          yield {"epsilon": epsilon}
-
 ---
 
 attack_regime:
   name : transfer-regime 
-  results_dir: results/test/eps_{epsilon}
   show_images : False
   skip_already_adversarial: False
 
   attack_algorithm: 
-    name: fgsm
+    name: passthrough 
 
-  surrogate:
-    name: resnet18
-    loss: cw
-
-  epsilon: {epsilon}
+  epsilon: 0.0
   norm: linf
 
   dataset_config:
     data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped
     dataset_type: imagenet-validation
     load_only_organism: True
-    size_limit: 50
+    size_limit: 10000
 
   target_blackbox_config:
     blackbox_type: local
-    name: resnet18
+    name: efficientnet-b0
     resize_and_center_crop: False
 
     loss:
       name: margin_loss
       margin: 0.0
-
-

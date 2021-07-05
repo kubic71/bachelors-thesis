@@ -5,7 +5,7 @@ attack_regime:
 
   attack_algorithm: 
     name: square_attack
-    n_iters: 500
+    n_iters: 300
     p_init: 0.3
 
   max_iter: 1500

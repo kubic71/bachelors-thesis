@@ -10,10 +10,12 @@ import pathlib
 from PIL import Image, ImageDraw
 import cv2
 from advpipe.log import logger
+import eagerpy as ep
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from typing import Callable, Optional
+    from advpipe.types import TensorTypeVar
 
 
 def scale_img(img: Image, target_size: int) -> Image:
@@ -27,6 +29,24 @@ def scale_img(img: Image, target_size: int) -> Image:
         scale_ratio = target_size / y
 
     return img.resize((int(x * scale_ratio), int(y * scale_ratio)))
+
+
+def quantize_img(img: TensorTypeVar, round: bool = True) -> TensorTypeVar:
+    """Quantizes tensor image to uint8"""
+
+    ep_img, restore_func = ep.astensor_(img)
+    assert ep_img.min() >= 0 and ep_img.max() <= 255
+    if ep_img.max() <= 1:
+        ep_img *= 255
+
+    # we have to convert it first to numpy, because eagerpy doesn't have round function, and also eagerpy's .astype(dtype) has 
+    # tensortype-dependent dtype argument
+    if round:
+        np_img = np.asarray(np.round(ep_img.numpy()), dtype=np.uint8)
+    else:
+        np_img = np.asarray(ep_img.numpy(), dtype=np.uint8)
+
+    return restore_func(ep.astensor(np_img)) # type: ignore
 
 
 def mkdir_p(dir_path: str) -> None:
@@ -88,6 +108,7 @@ def convert_to_pillow(np_img: np.ndarray) -> Image:
 
     return Image.fromarray(np_img)
 
+
 # deprecated
 def clip_linf(orig_img: np.ndarray, pertubed_img: np.ndarray, epsilon: float = 0.05) -> np.ndarray:
     min_boundary = np.clip(orig_img - epsilon * np.ones_like(orig_img), 0, 1)
@@ -98,6 +119,10 @@ def clip_linf(orig_img: np.ndarray, pertubed_img: np.ndarray, epsilon: float = 0
 def load_yaml(yaml_filename: str) -> Munch:
     with open(yaml_filename, 'r') as stream:
         return Munch.fromDict(yaml.safe_load(stream))
+
+
+def load_yaml_from_str(yaml_str: str) -> Munch:
+    return Munch.fromDict(yaml.safe_load(yaml_str))
 
 
 # TODO: this is quite a bad fuction name
@@ -154,4 +179,4 @@ def get_config_attr(conf: Munch, attr_name: str, default_val: Any) -> Any:
 
 def serialize_config(conf: Munch) -> str:
     unmunched = unmunchify(conf)
-    return yaml.dump(unmunched) # type: ignore
+    return yaml.dump(unmunched)    # type: ignore

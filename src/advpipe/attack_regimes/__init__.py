@@ -51,7 +51,9 @@ class AttackRegime(ABC):
     def create_results_dir(self) -> None:
         if path.exists(self.regime_config.results_dir):
             print(f"Results directory {self.regime_config.results_dir} already exists!")
-            choice = input("Do you want to overwrite the results? (y/n):")
+            ## TODO: DEBUG
+            # choice = input("Do you want to overwrite the results? (y/n):")
+            choice = 'y'
             if choice != 'y':
                 raise KeyboardInterrupt
 

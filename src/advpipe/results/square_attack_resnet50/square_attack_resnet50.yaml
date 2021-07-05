@@ -1,20 +1,22 @@
 attack_algorithm:
-  name: passthrough
-config_filename: attack_config/imagenet_val_baseline_resnet18.yaml
+  n_iters: 300
+  name: square_attack
+  p_init: 0.3
+config_filename: attack_config/square_attack_resnet50.yaml
 dataset_config:
   data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped
   dataset_type: imagenet-validation
   load_only_organism: true
-  size_limit: 10000
-epsilon: 0.0
-name: transfer-regime
-norm: linf
+  size_limit: 500
+epsilon: 20
+max_iter: 1500
+name: iterative-regime
+norm: l2
 show_images: false
-skip_already_adversarial: false
 target_blackbox_config:
   blackbox_type: local
   loss:
     margin: 0.0
     name: margin_loss
-  name: resnet18
+  name: resnet50
   resize_and_center_crop: false

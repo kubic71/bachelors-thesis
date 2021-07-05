@@ -2,9 +2,10 @@ attack_algorithm:
   name: passthrough
 config_filename: attack_config/imagenet_val_baseline_resnet50.yaml
 dataset_config:
-  data_dir: datasets/imagenet_val_256_rescaled
+  data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped
   dataset_type: imagenet-validation
   load_only_organism: true
+  size_limit: 10000
 epsilon: 0.0
 name: transfer-regime
 norm: linf
@@ -16,4 +17,4 @@ target_blackbox_config:
     margin: 0.0
     name: margin_loss
   name: resnet50
-  resize_and_center_crop: true
+  resize_and_center_crop: false

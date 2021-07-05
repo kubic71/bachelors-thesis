@@ -1,4 +1,3 @@
-
 # Import everything in the right order
 # My lack of software engineering skills means that I tend to have a lot of circular dependencies in my code
 import advpipe.blackbox

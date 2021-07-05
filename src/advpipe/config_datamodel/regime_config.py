@@ -8,6 +8,7 @@ from advpipe import utils
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from munch import Munch
+    from typing import Optional
     from .attack_algorithm_config import AttackAlgorithmConfig
 
 
@@ -18,9 +19,9 @@ class AttackRegimeConfig:
     save_only_successful_examples: bool = False
     dataset_config: DatasetConfig
     target_blackbox_config: TargetBlackBoxConfig
-    attack_algorithm_config: AttackAlgorithmConfig
     results_dir: str
-    config_filename:str
+    config_filename: str
+    attack_algorithm_config: AttackAlgorithmConfig
 
     _unparsed_config: Munch
 
@@ -38,16 +39,12 @@ class AttackRegimeConfig:
         self.target_blackbox_config = TargetBlackBoxConfig.loadFromYamlConfig(
             attack_regime_config.target_blackbox_config)
 
-        # leaky-abstraction, because attack algorithm needs to access epsilon, norm and other constraints,
-        # which are global to the AttackRegime whole AdvPipe Attack
-        self.attack_algorithm_config = AttackAlgorithmConfig.loadFromYamlConfig(attack_regime_config,
-                                                                                attack_regime_config.attack_algorithm)
-
         default_exp_name = self.config_filename.split(".")[0]
         self.results_dir = utils.convert_to_absolute_path(
             utils.get_config_attr(attack_regime_config, "results_dir", "results/" + default_exp_name))
 
-        self.save_only_successful_images = utils.get_config_attr(attack_regime_config, "save_only_successful_examples", AttackRegimeConfig.save_only_successful_examples)
+        self.save_only_successful_images = utils.get_config_attr(attack_regime_config, "save_only_successful_examples",
+                                                                 AttackRegimeConfig.save_only_successful_examples)
         # log destination includes information about the whole attack regime
         # default is saving to /tmp/cloud_data
         if isinstance(self.target_blackbox_config, CloudBlackBoxConfig):
@@ -57,9 +54,9 @@ class AttackRegimeConfig:
             attack_name = self.name
             algo_name = self.attack_algorithm_config.name
             timestamp = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
-            cloud_log_path = os.path.join(utils.get_abs_module_path(), "collected_cloud_data", bbox_name, dataset_name, attack_name, algo_name, timestamp)
+            cloud_log_path = os.path.join(utils.get_abs_module_path(), "collected_cloud_data", bbox_name, dataset_name,
+                                          attack_name, algo_name, timestamp)
             self.target_blackbox_config.cloud_data_logger = CloudDataLogger(cloud_log_path)
-
 
     @staticmethod
     def loadFromYamlConfig(attack_regime_config: Munch) -> AttackRegimeConfig:
@@ -68,17 +65,38 @@ class AttackRegimeConfig:
 
 class IterativeRegimeConfig(AttackRegimeConfig):
     name: str = "iterative-regime"
+    attack_algorithm_config: IterativeAttackAlgorithmConfig
 
     def __init__(self, attack_regime_config: Munch):
+        self.attack_algorithm_config = IterativeAttackAlgorithmConfig.loadFromYamlConfig(
+            attack_regime_config, attack_regime_config.attack_algorithm)
+
         super().__init__(attack_regime_config)
         self.max_iter = attack_regime_config.max_iter
+
+        # leaky-abstraction, because attack algorithm needs to access epsilon, norm and other constraints,
+        # which are global to the AttackRegime whole AdvPipe Attack
 
 
 class TransferRegimeConfig(AttackRegimeConfig):
     name: str = "transfer-regime"
+    surrogate_config: Optional[WhiteBoxSurrogateConfig]
+    attack_algorithm_config: TransferAttackAlgorithmConfig
 
     def __init__(self, attack_regime_config: Munch):
+        self.attack_algorithm_config = TransferAttackAlgorithmConfig.loadFromYamlConfig(
+            attack_regime_config, attack_regime_config.attack_algorithm)
+
         super().__init__(attack_regime_config)
+
+        # leaky-abstraction, because attack algorithm needs to access epsilon, norm and other constraints,
+        # which are global to the AttackRegime whole AdvPipe Attack
+
+        # passthrough attack doesn't need surrogate
+        if utils.get_config_attr(attack_regime_config, "surrogate", None):
+            self.surrogate_config = WhiteBoxSurrogateConfig(attack_regime_config.surrogate)
+        else:
+            self.surrogate_config = None
 
 
 ATTACK_REGIME_CONFIGS = {
@@ -86,5 +104,5 @@ ATTACK_REGIME_CONFIGS = {
     TransferRegimeConfig.name: TransferRegimeConfig
 }
 
-from .blackbox_config import TargetBlackBoxConfig, CloudBlackBoxConfig
-from .attack_algorithm_config import AttackAlgorithmConfig
+from .blackbox_config import TargetBlackBoxConfig, CloudBlackBoxConfig, LocalBlackBoxConfig, WhiteBoxSurrogateConfig
+from .attack_algorithm_config import AttackAlgorithmConfig, IterativeAttackAlgorithmConfig, TransferAttackAlgorithmConfig

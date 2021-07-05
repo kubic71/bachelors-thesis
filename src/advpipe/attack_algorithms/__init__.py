@@ -7,6 +7,7 @@ import eagerpy as ep
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from advpipe.utils import LossCallCounter
+    from advpipe.blackbox.local import WhiteBoxSurrogate
     from typing import Generator
 
 
@@ -51,10 +52,15 @@ class BlackBoxIterativeAlgorithm(BlackBoxAlgorithm):
 
 
 class BlackBoxTransferAlgorithm(BlackBoxAlgorithm):
-    def __init__(self, image: np.ndarray):
+    surrogate: WhiteBoxSurrogate
+
+    def __init__(self, image: np.ndarray, surrogate: WhiteBoxSurrogate):
         super().__init__(image)
+
+        self.surrogate = surrogate
 
 
 from .rays import RaySAttackAlgorithm
 from .passthrough_attack import PassthroughTransferAttackAlgorithm
 from .square_attack import SquareL2AttackAlgorithm
+from .fgsm import FgsmTransferAlgorithm

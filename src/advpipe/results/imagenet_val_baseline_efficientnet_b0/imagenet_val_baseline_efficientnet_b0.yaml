@@ -1,6 +1,6 @@
 attack_algorithm:
   name: passthrough
-config_filename: attack_config/imagenet_val_baseline_resnet18.yaml
+config_filename: attack_config/imagenet_val_baseline_efficientnet_b0.yaml
 dataset_config:
   data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped
   dataset_type: imagenet-validation
@@ -16,5 +16,5 @@ target_blackbox_config:
   loss:
     margin: 0.0
     name: margin_loss
-  name: resnet18
+  name: efficientnet-b0
   resize_and_center_crop: false

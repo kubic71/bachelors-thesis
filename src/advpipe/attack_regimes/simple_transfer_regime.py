@@ -9,19 +9,27 @@ from os import path
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from advpipe.config_datamodel import TransferRegimeConfig
+    from advpipe.blackbox.local import WhiteBoxSurrogate
     from typing import Optional
 
 
 # TODO
 class SimpleTransferRegime(AttackRegime):
     regime_config: TransferRegimeConfig
+    surrogate: Optional[WhiteBoxSurrogate]
     results_file: str
 
     def __init__(self, attack_regime_config: TransferRegimeConfig):
         # Initialize the black-box
         super().__init__(attack_regime_config)
+        self.regime_config = attack_regime_config
 
         self.create_results_file()
+
+        if self.regime_config.surrogate_config is None:
+            self.surrogate = None
+        else:
+            self.surrogate = self.regime_config.surrogate_config.getSurrogateInstance()
         
 
     def run(self) -> None:
@@ -43,12 +51,8 @@ class SimpleTransferRegime(AttackRegime):
             
             total += 1
 
-            # Set max_loss_count to 10, such that MaxCall exception isn't raised
-            blackbox_loss = LossCallCounter(self.target_blackbox.loss, 10)
-
-
             self.transfer_algorithm = self.regime_config.attack_algorithm_config.getAttackAlgorithmInstance(
-                np_img.copy(), blackbox_loss)
+                np_img.copy(), self.surrogate) # type: ignore
 
             running_attack = self.transfer_algorithm.run()
             x_adv = next(running_attack)
@@ -60,7 +64,7 @@ class SimpleTransferRegime(AttackRegime):
             except StopIteration:
                 transfer_mode = True
 
-            assert transfer_mode, f"Attack algorithm {self.regime_config.attack_algorithm_config.name} isn't used in transfer mode, because it returned more than one pertubation"
+            assert transfer_mode, f"Attack algorithm {self.regime_config.attack_algorithm_config.name} isn't used in transfer mode, because it yielded more than once"
 
             success = False
             pertubation = x_adv - np_img 

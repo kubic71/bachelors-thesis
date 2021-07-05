@@ -1,1 +1,1 @@
-successfully transferred / total = 438/20500 = 2.14%
+successfully transferred / total = 173/10000 = 1.73%

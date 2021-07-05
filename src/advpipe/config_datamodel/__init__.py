@@ -50,7 +50,8 @@ class ImageNetValidationDatasetConfig(DatasetConfig):
 
     def __init__(self, dataset_config_yaml: Munch):
         super().__init__(dataset_config_yaml)
-        self.load_only_organisms = utils.get_config_attr(dataset_config_yaml, "load_only_organisms", ImageNetValidationDatasetConfig.load_only_organisms)
+        self.load_only_organisms = utils.get_config_attr(dataset_config_yaml, "load_only_organisms",
+                                                         ImageNetValidationDatasetConfig.load_only_organisms)
 
     def getDatasetInstance(self) -> ImageNetValidationDataloader:
         return ImageNetValidationDataloader(self)
@@ -70,10 +71,10 @@ class AdvPipeConfig:
 from .regime_config import AttackRegimeConfig, IterativeRegimeConfig, TransferRegimeConfig
 
 #  add attack algorithm config to namespace
-from .attack_algorithm_config import AttackAlgorithmConfig, RaySAlgorithmConfig, ATTACK_ALGORITHM_CONFIGS
+from .attack_algorithm_config import AttackAlgorithmConfig, RaySAlgorithmConfig
 
 #  add blackbox config to namespace
-from .blackbox_config import TargetBlackBoxConfig, LocalBlackBoxConfig, CloudBlackBoxConfig, BLACKBOX_TYPE
+from .blackbox_config import TargetBlackBoxConfig, LocalBlackBoxConfig, CloudBlackBoxConfig
 
 from advpipe.attack_regimes import SimpleIterativeRegime, SimpleTransferRegime
 
