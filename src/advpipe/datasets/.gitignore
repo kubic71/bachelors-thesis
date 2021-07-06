@@ -1,3 +1,5 @@
 DAmageNet/
-imagenet_val*/
 test/
+imagenet_val/
+imagenet_val_256_rescaled/
+imagenet_val_256_rescaled_224_center_cropped/

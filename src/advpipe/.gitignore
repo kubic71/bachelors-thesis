@@ -1,2 +1,4 @@
 collected_cloud_data/
 keys/*
+results/
+.exported_configs/

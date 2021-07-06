@@ -99,28 +99,27 @@ class WhiteBoxSurrogate:
     def __getattr__(self, attrname: Text) -> Any:
         return getattr(self.local_model, attrname)
 
+def get_pytorch_model_map() -> Dict[str, Any]:
+    torch_models = {}
+
+    # standard resnet18, 34, 50 and 101
+    for resnet_variant in [18, 34, 50, 101]:
+        resnet_name = f"resnet{resnet_variant}"
+        torch_models[resnet_name] = functools.partial(getattr(torchvision.models, resnet_name), pretrained=True)
+
+    # efficientnet with/without adversarial training
+
+    for efnet_variant in [0, 1, 2, 3, 4, 5, 6, 7]:
+        efnet_name = f"efficientnet-b{efnet_variant}"
+
+        torch_models[efnet_name] = functools.partial(EfficientNet.from_pretrained, model_name=efnet_name, advprop=False)
+        torch_models[f"{efnet_name}-advtrain"] = functools.partial(EfficientNet.from_pretrained, model_name=efnet_name, advprop=True)
+    
+    return torch_models
+
 
 class PytorchModel(LocalModel):
-
-    models: Dict[str, Any] = {
-        "resnet18":
-        functools.partial(torchvision.models.resnet18, pretrained=True),
-        "resnet34":
-        functools.partial(torchvision.models.resnet18, pretrained=True),
-        "resnet50":
-        functools.partial(torchvision.models.resnet50, pretrained=True),
-        "resnet101":
-        functools.partial(torchvision.models.resnet101, pretrained=True),
-        "efficientnet-b0":
-        functools.partial(EfficientNet.from_pretrained, model_name="efficientnet-b0", advprop=False),
-        "efficientnet-b0-advtrain":
-        functools.partial(EfficientNet.from_pretrained, model_name="efficientnet-b0", advprop=True),
-        "efficientnet-b1":
-        functools.partial(EfficientNet.from_pretrained, model_name="efficientnet-b1", advprop=False),
-        "efficientnet-b1-advtrain":
-        functools.partial(EfficientNet.from_pretrained, model_name="efficientnet-b1", advprop=True),
-    }
-
+    models: Dict[str, Any] = get_pytorch_model_map()
     model: torch.nn.Module
     cuda: bool
     resize_and_center_crop: bool

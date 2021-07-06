@@ -2,6 +2,7 @@ from __future__ import annotations
 import argparse
 from advpipe import utils
 from advpipe.config_datamodel import AdvPipeConfig
+from advpipe.log import logger
 import os
 
 from typing import TYPE_CHECKING
@@ -16,9 +17,11 @@ def split_to_macro_and_template(config_content: str) -> Tuple[str, str]:
     line_i = 0
     while True:
         line = conf_lines[line_i]
-        if line.startswith('#@\t'):
-            macro_lines.append(line[3:])
+        if line.startswith('#@  '):
+            macro_lines.append(line[4:])
             line_i += 1
+        elif line.startswith('#@'):
+            raise Exception(f"Config macro must be prefixed with '#@' followed by two white-spaces!\nError line: {line}")
         else:
             break
 
@@ -46,7 +49,7 @@ def is_valid_yaml_str(yaml_str: str) -> bool:
     return True
 
 
-def get_config_parameters() -> Iterator[Dict[str, str]]:
+def get_default_config_parameters() -> Iterator[Dict[str, str]]:
     return iter([{}])
 
 
@@ -60,7 +63,8 @@ def preprocess_config(config_fn: str) -> Sequence[str]:
             Sequence[str] - exported YAML config paths
      
     AdvPipe config file can contain optional python code-block at the beggining.
-    Each python code line must be escaped by '#@\t', for example:
+    Each python code line must be escaped by '#@  ' (two white-spaces at the end).
+    These for characters are removed before passing the code to the python interpreter
     If it contains python code block, it must define a function:
         def get_config_parameters() -> Iterator[Dict[str, str]]
 
@@ -92,15 +96,19 @@ def preprocess_config(config_fn: str) -> Sequence[str]:
 
     macro, template = split_to_macro_and_template(config_content)
 
-    # run macro
-    # exports get_config_parameters() to global namespace and overwrites the default function
-    # very bad practice, I know
-    exec(macro)
+    if macro != '':
+        # run macro
+        # exports get_config_parameters() to local namespace and overwrites the default function
+        # very bad practice, I know
+        exec(macro)
+        param_function = locals()['get_config_parameters']
+    else:
+        param_function = get_default_config_parameters
 
     temp_dir_path = utils.convert_to_absolute_path(".exported_configs")
-    utils.mkdir_p(template)
+    utils.mkdir_p(temp_dir_path)
     config_fns = []
-    for parameters in get_config_parameters():
+    for parameters in param_function():
         yaml_config_str = template.format_map(parameters)
 
         exported_fn = f"{temp_dir_path}/{os.path.basename(config_fn).split('.')[0]}_{params_to_str(parameters)}.yaml"
@@ -108,6 +116,17 @@ def preprocess_config(config_fn: str) -> Sequence[str]:
             f.write(yaml_config_str)
         config_fns.append(exported_fn)
     return config_fns
+    
+
+def run_attacks(config_files: Sequence[str]) -> None:
+    for config_fn in config_files:
+        logger.info(f"Running experiment from config: {config_fn}")
+
+        advpipe_config = AdvPipeConfig(config_fn)
+        attack = advpipe_config.getAttackInstance()
+        attack.run()
+
+
 
 
 if __name__ == "__main__":
@@ -116,13 +135,9 @@ if __name__ == "__main__":
     parser.add_argument('-c',
                         '--config',
                         type=str,
-                        default=utils.convert_to_absolute_path("attack_config/fgsm_resnet18.yaml"),
+                        default=utils.convert_to_absolute_path("attack_config/test.yaml"),
                         help='AdvPipe attack YAML config file')
     args = parser.parse_args()
-    
     config_fns = preprocess_config(args.config)
+    run_attacks(config_fns)
 
-    advpipe_config = AdvPipeConfig(args.config)
-    attack = advpipe_config.getAttackInstance()
-
-    attack.run()

@@ -1,12 +1,16 @@
 #@  def get_config_parameters():
+#@      models = ["resnet18", "resnet50", "efficientnet-b0", "efficientnet-b0-advtrain", "efficientnet-b3", "efficientnet-b3-advtrain"]
 #@      for epsilon in [0.01, 0.02, 0.05, 0.1, 0.2]:
-#@          yield {"epsilon": epsilon}
+#@          for loss in ["cross-entropy", "cw"]:
+#@              for surrogate in models:
+#@                  for target in models:
+#@                      yield {"epsilon": epsilon, "loss":loss, "surrogate": surrogate, "target": target}
 
 ---
 
 attack_regime:
   name : transfer-regime 
-  results_dir: results/test/eps_{epsilon}
+  results_dir: results/gridsearch/surrogate_{surrogate}/target_{target}/eps_{epsilon}
   show_images : False
   skip_already_adversarial: False
 
@@ -14,7 +18,7 @@ attack_regime:
     name: fgsm
 
   surrogate:
-    name: resnet18
+    name: efficientnet-b3
     loss: cw
 
   epsilon: {epsilon}
@@ -24,7 +28,7 @@ attack_regime:
     data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped
     dataset_type: imagenet-validation
     load_only_organism: True
-    size_limit: 50
+    size_limit: 750
 
   target_blackbox_config:
     blackbox_type: local
