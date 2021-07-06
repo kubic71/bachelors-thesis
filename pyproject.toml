@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "advpipe"
+version = "0.1.0"
+description = "Adversarial example pipeline for attacking cloud blackboxes"
+authors = ["Jakub Hejhal <kubic71@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+tensorflow-gpu = "^2.4"
+torch = "*"
+torchvision = "*"
+nltk = "*"
+transformers = "*"
+pytest = "*"
+munch = "*"
+
+scikit-image = "*"
+matplotlib = "*"
+seaborn = "*"
+google-cloud-vision = "*"
+opencv-python = "*"
+eagerpy = "*"
+sklearn = "*"
+efficientnet_pytorch = "*"
+ipython = "*"
+ebcic = "^0.0.1"
+pyyaml = "*"
+
+# pillow 8.3.0 has a bug
+# https://stackoverflow.com/questions/68238057/typeerror-array-takes-1-positional-argument-but-2-were-given-image-class
+pillow = "<8.3.0"
+
+# kornia uses numpy only for typing, this PR relaxes numpy dependency
+# Currently, kornia pypi package depends on numpy<=1.19, but tensorflow-gpu=2.4 requires numpy>=1.19.2, which causes conflict
+# TODO: when this is merged, just install the master or the pypi version of kornia
+kornia = { git = "https://github.com/kornia/kornia.git", rev = "a84206b930af16892802c71c26d0cce45d9fdbc7" }
+
+[tool.poetry.dev-dependencies]
+mypy = "*"
+types-PyYAML = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
