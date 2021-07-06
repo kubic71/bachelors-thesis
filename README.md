@@ -10,7 +10,14 @@ More on this [here](adv-pipe.md)
 
 
 ## Setup
+- Tested on cuda 11.3
+```
+$ poetry install
+```
+That's all, really :) 
 
+
+## *deprecated*
 ### Installing tensorflow-gpu and pytorch-gpu in the same conda environment
 I had to specify 'pytorch' channel, otherwise conda always installs the cpu pytorch version 
 ```
@@ -34,8 +41,13 @@ $ pip install transformers
 ### Other dependencies and packages installed throught the development process
 Not all packages are required dependencies.
 ```
-conda install pytest pylint pyyaml munch pillow scikit-image matplotlib 
-pip install google-cloud-vision opencv-python jedi neovim seaborn pre-commit eagerpy
+$ conda install pytest pyyaml munch pillow scikit-image matplotlib seaborn 
+$ pip install google-cloud-vision opencv-python jedi neovim seaborn pre-commit eagerpy sklearn efficientnet_pytorch 
+
+
+# python3.7-ported version of ebcic
+$ git clone https://github.com/kubic71/ebcic
+$ pip install -e ebcic
 ```
 
 
