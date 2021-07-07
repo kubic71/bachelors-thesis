@@ -10,7 +10,7 @@
 
 attack_regime:
   name : transfer-regime 
-  results_dir: results/gridsearch/surrogate_{surrogate}/target_{target}/eps_{epsilon}
+  results_dir: results/gridsearch/surrogate_{surrogate}/target_{target}/eps_{epsilon}/loss_{loss}
   show_images : False
   skip_already_adversarial: False
 
@@ -25,7 +25,7 @@ attack_regime:
   norm: linf
 
   dataset_config:
-    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped
+    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped_first_2000
     dataset_type: imagenet-validation
     load_only_organism: True
     size_limit: 750
