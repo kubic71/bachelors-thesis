@@ -12,9 +12,7 @@ torch = "*"
 torchvision = "*"
 nltk = "*"
 transformers = "*"
-pytest = "*"
 munch = "*"
-
 scikit-image = "*"
 matplotlib = "*"
 seaborn = "*"
@@ -38,8 +36,17 @@ kornia = { git = "https://github.com/kornia/kornia.git", rev = "a84206b930af1689
 
 [tool.poetry.dev-dependencies]
 mypy = "*"
+pytest = "*"
 types-PyYAML = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--disable-pytest-warnings"
+testpaths = [
+    "tests",  # You should have a "tests" directory
+]
