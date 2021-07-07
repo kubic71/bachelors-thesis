@@ -9,7 +9,7 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-tensorflow-gpu = "^2.4"
+tensorflow = "^2.4"
 torch = "*"
 torchvision = "*"
 nltk = "*"
@@ -32,7 +32,7 @@ pyyaml = "*"
 pillow = "<8.3.0"
 
 # kornia uses numpy only for typing, this PR relaxes numpy dependency
-# Currently, kornia pypi package depends on numpy<=1.19, but tensorflow-gpu=2.4 requires numpy>=1.19.2, which causes conflict
+# Currently, kornia pypi package depends on numpy<=1.19, but tensorflow=2.4 requires numpy>=1.19.2, which causes conflict
 # TODO: when this is merged, just install the master or the pypi version of kornia
 kornia = { git = "https://github.com/kornia/kornia.git", rev = "a84206b930af16892802c71c26d0cce45d9fdbc7" }
 
