@@ -1,8 +1,10 @@
 [tool.poetry]
 name = "advpipe"
 version = "0.1.0"
-description = "Adversarial example pipeline for attacking cloud blackboxes"
+description = "Adversarial attack pipeline for attacking cloud blackboxes"
 authors = ["Jakub Hejhal <kubic71@gmail.com>"]
+repository = "https://github.com/kubic71/bachelors-thesis"
+readme = "README.md"
 license = "MIT"
 
 [tool.poetry.dependencies]
