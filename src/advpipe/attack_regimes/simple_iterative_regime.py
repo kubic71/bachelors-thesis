@@ -24,7 +24,7 @@ class SimpleIterativeRegime(AttackRegime):
     def run(self) -> None:
         super().run()
 
-        logger.info(f"running Simple iterative attack for {len(self.dataloader)} images")
+        logger.info(f"running Simple iterative regime with dataset {self.dataloader.name}")
 
         n_successful = 0
         total = 0
@@ -59,7 +59,7 @@ class SimpleIterativeRegime(AttackRegime):
                         best_loss = blackbox_loss.last_loss_val
                         best_img = blackbox_loss.last_img
                         # utils.show_img(best_img)
-                        logger.info(
+                        logger.debug(
                             f"New best img: {img_fn}\t\tQuery: {i}\tdist:{dist}\tloss: {blackbox_loss.last_loss_val}")
 
                         if best_loss < 0:
@@ -80,7 +80,9 @@ class SimpleIterativeRegime(AttackRegime):
             logger.info(
                 f"Img {img_fn} attack result: dist:{dist} best_loss: {loss_val} success_rate: {n_successful}/{total} = {(n_successful/total*100):.2f}%"
             )
-            self.write_result_to_file(img_fn, human_readable_label, loss_val, n_queries_needed, labels.get_top_organism()[0], labels.get_top_object()[0], dist)
+            self.write_result_to_file(img_fn, human_readable_label, loss_val, n_queries_needed,
+                                      labels.get_top_organism()[0],
+                                      labels.get_top_object()[0], dist)
 
             if (not self.regime_config.save_only_successful_images) or success:
                 self.save_adv_img(best_img, img_fn)
@@ -88,16 +90,17 @@ class SimpleIterativeRegime(AttackRegime):
             if self.regime_config.show_images:
                 utils.show_img(best_img, method="pyplot")
 
-
-
     def write_result_to_file(self, img_fn: str, human_readable_label: Optional[str], loss_val: float,
-                             n_queries_needed: Optional[int], top_organism_label: str, top_object_label: str, dist: float) -> None:
+                             n_queries_needed: Optional[int], top_organism_label: str, top_object_label: str,
+                             dist: float) -> None:
 
         results_file = self.regime_config.results_dir + "/iterative_attack_results.csv"
         with open(results_file, "a") as f:
             label_str = "label-NA" if human_readable_label is None else human_readable_label
             n_queries_str = "inf" if n_queries_needed is None else str(n_queries_needed)
-            f.write(f"{img_fn}\t{label_str}\t{loss_val:.5f}\t{n_queries_str}\t{top_organism_label}\t{top_object_label}\t{dist:.5f}\n")
+            f.write(
+                f"{img_fn}\t{label_str}\t{loss_val:.5f}\t{n_queries_str}\t{top_organism_label}\t{top_object_label}\t{dist:.5f}\n"
+            )
 
     def create_results_file(self) -> None:
         self.results_file = self.regime_config.results_dir + "/iterative_attack_results.csv"

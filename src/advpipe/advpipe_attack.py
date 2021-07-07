@@ -3,11 +3,13 @@ import argparse
 from advpipe import utils
 from advpipe.config_datamodel import AdvPipeConfig
 from advpipe.log import logger
+import time
 import os
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from typing import Sequence, Tuple, Dict, Iterator
+    from argparse import Namespace
 
 
 def split_to_macro_and_template(config_content: str) -> Tuple[str, str]:
@@ -21,7 +23,8 @@ def split_to_macro_and_template(config_content: str) -> Tuple[str, str]:
             macro_lines.append(line[4:])
             line_i += 1
         elif line.startswith('#@'):
-            raise Exception(f"Config macro must be prefixed with '#@' followed by two white-spaces!\nError line: {line}")
+            raise Exception(
+                f"Config macro must be prefixed with '#@' followed by two white-spaces!\nError line: {line}")
         else:
             break
 
@@ -116,17 +119,26 @@ def preprocess_config(config_fn: str) -> Sequence[str]:
             f.write(yaml_config_str)
         config_fns.append(exported_fn)
     return config_fns
-    
+
 
 def run_attacks(config_files: Sequence[str]) -> None:
-    for config_fn in config_files:
-        logger.info(f"Running experiment from config: {config_fn}")
+    for i, config_fn in enumerate(config_files):
+        logger.info(f"Running experiment {i + 1}/{len(config_files)} from config: {config_fn}")
+
+        start = time.time()
 
         advpipe_config = AdvPipeConfig(config_fn)
+        logger.info(f"Results directory: {advpipe_config.attack_regime_config.results_dir}")
+
         attack = advpipe_config.getAttackInstance()
         attack.run()
 
+        logger.info(f"Finished. Took {time.time() - start:.2f}s\n")
 
+
+def set_log_level(args: Namespace) -> None:
+    if args.loglevel is not None:
+        logger.set_level(args.loglevel)
 
 
 if __name__ == "__main__":
@@ -137,7 +149,15 @@ if __name__ == "__main__":
                         type=str,
                         default=utils.convert_to_absolute_path("attack_config/test.yaml"),
                         help='AdvPipe attack YAML config file')
+
+    parser.add_argument('--loglevel',
+                        default=None,
+                        choices=["debug", "info", "error"],
+                        help="Overwrite default log level")
+
     args = parser.parse_args()
+
+    set_log_level(args)
+
     config_fns = preprocess_config(args.config)
     run_attacks(config_fns)
-

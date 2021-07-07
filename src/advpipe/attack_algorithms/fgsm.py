@@ -21,9 +21,8 @@ class FgsmTransferAlgorithm(BlackBoxTransferAlgorithm):
 
         self.epsilon = epsilon
 
-
     def run(self) -> Generator[np.ndarray, None, None]:
         grad = self.surrogate.grad(self.image)
-        np_img = np.clip(self.image - self.epsilon*np.sign(grad), 0, 1)
+        np_img = np.clip(self.image - self.epsilon * np.sign(grad), 0, 1)
 
-        yield np.asarray(np.asarray(np_img * 255, dtype=np.uint8), dtype=np.float32) / 255
+        yield np_img

@@ -15,6 +15,7 @@ if TYPE_CHECKING:
     from logging import Logger
     import numpy as np
     from typing import Any, Text
+    from typing_extensions import Literal
 
 
 class CloudDataLogger:
@@ -51,10 +52,16 @@ class CloudDataLogger:
                 f.write(f"{label};{score}\n")
 
 
+LOG_LEVELS = {"debug": logging.DEBUG, "info": logging.INFO, "error": logging.ERROR}
+
+
 class CustomLogger:
     """Wrapper around standard python logger"""
     def __init__(self, logger: Logger):
         self.logger = logger
+
+    def set_level(self, level: Literal["debug", "info", "error"]) -> None:
+        self.logger.setLevel(LOG_LEVELS[level])
 
     def __getattr__(self, attrname: Text) -> Any:
         return getattr(self.logger, attrname)

@@ -6,7 +6,7 @@ from advpipe.log import logger
 
 import nltk
 
-print("Loading wordnet")
+logger.info("Loading wordnet")
 nltk.download("wordnet")
 from nltk import wordnet as wn    # pylint: disable=no-name-in-module
 from functools import lru_cache
@@ -48,7 +48,7 @@ class OrganismLabelClassifier:
     def classifier(self) -> transformers.Pipeline:
         # Lazy-load the transformer, because it's HUGE (1.52 GB) and loads slowly
         if OrganismLabelClassifier._transformer_classifier is None:
-            print("Loading hugginnface transformer model")
+            logger.info("Loading hugginnface transformer model")
             from transformers import pipeline
 
             script_dir = path.dirname(path.abspath(__file__))

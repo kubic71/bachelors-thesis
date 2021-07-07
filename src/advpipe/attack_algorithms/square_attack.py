@@ -138,10 +138,8 @@ class SquareL2AttackAlgorithm(BlackBoxIterativeAlgorithm):
         metrics = np.zeros([n_iters, 7])
         for i_iter in range(n_iters):
             idx_to_fool = (margin_min > 0.0)
-            print(idx_to_fool)
 
             x_curr, x_best_curr = x[idx_to_fool], x_best[idx_to_fool]
-            print(x_best_curr.shape)
             # y_curr, margin_min_curr = y[idx_to_fool], margin_min[idx_to_fool]
             margin_min_curr = margin_min[idx_to_fool]
             loss_min_curr = loss_min[idx_to_fool]
@@ -225,11 +223,11 @@ class SquareL2AttackAlgorithm(BlackBoxIterativeAlgorithm):
                 # np.save(metrics_path, metrics)
             if acc == 0:
                 curr_norms_image = np.sqrt(np.sum((x_best - x)**2, axis=(1, 2, 3), keepdims=True))
-                print('Maximal norm of the perturbations: {:.5f}'.format(np.amax(curr_norms_image)))
+                logger.debug('Maximal norm of the perturbations: {:.5f}'.format(np.amax(curr_norms_image)))
                 break
 
         curr_norms_image = np.sqrt(np.sum((x_best - x)**2, axis=(1, 2, 3), keepdims=True))
-        print('Maximal norm of the perturbations: {:.5f}'.format(np.amax(curr_norms_image)))
+        logger.debug('Maximal norm of the perturbations: {:.5f}'.format(np.amax(curr_norms_image)))
 
 
 """

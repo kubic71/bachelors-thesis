@@ -22,6 +22,10 @@ class DataLoader:
     dataset_config: DatasetConfig
     dataset_list: Sequence[str]
 
+    @property
+    def name(self) -> str:
+        return self.dataset_config.name
+
     def __init__(self, dataset_config: DatasetConfig, resize: Optional[Tuple[int, int]] = None):
         self.dataset_config = dataset_config
         self.resize = resize

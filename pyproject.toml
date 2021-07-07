@@ -38,9 +38,10 @@ kornia = { git = "https://github.com/kornia/kornia.git", rev = "a84206b930af1689
 [tool.poetry.dev-dependencies]
 ipython = "*"
 ipykernel = "*"
-mypy = "*"
 pytest = "*"
 types-PyYAML = "*"
+mypy = "*"
+yapf = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -99,6 +99,7 @@ class WhiteBoxSurrogate:
     def __getattr__(self, attrname: Text) -> Any:
         return getattr(self.local_model, attrname)
 
+
 def get_pytorch_model_map() -> Dict[str, Any]:
     torch_models = {}
 
@@ -113,8 +114,10 @@ def get_pytorch_model_map() -> Dict[str, Any]:
         efnet_name = f"efficientnet-b{efnet_variant}"
 
         torch_models[efnet_name] = functools.partial(EfficientNet.from_pretrained, model_name=efnet_name, advprop=False)
-        torch_models[f"{efnet_name}-advtrain"] = functools.partial(EfficientNet.from_pretrained, model_name=efnet_name, advprop=True)
-    
+        torch_models[f"{efnet_name}-advtrain"] = functools.partial(EfficientNet.from_pretrained,
+                                                                   model_name=efnet_name,
+                                                                   advprop=True)
+
     return torch_models
 
 
@@ -148,7 +151,8 @@ class PytorchModel(LocalModel):
 
         # Debug
         if self.adv_train:
-            print(f"{pytorch_model_name} is adversarially-trained model. Using different preprocessing normalization")
+            logger.debug(
+                f"{pytorch_model_name} is adversarially-trained model. Using different preprocessing normalization")
 
         self.organism_indeces = torch.tensor(get_organism_indeces(), dtype=torch.long)
         self.object_indeces = torch.tensor(get_object_indeces(), dtype=torch.long)
@@ -221,12 +225,11 @@ class PytorchModel(LocalModel):
         loss_val.backward()
 
         np_grad: np.ndarray = input_img.grad.squeeze().detach().cpu().numpy()
-        if np_img.shape[0] == 3: # channels-first
+        if np_img.shape[0] == 3:    # channels-first
             return np_grad
         else:
             # convert-back to channels-last
             return np_grad.transpose(1, 2, 0)
-
 
     def _preprocess(self, torch_img: torch.Tensor) -> torch.Tensor:
         if self.resize_and_center_crop:

@@ -17,6 +17,7 @@ class AttackRegimeConfig:
     skip_already_adversarial: bool = True
     show_images: bool = True
     save_only_successful_examples: bool = False
+    dont_save_images: bool = False
     dataset_config: DatasetConfig
     target_blackbox_config: TargetBlackBoxConfig
     results_dir: str
@@ -45,6 +46,8 @@ class AttackRegimeConfig:
 
         self.save_only_successful_images = utils.get_config_attr(attack_regime_config, "save_only_successful_examples",
                                                                  AttackRegimeConfig.save_only_successful_examples)
+        self.dont_save_images = utils.get_config_attr(attack_regime_config, "dont_save_images",
+                                                                 AttackRegimeConfig.dont_save_images)
         # log destination includes information about the whole attack regime
         # default is saving to /tmp/cloud_data
         if isinstance(self.target_blackbox_config, CloudBlackBoxConfig):
