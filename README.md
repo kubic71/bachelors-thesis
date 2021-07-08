@@ -10,7 +10,7 @@ More on this [here](adv-pipe.md)
 
 
 ## Setup
-- Tested on cuda 11.3
+- Tested on cuda 11.3, python 3.8
 ```
 $ poetry install
 ```
