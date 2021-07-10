@@ -17,15 +17,13 @@ import kornia as K
 import functools
 
 from advpipe.imagenet_utils import get_human_readable_label, get_object_indeces, get_organism_indeces
-from advpipe.blackbox import TargetBlackBox, BlackboxLabels
+from advpipe.blackbox import TargetModel, BlackboxLabels
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from advpipe.config_datamodel import LocalModelConfig
     from typing import Tuple, Iterator, Dict, Any, Callable, Text, Sequence, List
     from typing_extensions import Literal
-
-
 
 
 class LocalLabels(BlackboxLabels):
@@ -49,19 +47,22 @@ class LocalLabels(BlackboxLabels):
 
     def get_top_organism_labels(self) -> Sequence[str]:
         return [get_human_readable_label(org_id) for org_id in self.top_org_ids]
-    
+
     def get_top_organism_logits(self) -> torch.Tensor:
         return torch.tensor(self.organism_logits.max(axis=1))
 
     def get_top_object_labels(self) -> Sequence[str]:
         return [get_human_readable_label(obj_id) for obj_id in self.top_obj_ids]
-    
+
     def get_top_object_logits(self) -> torch.Tensor:
         return torch.tensor(self.object_logits.max(axis=1))
 
     def __repr__(self) -> str:
         res = []
-        for org_label, org_logit, obj_label, obj_logit in zip(self.get_top_organism_labels(), self.get_top_organism_logits(), self.get_top_object_labels(), self.get_top_object_logits()):
+        for org_label, org_logit, obj_label, obj_logit in zip(self.get_top_organism_labels(),
+                                                              self.get_top_organism_logits(),
+                                                              self.get_top_object_labels(),
+                                                              self.get_top_object_logits()):
             res.append(f"top organism: {org_label}, {org_logit},\ttop object: {obj_label}, {obj_logit}")
         return "\n".join(res)
 
@@ -91,7 +92,7 @@ PYTORCH_MODELS: Dict[str, Any] = get_pytorch_model_map()
 
 
 def get_pytorch_model(model_name: str) -> torch.nn.Module:
-    return PYTORCH_MODELS[model_name]() # type: ignore
+    return PYTORCH_MODELS[model_name]()    # type: ignore
 
 
 def normalize(torch_img: torch.Tensor, adv_train: bool = False) -> torch.Tensor:
@@ -107,17 +108,15 @@ def resize_and_center_crop_transform(torch_img: torch.Tensor) -> torch.Tensor:
     return K.center_crop(K.resize(torch_img, size=256), size=(224, 224))
 
 
-organism_indeces_tensor: torch.Tensor = torch.tensor(get_organism_indeces(), dtype=torch.long)
-object_indeces_tensor: torch.Tensor = torch.tensor(get_object_indeces(), dtype=torch.long)
+organism_indeces_tensor: torch.Tensor = torch.tensor(get_organism_indeces(), dtype=torch.long).cuda()
+object_indeces_tensor: torch.Tensor = torch.tensor(get_object_indeces(), dtype=torch.long).cuda()
 
 
 def imagenet_logits_to_organism_probs(logits: torch.Tensor) -> torch.Tensor:
-    org_indeces = organism_indeces_tensor.to(logits.device)
-    obj_indeces = object_indeces_tensor.to(logits.device)
     # sum up the probabilities corresponding to organisms and objects
     imagenet_probs = F.softmax(logits, dim=1)
-    organism_probs = imagenet_probs[:, org_indeces].sum(dim=1)
-    object_probs = imagenet_probs[:, obj_indeces].sum(dim=1)
+    organism_probs = imagenet_probs[:, organism_indeces_tensor].sum(dim=1)
+    object_probs = imagenet_probs[:, object_indeces_tensor].sum(dim=1)
     return torch.stack([object_probs, organism_probs], dim=1)
 
 
@@ -127,55 +126,10 @@ def imagenet_logits_to_simulated_organism_logits(logits: torch.Tensor) -> torch.
 
 
 def imagenet_logits_to_max_logits(logits: torch.Tensor) -> torch.Tensor:
-    org_indeces = organism_indeces_tensor.to(logits.device)
-    obj_indeces = object_indeces_tensor.to(logits.device)
     # sum up the probabilities corresponding to organisms and objects
-    organism_logits = logits[:, org_indeces]
-    object_logits = logits[:, obj_indeces]
+    organism_logits = logits[:, organism_indeces_tensor]
+    object_logits = logits[:, object_indeces_tensor]
     return torch.stack([object_logits.max(dim=1).values, organism_logits.max(dim=1).values], dim=1)
-
-
-class PytorchOrganismClassifier(torch.nn.Module):
-    """ wraps standard ImageNet pytorch model and maps its outputs to {object, organism}
-        args:
-            model: PytorchModel
-            output: Literal['logits', 'probs', 'max_logits'] = 'logits'
-                - output == 'probs':
-                    - the output of model is passed through softmax and probabilies of all object classes are summed up, as well as the probabilities of all organisms
-
-                - output == 'logits':
-                    - simulated logits are computed from summed-up probabilities by taking their logarithm.
-                    - This is sometimes necessary, because for example foolbox expects the target model to output logits.
-                    - This is useful when dealing with adversarial algorithms using cross-entropy loss (FGSM, PGD)
-                    - Note that softmax is shift-invariant and therefore it's inverse is not unique.
-                
-                - output == 'max_logits':
-                    - outputs [max_object_logit, max_organism_logit]
-                    - useful when attacking algorithm is using CW-loss
-
-                - in each case, the output tensor has shape (batch_size, 2)
-    """
-    def __init__(self, model: torch.nn.Module, output: Literal["logits", "probs", "max_logits"] = "logits"):
-        super(PytorchOrganismClassifier, self).__init__()    # type: ignore
-
-        self.model = model
-        self.output = output
-
-        if output == "logits":
-            self.output_mapping = imagenet_logits_to_simulated_organism_logits
-        elif output == "probs":
-            self.output_mapping = imagenet_logits_to_organism_probs
-        elif output == "max_logits":
-            self.output_mapping = imagenet_logits_to_max_logits
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        result = self.output_mapping(self.model(x))
-
-        # DEBUG
-        # print(f"PytorchOrganismClassifier output (output type - {self.output}):")
-        # print(result)
-
-        return result
 
 
 class PytorchModel(torch.nn.Module):
@@ -209,7 +163,7 @@ class PytorchModel(torch.nn.Module):
                 f"{pytorch_model_name} is adversarially-trained model. Using different preprocessing normalization")
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        inp = self.preprocess(x.to(self.device))
+        inp = self.preprocess(x)
         return self.model(inp)    # type: ignore
 
     # def _convert_to_tensor(self, np_img: np.ndarray) -> torch.Tensor:
@@ -258,26 +212,53 @@ class PytorchModel(torch.nn.Module):
 
 # ------------Local BlackBox------------
 # - BlackBox wrapping around LocalModel
-class LocalModel(TargetBlackBox):
-    """Pretrained ImageNet model"""
-    local_model: PytorchModel
-    blackbox_config: LocalModelConfig
+class LocalModel(TargetModel):
+    """ wraps standard ImageNet pytorch model and maps its outputs to {object, organism} categories
+        args:
+            model: PytorchModel
+            output: Literal['logits', 'probs', 'max_logits'] = 'logits'
+                - output == 'probs':
+                    - the output of model is passed through softmax and probabilies of all object classes are summed up, as well as the probabilities of all organisms
+
+                - output == 'logits':
+                    - simulated logits are computed from summed-up probabilities by taking their logarithm.
+                    - This is sometimes necessary, because for example foolbox expects the target model to output logits.
+                    - This is useful when dealing with adversarial algorithms using cross-entropy loss (FGSM, PGD)
+                    - Note that softmax is shift-invariant and therefore it's inverse is not unique.
+                
+                - output == 'max_logits':
+                    - outputs [max_object_logit, max_organism_logit]
+                    - useful when attacking algorithm is using CW-loss
+
+                - in each case, the output tensor has shape (batch_size, 2)
+    """
+
+    imagenet_model: PytorchModel
+    model_config: LocalModelConfig
     last_query_result: LocalLabels
 
-    def __init__(self, blackbox_config: LocalModelConfig):
-        super(LocalModel, self).__init__(blackbox_config)
-        self.local_model = PytorchModel(
-            blackbox_config.name,
-            preprocess_transforms=[resize_and_center_crop_transform] if blackbox_config.resize_and_center_crop else [])
+    def __init__(self, local_model_config: LocalModelConfig):
+        super(LocalModel, self).__init__(local_model_config)
+
+        self.imagenet_model = PytorchModel(local_model_config.name,
+                                           preprocess_transforms=[resize_and_center_crop_transform]
+                                           if local_model_config.resize_and_center_crop else [])
+
+        self.output_mapping = {
+            "logits": imagenet_logits_to_simulated_organism_logits,
+            "probs": imagenet_logits_to_organism_probs,
+            "organism_margin": imagenet_logits_to_max_logits
+        }[local_model_config.output_mapping]
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        logits = self.local_model(x)
+        logits = self.imagenet_model(x)
         self.last_query_result = LocalLabels(logits)
-        return logits  # type: ignore
+        return self.output_mapping(logits)
 
     def loss(self, pertubed_image: torch.Tensor) -> torch.Tensor:
-        with torch.no_grad(): # type: ignore
-            logits = self.local_model(pertubed_image)
+        with torch.no_grad():    # type: ignore
+            logits = self.imagenet_model(pertubed_image)
             self.last_query_result = LocalLabels(logits)
-            
-            return (self.last_query_result.get_top_organism_logits() - self.last_query_result.get_top_object_logits()) + self.blackbox_config.loss.margin # type: ignore
+
+            return (self.last_query_result.get_top_organism_logits() - # type: ignore
+                    self.last_query_result.get_top_object_logits()) + self.model_config.loss.margin    

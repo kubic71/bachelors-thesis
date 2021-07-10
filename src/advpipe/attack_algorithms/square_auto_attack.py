@@ -1,6 +1,6 @@
 from __future__ import annotations
 from advpipe.attack_algorithms import BlackBoxTransferAlgorithm
-from advpipe.blackbox.local import LocalModel, PytorchOrganismClassifier
+from advpipe.blackbox.local import LocalModel
 import numpy as np
 from advpipe.log import logger
 from advpipe import utils
@@ -23,12 +23,9 @@ class SquareAutoAttack(BlackBoxTransferAlgorithm):
 
         self.config = config
 
-        org_classifier = PytorchOrganismClassifier(surrogate, output="max_logits")
-        org_classifier.eval()
-
         def predict(x: torch.Tensor) -> torch.Tensor:
             with torch.no_grad(): # type: ignore
-                return org_classifier(x) # type: ignore
+                return surrogate(x) # type: ignore
 
         self.attack = SquareAttack(predict, norm=self.config.metric, n_restarts = self.config.n_restarts, n_queries=self.config.n_iters, eps=self.config.epsilon, loss="margin", device="cuda")
 

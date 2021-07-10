@@ -74,7 +74,7 @@ from .regime_config import AttackRegimeConfig, IterativeRegimeConfig, TransferRe
 from .attack_algorithm_config import AttackAlgorithmConfig, RaySAlgorithmConfig
 
 #  add blackbox config to namespace
-from .blackbox_config import TargetBlackBoxConfig, LocalModelConfig, CloudBlackBoxConfig
+from .blackbox_config import TargetModelConfig, LocalModelConfig, CloudBlackBoxConfig
 
 from advpipe.attack_regimes import SimpleIterativeRegime, SimpleTransferRegime
 

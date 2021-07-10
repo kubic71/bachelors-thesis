@@ -12,44 +12,21 @@ More on this [here](adv-pipe.md)
 ## Setup
 - Tested on cuda 11.3, python 3.8
 ```
+# Install poetry (you can also try pip-installing it, but this is the official way)
+$ curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+
+# install all dependencies from lock-file
 $ poetry install
 ```
 That's all, really :) 
 
-
-## *deprecated*
-### Installing tensorflow-gpu and pytorch-gpu in the same conda environment
-I had to specify 'pytorch' channel, otherwise conda always installs the cpu pytorch version 
+## Running experiment
+Create experiment YAML configuration and pass it to advpipe_attack.py
 ```
-$ conda create -n advpipe python=3.7 
-$ conda install pytorch torchvision cudatoolkit tensorflow-gpu -c pytorch
+$ cd src/advpipe
+$ python advpipe_attack.py --config=attack_config/square_attack_resnet18.yaml
 ```
-
-### Language model
-Nltk python library for wordnet label hypernyms
-
-```
-$ conda install -c anaconda nltk 
-```
-
-Huggingface transformers for zero-shot classification in case wordnet doesn't know the exact label phrase
-
-```
-$ pip install transformers  
-```
-
-### Other dependencies and packages installed throught the development process
-Not all packages are required dependencies.
-```
-$ conda install pytest pyyaml munch pillow scikit-image matplotlib seaborn 
-$ pip install google-cloud-vision opencv-python jedi neovim seaborn pre-commit eagerpy sklearn efficientnet_pytorch 
-
-
-# python3.7-ported version of ebcic
-$ git clone https://github.com/kubic71/ebcic
-$ pip install -e ebcic
-```
-
+ 
 
 
 ## Attacks

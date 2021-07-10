@@ -1,18 +1,13 @@
 from __future__ import annotations
-from advpipe.attack_algorithms import BlackBoxTransferAlgorithm
-from advpipe.blackbox.local import LocalModel, PytorchOrganismClassifier
-import numpy as np
-from advpipe.log import logger
-from advpipe import utils
-import torch
+from advpipe.blackbox.local import LocalModel
 import foolbox as fb
-import eagerpy as ep
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from advpipe.utils import LossCallCounter
-    from advpipe.blackbox.local import LocalModel
-    from typing import Generator, Sequence
+from advpipe.attack_algorithms import BlackBoxTransferAlgorithm
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from advpipe.blackbox.local import LocalModel
+    import torch
 
 class FgsmTransferAlgorithm(BlackBoxTransferAlgorithm):
     epsilon: float
@@ -20,9 +15,7 @@ class FgsmTransferAlgorithm(BlackBoxTransferAlgorithm):
     def __init__(self, surrogate: LocalModel, epsilon: float):
         super().__init__(surrogate)
 
-        org_classifier = PytorchOrganismClassifier(surrogate)
-        org_classifier.eval()
-        self.fmodel = fb.PyTorchModel(org_classifier, bounds=(0, 1))
+        self.fmodel = fb.PyTorchModel(surrogate, bounds=(0, 1))
         self.attack = fb.attacks.FGSM()
         self.epsilon = epsilon
 

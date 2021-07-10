@@ -1,7 +1,7 @@
 # type: ignore
 from __future__ import annotations
 from advpipe.attack_algorithms import BlackBoxTransferAlgorithm
-from advpipe.blackbox.local import LocalModel, PytorchOrganismClassifier
+from advpipe.blackbox.local import LocalModel
 import numpy as np
 from advpipe.log import logger
 from advpipe import utils
@@ -23,16 +23,12 @@ class APGDAutoAttack(BlackBoxTransferAlgorithm):
 
         self.config = config
 
-        # org_classifier = PytorchOrganismClassifier(surrogate, output="logits")
-        org_classifier = PytorchOrganismClassifier(surrogate, output="max_logits")
-        org_classifier.eval()
-
-
-        self.attack = APGDAttack(org_classifier, norm=self.config.metric, eps=self.config.epsilon, n_iter=self.config.n_iters, n_restarts = self.config.n_restarts, loss="ce", device="cuda", verbose=True)
+        # APGDAttack offers two losses: cross-entropy (ce) and DRL loss, but DRL is unusable for us, because it requires at least 3 output categories (we have only 2)
+        self.attack = APGDAttack(surrogate, norm=self.config.metric, eps=self.config.epsilon, n_iter=self.config.n_iters, n_restarts = self.config.n_restarts, loss="ce", device="cuda", verbose=True)
 
     def run(self, images: torch.Tensor, labels: torch.Tensor) -> torch.Tensor:
 
-        acc, x_adv = self.attack.perturb(images, labels) # type: ignore
+        acc, x_adv = self.attack.perturb(images, labels) 
         return x_adv
         
 

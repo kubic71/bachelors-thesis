@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from advpipe.utils import LossCallCounter
     import torch
     from advpipe.attack_algorithms import BlackBoxIterativeAlgorithm, BlackBoxTransferAlgorithm
-    from advpipe.blackbox import TargetBlackBox
+    from advpipe.blackbox import TargetModel
     from advpipe.blackbox.local import LocalModel
     from munch import Munch
     import numpy as np

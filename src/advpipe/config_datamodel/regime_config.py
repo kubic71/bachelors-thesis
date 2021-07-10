@@ -21,7 +21,7 @@ class AttackRegimeConfig:
     save_only_successful_examples: bool = False
     dont_save_images: bool = False
     dataset_config: DatasetConfig
-    target_blackbox_config: TargetBlackBoxConfig
+    target_model_config: TargetModelConfig
     results_dir: str
     config_filename: str
     attack_algorithm_config: AttackAlgorithmConfig
@@ -45,8 +45,8 @@ class AttackRegimeConfig:
         self.show_images = utils.get_config_attr(attack_regime_config, "show_images", self.show_images)
         self.dataset_config = DatasetConfig.loadFromYamlConfig(attack_regime_config.dataset_config)
 
-        self.target_blackbox_config = TargetBlackBoxConfig.loadFromYamlConfig(
-            attack_regime_config.target_blackbox_config)
+        self.target_model_config = TargetModelConfig.loadFromYamlConfig(
+            attack_regime_config.target_model_config)
 
         default_exp_name = self.config_filename.split(".")[0]
         self.results_dir = utils.convert_to_absolute_path(
@@ -64,16 +64,16 @@ class AttackRegimeConfig:
 
         # log destination includes information about the whole attack regime
         # default is saving to /tmp/cloud_data
-        if isinstance(self.target_blackbox_config, CloudBlackBoxConfig):
+        if isinstance(self.target_model_config, CloudBlackBoxConfig):
             # Create cloud data logger
-            bbox_name = self.target_blackbox_config.name
+            bbox_name = self.target_model_config.name
             dataset_name = self.dataset_config.name
             attack_name = self.name
             algo_name = self.attack_algorithm_config.name
             timestamp = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
             cloud_log_path = os.path.join(utils.get_abs_module_path(), "collected_cloud_data", bbox_name, dataset_name,
                                           attack_name, algo_name, timestamp)
-            self.target_blackbox_config.cloud_data_logger = CloudDataLogger(cloud_log_path)
+            self.target_model_config.cloud_data_logger = CloudDataLogger(cloud_log_path)
 
     @staticmethod
     def loadFromYamlConfig(attack_regime_config: Munch) -> AttackRegimeConfig:
@@ -120,5 +120,5 @@ ATTACK_REGIME_CONFIGS = {
     TransferRegimeConfig.name: TransferRegimeConfig
 }
 
-from .blackbox_config import TargetBlackBoxConfig, CloudBlackBoxConfig, LocalModelConfig
+from .blackbox_config import TargetModelConfig, CloudBlackBoxConfig, LocalModelConfig
 from .attack_algorithm_config import AttackAlgorithmConfig, IterativeAttackAlgorithmConfig, TransferAttackAlgorithmConfig

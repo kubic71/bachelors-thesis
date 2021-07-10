@@ -1078,6 +1078,17 @@ requests = ">=2.0.0"
 rsa = ["oauthlib[signedtoken] (>=3.0.0)"]
 
 [[package]]
+name = "rope"
+version = "0.19.0"
+description = "a python refactoring library..."
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.extras]
+dev = ["pytest"]
+
+[[package]]
 name = "rsa"
 version = "4.7.2"
 description = "Pure-Python RSA implementation"
@@ -1505,7 +1516,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "c62c13659005476b6cabb6689573944689af3a81d24bbbf8f779ee60ca09c2e7"
+content-hash = "3eb1eb2907f010b5a747ae22fe45eb478c99e60533bfd30776a6e2862f190f96"
 
 [metadata.files]
 absl-py = [
@@ -2346,6 +2357,9 @@ requests-oauthlib = [
     {file = "requests-oauthlib-1.3.0.tar.gz", hash = "sha256:b4261601a71fd721a8bd6d7aa1cc1d6a8a93b4a9f5e96626f8e4d91e8beeaa6a"},
     {file = "requests_oauthlib-1.3.0-py2.py3-none-any.whl", hash = "sha256:7f71572defaecd16372f9006f33c2ec8c077c3cfa6f5911a9a90202beb513f3d"},
     {file = "requests_oauthlib-1.3.0-py3.7.egg", hash = "sha256:fa6c47b933f01060936d87ae9327fead68768b69c6c9ea2109c48be30f2d4dbc"},
+]
+rope = [
+    {file = "rope-0.19.0.tar.gz", hash = "sha256:64e6d747532e1f5c8009ec5aae3e5523a5bcedf516f39a750d57d8ed749d90da"},
 ]
 rsa = [
     {file = "rsa-4.7.2-py3-none-any.whl", hash = "sha256:78f9a9bf4e7be0c5ded4583326e7461e3a3c5aae24073648b4bdfa797d78c9d2"},

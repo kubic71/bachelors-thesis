@@ -29,7 +29,7 @@ class SimpleTransferRegime(AttackRegime):
         if self.regime_config.surrogate_config is None:
             self.surrogate = None
         else:
-            self.surrogate = self.regime_config.surrogate_config.getBlackBoxInstance()
+            self.surrogate = self.regime_config.surrogate_config.getModelInstance()
 
         self.transfer_algorithm = self.regime_config.attack_algorithm_config.getAttackAlgorithmInstance(self.surrogate) # type: ignore   
 
@@ -43,7 +43,7 @@ class SimpleTransferRegime(AttackRegime):
             img_fns = list(map(path.basename, img_paths))    # get image file name
 
             # if self.regime_config.skip_already_adversarial:
-                # initial_loss_val = self.target_blackbox.loss(np_img)
+                # initial_loss_val = self.target_model.loss(np_img)
                 # if initial_loss_val < 0:
                     # logger.debug(f"Skipping already adversarial image - initial loss: {initial_loss_val}")
                     # continue
@@ -53,8 +53,8 @@ class SimpleTransferRegime(AttackRegime):
             x_advs = self.transfer_algorithm.run(imgs, labels)
 
             pertubations = x_advs - imgs
-            losses = self.target_blackbox.loss(x_advs)
-            local_labels = self.target_blackbox.last_query_result
+            losses = self.target_model.loss(x_advs)
+            local_labels = self.target_model.last_query_result
             norm = self.regime_config.norm
             dists = norm(pertubations)
         

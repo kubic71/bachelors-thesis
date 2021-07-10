@@ -16,8 +16,9 @@ attack_regime:
   batch_size: 4
 
   surrogate:
-    blackbox_type: local
+    model_type: local
     name: efficientnet-b0-advtrain
+    output_mapping: "organism_margin"
 
     loss:
       name: margin_loss
@@ -29,10 +30,10 @@ attack_regime:
     load_only_organisms: True
     size_limit: 100
 
-  target_blackbox_config:
-    blackbox_type: local
+  target_model_config:
+    model_type: local
     name: resnet18
-    resize_and_center_crop: False
+    output_mapping: "organism_margin"
 
     loss:
       name: margin_loss

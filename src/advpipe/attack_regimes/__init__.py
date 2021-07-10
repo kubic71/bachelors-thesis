@@ -12,13 +12,13 @@ import imageio
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from advpipe.config_datamodel import AttackRegimeConfig
-    from advpipe.blackbox import TargetBlackBox
+    from advpipe.blackbox import TargetModel
     from advpipe.data_loader import DataLoader
     import numpy as np
 
 
 class AttackRegime(ABC):
-    target_blackbox: TargetBlackBox
+    target_model: TargetModel
     regime_config: AttackRegimeConfig
     dataloader: DataLoader
 
@@ -26,8 +26,8 @@ class AttackRegime(ABC):
         self.regime_config = attack_regime_config
         self.dataloader = self.regime_config.dataset_config.getDatasetInstance()
 
-        # Initialize the connection to the target blackbox
-        self.target_blackbox = self.regime_config.target_blackbox_config.getBlackBoxInstance()
+        # Initialize the connection to the target model
+        self.target_model = self.regime_config.target_model_config.getModelInstance()
 
         self.create_results_dir()
         self.create_adv_img_dir()
