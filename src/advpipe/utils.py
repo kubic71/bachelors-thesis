@@ -11,11 +11,45 @@ from PIL import Image, ImageDraw
 import cv2
 from advpipe.log import logger
 import eagerpy as ep
+from torchvision import transforms
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from typing import Callable, Optional
+    import torch
+    from typing import Callable, Optional, Iterator, Any
     from advpipe.types import TensorTypeVar
+
+def batches(seq: Iterator[Any], bs: int = 16) -> Iterator[Sequence]:
+    batch = []
+    while True:
+        try:
+            batch.append(next(seq))
+        except StopIteration:
+            break
+
+        if len(batch) == bs:
+            yield batch
+            batch = []
+
+    if len(batch) > 0:
+        yield batch
+
+
+def tensor_batches(tensor_iter: Iterator[TensorTypeVar], bs: int = 16) -> Iterator[TensorTypeVar]:
+    while True:
+        batch = []
+        try:
+            batch.append(ep.astensor(next(tensor_iter)))
+        except StopIteration:
+            break
+
+        if len(batch) == bs:
+            yield ep.concatenate(batch).raw
+            batch = []
+
+    if len(batch) > 0:
+        yield ep.concatenate(batch).raw
+
 
 
 def scale_img(img: Image, target_size: int) -> Image:
@@ -53,7 +87,8 @@ def mkdir_p(dir_path: str) -> None:
     pathlib.Path(dir_path).mkdir(parents=True, exist_ok=True)
 
 
-def show_img(np_img: np.ndarray, method: str = "pyplot") -> None:
+def show_img(img: TensorTypeVar, method: str = "pyplot") -> None:
+    np_img = ep.astensor(img).numpy()
     if method == "PIL":
         convert_to_pillow(np_img).show()
     elif method == "opencv":
@@ -77,6 +112,11 @@ def load_image_to_numpy(img_path: str) -> np.ndarray:
     # convert image to numpy array
     np_img = np.asarray(image, dtype=np.float32) / 255
     return np_img
+
+_to_tensor = transforms.ToTensor()
+def load_image_to_torch(img_path: str) -> torch.Tensor:
+    image = Image.open(img_path)
+    return _to_tensor(image) # type: ignore
 
 
 def write_text_to_img(img: Image, text: str, max_lines: int = 20) -> Image:

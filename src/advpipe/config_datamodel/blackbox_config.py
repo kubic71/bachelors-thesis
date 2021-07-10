@@ -8,8 +8,7 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from advpipe.utils import LossCallCounter
-    from advpipe.attack_algorithms import BlackBoxAlgorithm
-    from advpipe.blackbox.local import LocalBlackBox
+    from advpipe.blackbox.local import LocalModel
     from advpipe.blackbox.cloud import CloudBlackBox
     from advpipe.blackbox import TargetBlackBox
     from munch import Munch
@@ -37,7 +36,7 @@ class TargetBlackBoxConfig(ABC):
         if b_type == "cloud":
             return CloudBlackBoxConfig(target_blackbox_config)
         elif b_type == "local":
-            return LocalBlackBoxConfig(target_blackbox_config)
+            return LocalModelConfig(target_blackbox_config)
         else:
             raise ValueError(f"Invalid blackbox type: {b_type}")
 
@@ -46,7 +45,7 @@ class TargetBlackBoxConfig(ABC):
         ...
 
 
-class LocalBlackBoxConfig(TargetBlackBoxConfig):
+class LocalModelConfig(TargetBlackBoxConfig):
     blackbox_type: BLACKBOX_TYPE = "local"
 
     # taken from: https://jhui.github.io/2018/02/09/PyTorch-Data-loading-preprocess_torchvision/
@@ -58,22 +57,8 @@ class LocalBlackBoxConfig(TargetBlackBoxConfig):
         self.resize_and_center_crop = utils.get_config_attr(local_blackbox_config, "resize_and_center_crop",
                                                             self.resize_and_center_crop)
 
-    def getBlackBoxInstance(self) -> LocalBlackBox:
-        return LocalBlackBox(self)
-
-
-class WhiteBoxSurrogateConfig():
-    name: str
-    loss: str = "cw"
-
-    def __init__(self, surrogate_config: Munch):
-        self.name = surrogate_config.name
-        self.loss = utils.get_config_attr(surrogate_config, "loss", WhiteBoxSurrogateConfig.loss)
-
-    def getSurrogateInstance(self) -> WhiteBoxSurrogate:
-        model = LocalModel.getLocalModel(self.name, False)
-        return WhiteBoxSurrogate(model, self.loss)
-
+    def getBlackBoxInstance(self) -> LocalModel:
+        return LocalModel(self)
 
 
 
@@ -92,6 +77,6 @@ class CloudBlackBoxConfig(TargetBlackBoxConfig):
         return CLOUD_BLACKBOXES[self.name](self)
 
 
-from advpipe.blackbox.local import LocalBlackBox, WhiteBoxSurrogate, LocalModel
+from advpipe.blackbox.local import LocalModel
 
 CLOUD_BLACKBOXES = {GVisionBlackBox.name: GVisionBlackBox}

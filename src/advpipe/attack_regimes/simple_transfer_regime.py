@@ -1,5 +1,6 @@
 from __future__ import annotations
 from advpipe.attack_regimes import AttackRegime
+from advpipe.data_loader import DataLoader
 from advpipe.utils import MaxFunctionCallsExceededException, LossCallCounter
 from advpipe.log import logger
 from advpipe import utils
@@ -9,14 +10,13 @@ from os import path
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from advpipe.config_datamodel import TransferRegimeConfig
-    from advpipe.blackbox.local import WhiteBoxSurrogate
+    from advpipe.blackbox.local import LocalModel
     from typing import Optional
 
 
-# TODO
 class SimpleTransferRegime(AttackRegime):
     regime_config: TransferRegimeConfig
-    surrogate: Optional[WhiteBoxSurrogate]
+    surrogate: Optional[LocalModel]
     results_file: str
 
     def __init__(self, attack_regime_config: TransferRegimeConfig):
@@ -29,67 +29,53 @@ class SimpleTransferRegime(AttackRegime):
         if self.regime_config.surrogate_config is None:
             self.surrogate = None
         else:
-            self.surrogate = self.regime_config.surrogate_config.getSurrogateInstance()
+            self.surrogate = self.regime_config.surrogate_config.getBlackBoxInstance()
+
+        self.transfer_algorithm = self.regime_config.attack_algorithm_config.getAttackAlgorithmInstance(self.surrogate) # type: ignore   
 
     def run(self) -> None:
-        super().run()
 
         logger.info(f"running Simple transfer regime with dataset {self.dataloader.name}")
 
         n_successful = 0
         total = 0
-        for img_path, np_img, label, human_readable_label in self.dataloader:
-            logger.debug(f"Running transfer attack algorithm for {img_path}")
-            _, img_fn = path.split(img_path)    # get image file name
+        for img_paths, imgs, labels, human_readable_labels in DataLoader.create_batches(self.dataloader, self.regime_config.batch_size):
+            img_fns = list(map(path.basename, img_paths))    # get image file name
 
-            if self.regime_config.skip_already_adversarial:
-                initial_loss_val = self.target_blackbox.loss(np_img)
-                if initial_loss_val < 0:
-                    logger.debug(f"Skipping already adversarial image - initial loss: {initial_loss_val}")
-                    continue
+            # if self.regime_config.skip_already_adversarial:
+                # initial_loss_val = self.target_blackbox.loss(np_img)
+                # if initial_loss_val < 0:
+                    # logger.debug(f"Skipping already adversarial image - initial loss: {initial_loss_val}")
+                    # continue
 
-            total += 1
+            total += len(img_paths)
 
-            self.transfer_algorithm = self.regime_config.attack_algorithm_config.getAttackAlgorithmInstance(
-                np_img.copy(), self.surrogate)    # type: ignore
+            x_advs = self.transfer_algorithm.run(imgs, labels)
 
-            running_attack = self.transfer_algorithm.run()
-            x_adv = next(running_attack)
+            pertubations = x_advs - imgs
+            losses = self.target_blackbox.loss(x_advs)
+            local_labels = self.target_blackbox.last_query_result
+            norm = self.regime_config.norm
+            dists = norm(pertubations)
+        
+            # logger.debug(f"Labels: {local_labels}")
+            # logger.debug(f"Distance: {dist}")
 
-            # check that attack algorithm is used in transfer mode
-            transfer_mode = False
-            try:
-                _ = next(running_attack)
-            except StopIteration:
-                transfer_mode = True
+            n_successful += int((losses < 0).sum())
 
-            assert transfer_mode, f"Attack algorithm {self.regime_config.attack_algorithm_config.name} isn't used in transfer mode, because it yielded more than once"
+            for img_fn, human_label, target_loss, top_org_label, top_obj_label, dist, x_adv in zip(img_fns, human_readable_labels, losses, local_labels.get_top_organism_labels(), local_labels.get_top_object_labels(), dists, x_advs.detach().cpu().numpy()):
 
-            success = False
-            pertubation = x_adv - np_img
+                self.write_result_to_file(str(img_fn), human_label, target_loss, top_org_label, top_obj_label, dist)
 
-            loss = self.target_blackbox.loss(x_adv)
-            labels = self.target_blackbox.last_query_result
-            norm = self.regime_config.attack_algorithm_config.norm
-            dist = norm(pertubation)
+                if (not self.regime_config.save_only_successful_images) or target_loss < 0:
+                    self.save_adv_img(x_adv.transpose(1, 2, 0), img_fn)
 
-            self.write_result_to_file(img_fn, human_readable_label, loss,
-                                      labels.get_top_organism()[0],
-                                      labels.get_top_object()[0], dist)
+                logger.debug(
+                    f"Img: {human_label} {img_fn}\t{norm.name} pertubation norm:{dist}\tloss: {target_loss}\tsuccess_rate: {n_successful}/{total} = {(n_successful/total*100):.2f}%" )
 
-            if loss < 0:
-                n_successful += 1
-                success = True
-
-            if (not self.regime_config.save_only_successful_images) or success:
-                self.save_adv_img(x_adv, img_fn)
-
-            logger.debug(
-                f"Img: {img_fn}\t{norm.name} pertubation norm:{dist}\tloss: {loss}\tsuccess_rate: {n_successful}/{total} = {(n_successful/total*100):.2f}%"
-            )
 
             if self.regime_config.show_images:
-                utils.show_img(x_adv)
+                utils.show_img(x_adv[0])
 
         self.write_summary(n_successful, total)
 

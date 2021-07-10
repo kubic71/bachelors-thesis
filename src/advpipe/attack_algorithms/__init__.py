@@ -7,8 +7,10 @@ import eagerpy as ep
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from advpipe.utils import LossCallCounter
-    from advpipe.blackbox.local import WhiteBoxSurrogate
+    from advpipe.blackbox.local import LocalModel
+    from advpipe.types import TensorTypeVar
     from typing import Generator
+    import torch
 
 
 class Norm:
@@ -19,48 +21,37 @@ class Norm:
         self._name = norm_order
         self._norm = self._supported_norms[norm_order]
 
-    def __call__(self, img: ep.types.NativeTensor) -> float:
-        return float(self._norm(ep.astensor(img)).numpy())
+    def __call__(self, imgs: TensorTypeVar) -> TensorTypeVar:
+        return self._norm(ep.astensor(imgs), axis=(1,2,3)).raw # type: ignore
 
     @property
     def name(self) -> str:
         return self._name
 
 
-class BlackBoxAlgorithm(ABC):
-    image: np.ndarray
-    pertubation: np.ndarray
-
-    def __init__(self, image: np.ndarray):
-        # Image should have [H, W, C] shape with values in [0, 1.0] range
-        self.image = image
-        self.pertubation = np.zeros_like(self.image)
-
-    # Algoritm should yield to the attack manager the current pertubation
-    # transfer attacks yield only once and then StopIteration
-    @abstractmethod
-    def run(self) -> Generator[np.ndarray, None, None]:
-        ...
-
-
-class BlackBoxIterativeAlgorithm(BlackBoxAlgorithm):
+class BlackBoxIterativeAlgorithm():
     loss_fn: LossCallCounter
+    images: torch.Tensor
 
-    def __init__(self, image: np.ndarray, loss_fn: LossCallCounter):
-        super().__init__(image)
+    def __init__(self, images: torch.Tensor, loss_fn: LossCallCounter):
+        self.images = images
         self.loss_fn = loss_fn
+    
+    def run(self) -> Generator[torch.Tensor, None, None]:
+        raise NotImplementedError
 
 
-class BlackBoxTransferAlgorithm(BlackBoxAlgorithm):
-    surrogate: WhiteBoxSurrogate
+class BlackBoxTransferAlgorithm():
+    surrogate: LocalModel
 
-    def __init__(self, image: np.ndarray, surrogate: WhiteBoxSurrogate):
-        super().__init__(image)
-
+    def __init__(self, surrogate: LocalModel):
         self.surrogate = surrogate
 
+    def run(self, images: torch.Tensor, labels: torch.Tensor) -> torch.Tensor:
+        raise NotImplementedError
 
+
+from .fgsm import FgsmTransferAlgorithm
 from .rays import RaySAttackAlgorithm
 from .passthrough_attack import PassthroughTransferAttackAlgorithm
 from .square_attack import SquareL2AttackAlgorithm
-from .fgsm import FgsmTransferAlgorithm

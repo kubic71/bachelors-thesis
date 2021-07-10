@@ -55,7 +55,7 @@ class SimpleIterativeRegime(AttackRegime):
                         f"Manager: Img: {img_fn}\t\tIter: {i}\tdist:{dist}\tloss: {blackbox_loss.last_loss_val}")
 
                     # x_adv satisfies l_p norm constarint and has best loss val so far
-                    if blackbox_loss.last_loss_val < best_loss and dist <= self.regime_config.attack_algorithm_config.epsilon:
+                    if blackbox_loss.last_loss_val < best_loss and dist <= self.regime_config.epsilon:
                         best_loss = blackbox_loss.last_loss_val
                         best_img = blackbox_loss.last_img
                         # utils.show_img(best_img)

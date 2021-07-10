@@ -5,6 +5,8 @@ from datetime import datetime
 import os
 from advpipe import utils
 
+from advpipe.attack_algorithms import Norm
+
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from munch import Munch
@@ -23,6 +25,12 @@ class AttackRegimeConfig:
     results_dir: str
     config_filename: str
     attack_algorithm_config: AttackAlgorithmConfig
+
+    norm: Norm
+    epsilon: float
+
+
+
 
     _unparsed_config: Munch
 
@@ -48,6 +56,12 @@ class AttackRegimeConfig:
                                                                  AttackRegimeConfig.save_only_successful_examples)
         self.dont_save_images = utils.get_config_attr(attack_regime_config, "dont_save_images",
                                                                  AttackRegimeConfig.dont_save_images)
+
+
+        self.epsilon = attack_regime_config.epsilon
+        self.norm = Norm(attack_regime_config.norm)
+
+
         # log destination includes information about the whole attack regime
         # default is saving to /tmp/cloud_data
         if isinstance(self.target_blackbox_config, CloudBlackBoxConfig):
@@ -63,7 +77,11 @@ class AttackRegimeConfig:
 
     @staticmethod
     def loadFromYamlConfig(attack_regime_config: Munch) -> AttackRegimeConfig:
-        return ATTACK_REGIME_CONFIGS[attack_regime_config.name](attack_regime_config)
+        attack_regime_config.attack_algorithm.epsilon = attack_regime_config.epsilon
+        attack_regime_config.attack_algorithm.norm = attack_regime_config.norm
+
+
+        return  ATTACK_REGIME_CONFIGS[attack_regime_config.name](attack_regime_config)
 
 
 class IterativeRegimeConfig(AttackRegimeConfig):
@@ -71,33 +89,28 @@ class IterativeRegimeConfig(AttackRegimeConfig):
     attack_algorithm_config: IterativeAttackAlgorithmConfig
 
     def __init__(self, attack_regime_config: Munch):
-        self.attack_algorithm_config = IterativeAttackAlgorithmConfig.loadFromYamlConfig(
-            attack_regime_config, attack_regime_config.attack_algorithm)
+        self.attack_algorithm_config = IterativeAttackAlgorithmConfig.loadFromYamlConfig(attack_regime_config.attack_algorithm)
 
         super().__init__(attack_regime_config)
         self.max_iter = attack_regime_config.max_iter
 
-        # leaky-abstraction, because attack algorithm needs to access epsilon, norm and other constraints,
-        # which are global to the AttackRegime whole AdvPipe Attack
-
 
 class TransferRegimeConfig(AttackRegimeConfig):
     name: str = "transfer-regime"
-    surrogate_config: Optional[WhiteBoxSurrogateConfig]
+    surrogate_config: Optional[LocalModelConfig]
     attack_algorithm_config: TransferAttackAlgorithmConfig
+    batch_size: int = 16
 
     def __init__(self, attack_regime_config: Munch):
-        self.attack_algorithm_config = TransferAttackAlgorithmConfig.loadFromYamlConfig(
-            attack_regime_config, attack_regime_config.attack_algorithm)
+        self.attack_algorithm_config = TransferAttackAlgorithmConfig.loadFromYamlConfig(attack_regime_config.attack_algorithm)
 
         super().__init__(attack_regime_config)
 
-        # leaky-abstraction, because attack algorithm needs to access epsilon, norm and other constraints,
-        # which are global to the AttackRegime whole AdvPipe Attack
+        self.batch_size = utils.get_config_attr(attack_regime_config, "batch_size", TransferRegimeConfig.batch_size)
 
         # passthrough attack doesn't need surrogate
         if utils.get_config_attr(attack_regime_config, "surrogate", None):
-            self.surrogate_config = WhiteBoxSurrogateConfig(attack_regime_config.surrogate)
+            self.surrogate_config = LocalModelConfig(attack_regime_config.surrogate)
         else:
             self.surrogate_config = None
 
@@ -107,5 +120,5 @@ ATTACK_REGIME_CONFIGS = {
     TransferRegimeConfig.name: TransferRegimeConfig
 }
 
-from .blackbox_config import TargetBlackBoxConfig, CloudBlackBoxConfig, LocalBlackBoxConfig, WhiteBoxSurrogateConfig
+from .blackbox_config import TargetBlackBoxConfig, CloudBlackBoxConfig, LocalModelConfig
 from .attack_algorithm_config import AttackAlgorithmConfig, IterativeAttackAlgorithmConfig, TransferAttackAlgorithmConfig

@@ -1,0 +1,41 @@
+---
+# implementation of square-attack form auto-attack returns original images when it cannot get the loss below zero
+# TODO: make it return the best x_adv so far, even if the loss is positive
+attack_regime:
+  name : transfer-regime 
+  show_images : False
+  skip_already_adversarial: False
+
+  attack_algorithm: 
+    name: square-autoattack
+    n_iters: 300
+    n_restarts: 1
+
+  epsilon: 10
+  norm: l2
+  batch_size: 4
+
+  surrogate:
+    blackbox_type: local
+    name: efficientnet-b0-advtrain
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+
+  dataset_config:
+    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped
+    dataset_type: imagenet-validation
+    load_only_organisms: True
+    size_limit: 100
+
+  target_blackbox_config:
+    blackbox_type: local
+    name: resnet18
+    resize_and_center_crop: False
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+
+
