@@ -1,23 +1,32 @@
+#@  def get_config_parameters():
+#@      models = ["wide_resnet50_2", "resnet18", "resnet50", "resnext50_32x4d", "efficientnet-b0", "efficientnet-b0-advtrain", "efficientnet-b4", "efficientnet-b4-advtrain", "densenet-121", "squeezenet"]
+#@      for model in models:
+#@          for norm_type, epsilon in [("l2", 10), ("linf", 0.05)]:
+#@              for n_restarts in [1, 2, 4]:
+#@                  yield {"model": model, "norm_type":norm_type, "epsilon": epsilon, "n_restarts": n_restarts}
+
 ---
 # implementation of square-attack form auto-attack returns original images when it cannot get the loss below zero
 # TODO: make it return the best x_adv so far, even if the loss is positive
 attack_regime:
-  name : transfer-regime 
+  name : transfer-regime-multiple-targets
   show_images : False
   skip_already_adversarial: False
+  dont_save_images: True
+  results_dir: results/square_auto_attack/norm_{norm_type}/n_restarts_{n_restarts}/eps_{epsilon}/surrogate_{model}
 
   attack_algorithm: 
     name: square-autoattack
     n_iters: 300
-    n_restarts: 1
+    n_restarts: {n_restarts}
 
-  epsilon: 10
-  norm: l2
-  batch_size: 4
+  epsilon: {epsilon}
+  norm: {norm_type}
+  batch_size: 64
 
   surrogate:
     model_type: local
-    name: efficientnet-b0-advtrain
+    name: {model}
     output_mapping: "organism_margin"
 
     loss:
@@ -25,15 +34,26 @@ attack_regime:
       margin: 0.0
 
   dataset_config:
-    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped
+    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped_first_2000
     dataset_type: imagenet-validation
     load_only_organisms: True
-    size_limit: 100
+    size_limit: 500
 
-  target_model_config:
+  multiple_target_configs:
     model_type: local
-    name: resnet18
-    output_mapping: "organism_margin"
+    names:
+      - wide_resnet50_2
+      - resnet18
+      - resnet50
+      - resnext50_32x4d
+      - efficientnet-b0
+      - efficientnet-b0-advtrain
+      - efficientnet-b4
+      - efficientnet-b4-advtrain
+      - densenet-121
+      - squeezenet
+
+    output_mapping: organism_margin
 
     loss:
       name: margin_loss
