@@ -1,17 +1,16 @@
 #@  def get_config_parameters():
-#@      models = ["resnet18", "resnet50", "resnext50_32x4d", "efficientnet-b0", "efficientnet-b0-advtrain", "densenet-121", "squeezenet"]
-#@      for surrogate in models:
-#@          for target in models:
-#@              yield {"surrogate": surrogate, "target": target}
+#@      models = ["wide_resnet50_2", "resnet18", "resnet50", "resnext50_32x4d", "efficientnet-b0", "efficientnet-b0-advtrain", "densenet-121", "squeezenet"]
+#@      for model in models:
+#@          yield {"model": model}
 
 ---
 
 attack_regime:
-  name : transfer-regime 
+  name : transfer-regime-multiple-targets
   show_images : False
   skip_already_adversarial: False
-  dont_save_images: False
-  results_dir: results/nets_crossproduct_apgd/surrogate_{surrogate}/target_{target}
+  dont_save_images: True
+  results_dir: results/nets_crossproduct_apgd/surrogate_{model}
 
   attack_algorithm: 
     name: apgd
@@ -19,11 +18,11 @@ attack_regime:
 
   epsilon: 10
   norm: l2
-  batch_size: 16
+  batch_size: 64
 
   surrogate:
     model_type: local
-    name: {surrogate}
+    name: {model}
     output_mapping: organism_margin
 
     loss:
@@ -34,11 +33,12 @@ attack_regime:
     data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped
     dataset_type: imagenet-validation
     load_only_organisms: True
-    size_limit: 1
+    size_limit: 500
 
   multiple_target_configs:
     model_type: local
     names:
+      - wide_resnet50_2
       - resnet18
       - resnet50
       - resnext50_32x4d

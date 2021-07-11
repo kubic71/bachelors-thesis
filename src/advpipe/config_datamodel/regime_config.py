@@ -25,6 +25,7 @@ class AttackRegimeConfig:
     results_dir: str
     config_filename: str
     attack_algorithm_config: AttackAlgorithmConfig
+    batch_size: int = 16
 
     norm: Norm
     epsilon: float
@@ -66,6 +67,7 @@ class AttackRegimeConfig:
 
         self.epsilon = attack_regime_config.epsilon
         self.norm = Norm(attack_regime_config.norm)
+        self.batch_size = utils.get_config_attr(attack_regime_config, "batch_size", TransferRegimeConfig.batch_size)
 
 
         # log destination includes information about the whole attack regime
@@ -106,14 +108,11 @@ class TransferRegimeConfig(AttackRegimeConfig):
     name: str = "transfer-regime"
     surrogate_config: TargetModelConfig
     attack_algorithm_config: TransferAttackAlgorithmConfig
-    batch_size: int = 16
 
     def __init__(self, attack_regime_config: Munch):
         self.attack_algorithm_config = TransferAttackAlgorithmConfig.loadFromYamlConfig(attack_regime_config.attack_algorithm)
 
         super().__init__(attack_regime_config)
-
-        self.batch_size = utils.get_config_attr(attack_regime_config, "batch_size", TransferRegimeConfig.batch_size)
 
         # passthrough attack doesn't need surrogate
         if utils.get_config_attr(attack_regime_config, "surrogate", None):

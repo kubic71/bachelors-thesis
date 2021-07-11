@@ -3,7 +3,7 @@ from advpipe.attack_regimes import AttackRegime
 from advpipe.data_loader import DataLoader
 from advpipe.utils import MaxFunctionCallsExceededException, LossCallCounter
 from advpipe.log import logger
-from advpipe.attack_regimes.simple_transfer_regime import SimpleTransferRegime, BatchTransferResult, TransferResult, RESULTS_FILENAME
+from advpipe.attack_regimes.simple_transfer_regime import SimpleTransferRegime, BatchTransferResult, TransferResult, RESULTS_FILENAME, CSV_HEADER
 from advpipe import utils
 import numpy as np
 from collections import defaultdict
@@ -14,6 +14,7 @@ from os import path
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from advpipe.config_datamodel import TransferRegimeMultipleTargetsConfig
+    from advpipe.config_datamodel.blackbox_config import LocalModelConfig
     from advpipe.blackbox.local import LocalModel, TargetModel
     import torch
     from typing import Optional, Sequence, Iterator, Union, Dict
@@ -41,14 +42,14 @@ class TransferRegimeMultipleTargets(SimpleTransferRegime):
         self.target_result_dirs = {}
 
         for target_config in self.regime_config.multiple_target_configs:
-            results_dir = path.join(self.regime_config.results_dir, target_config.name)
+            results_dir = path.join(self.regime_config.results_dir, "target_" + target_config.name)
             utils.mkdir_p(results_dir)
             self.target_result_dirs[target_config.name] = results_dir
 
             results_file = path.join(results_dir, RESULTS_FILENAME)
             # write header
             with open(results_file, "w") as f:
-                f.write("img_fn\thuman_readable_label\ttarget_loss\ttop_organism_label\ttop_object_label\tdist\tsurrogate\ttarget\n")
+                f.write(CSV_HEADER)
 
     # @override from TransferRegime
     def init_target(self) -> None:
@@ -67,14 +68,12 @@ class TransferRegimeMultipleTargets(SimpleTransferRegime):
             # get image file name
             img_fns: Sequence[str] = list(map(path.basename, img_paths))    # type: ignore
 
-            # if self.regime_config.skip_already_adversarial:
-            # initial_loss_val = self.target_model.loss(np_img)
-            # if initial_loss_val < 0:
-            # logger.debug(f"Skipping already adversarial image - initial loss: {initial_loss_val}")
-            # continue
+            if self.regime_config.skip_already_adversarial:
+                raise NotImplementedError
 
             self.total += len(img_paths)
             x_advs = self.transfer_algorithm.run(imgs, labels)
+            print(x_advs.requires_grad)
 
             for target_name, target_model in self.target_models.items():
                 results = self.evaluate_batch_on_target(target_model, x_advs, imgs, img_fns, human_readable_labels)
@@ -84,13 +83,6 @@ class TransferRegimeMultipleTargets(SimpleTransferRegime):
             if self.regime_config.show_images:
                 raise NotImplementedError
         
-        for target_name in self.target_models:
-            self.write_summary(self.n_successful[target_name], self.total, self.target_result_dirs[target_name])
-
-
-    def write_summary(self, n_successful: int, n_total: int, destination_dir: str) -> None:
-        summary = f"successfully transferred / total = {n_successful}/{n_total} = {(n_successful/n_total*100):.2f}%"
-        logger.info(summary)
-
-        with open(destination_dir + "/summary.txt", "w") as f:
-            f.write(summary + "\n")
+        for target_config in self.regime_config.multiple_target_configs:
+            target_name = target_config.name
+            self.write_summary(self.n_successful[target_name], self.total, self.target_result_dirs[target_name], self.surrogate.model_config.name, target_name)

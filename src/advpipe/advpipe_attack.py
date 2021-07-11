@@ -5,10 +5,11 @@ from advpipe.config_datamodel import AdvPipeConfig
 from advpipe.log import logger
 import time
 import os
+import traceback
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from typing import Sequence, Tuple, Dict, Iterator
+    from typing import Sequence, Tuple, Dict, Iterator, List
     from argparse import Namespace
 
 
@@ -122,6 +123,9 @@ def preprocess_config(config_fn: str) -> Sequence[str]:
 
 
 def run_attacks(config_files: Sequence[str]) -> None:
+    start_all_experiments = time.time()
+    runtimes: List[Tuple[str, float]] = []
+
     for i, config_fn in enumerate(config_files):
         logger.info(f"Running experiment {i + 1}/{len(config_files)} from config: {config_fn}")
 
@@ -130,11 +134,31 @@ def run_attacks(config_files: Sequence[str]) -> None:
         advpipe_config = AdvPipeConfig(config_fn)
         logger.info(f"Results directory: {advpipe_config.attack_regime_config.results_dir}")
 
-        attack = advpipe_config.getAttackInstance()
-        attack.run()
+        while True:
+            try: 
+                attack = advpipe_config.getAttackInstance()
+                attack.run()
+                break
+            except RuntimeError:
+                traceback.print_exc()
+                advpipe_config.attack_regime_config.batch_size //= 2
+                del attack
+                logger.error(f"Maybe CUDA error, lowering batch size to {advpipe_config.attack_regime_config.batch_size}") 
 
-        logger.info(f"Finished. Took {time.time() - start:.2f}s\n")
 
+        duration = time.time() - start
+        config_basename = os.path.basename(config_fn)
+        runtimes.append((config_basename, duration))
+
+        logger.info(f"Finished {config_basename}.\nTook {duration:.2f}s\n")
+    
+    # print summary
+    logger.info("Runtimes:\n")
+    for config_name, runtime in runtimes:
+        logger.info(f"{config_name}:\t{runtime:.2f}s")
+
+    logger.info(f"Finished all {len(config_files)} experiments in {time.time() - start_all_experiments:.2f}s")
+         
 
 def set_log_level(args: Namespace) -> None:
     if args.loglevel is not None:
