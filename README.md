@@ -12,6 +12,13 @@ More on this [here](adv-pipe.md)
 ## Setup
 - Tested on cuda 11.3, python 3.8
 ```
+# Install NVIDIA cuda (depends on your distribution)
+# for example on ArchLinux you would do:
+$ sudo pacman -S cudnn cuda cuda-tools 
+
+# you can also try to install cuda using conda environment manager, but I haven't tested how well conda plays together with poetry
+
+
 # Install poetry (you can also try pip-installing it, but this is the official way)
 $ curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 
