@@ -1,0 +1,58 @@
+#@  def get_config_parameters():
+#@      models = ["wide_resnet50_2", "resnet18", "resnet50", "resnext50_32x4d", "efficientnet-b0", "efficientnet-b0-advtrain", "efficientnet-b4", "efficientnet-b4-advtrain", "densenet-121", "squeezenet"]
+#@      for model in models:
+#@          for epsilon in [3, 10, 20]:
+#@              yield {"model": model, "epsilon": epsilon}
+
+---
+
+attack_regime:
+  name : transfer-regime-multiple-targets
+  show_images : False
+  skip_already_adversarial: False
+  dont_save_images: True
+  results_dir: results/net_crossproduct_apgd_surrogate_outputmap_margin/eps_{epsilon}/surrogate_{model}
+
+  attack_algorithm: 
+    name: apgd
+    n_iters: 25
+
+  epsilon: {epsilon}
+  norm: l2
+  batch_size: 128
+
+  surrogate:
+    model_type: local
+    name: {model}
+    output_mapping: organism_margin
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+
+  dataset_config:
+    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped_first_2000
+    dataset_type: imagenet-validation
+    load_only_organisms: True
+    size_limit: 1000
+
+  multiple_target_configs:
+    model_type: local
+    names:
+      - wide_resnet50_2
+      - resnet18
+      - resnet50
+      - resnext50_32x4d
+      - efficientnet-b0
+      - efficientnet-b0-advtrain
+      - efficientnet-b4
+      - efficientnet-b4-advtrain
+      - densenet-121
+      - squeezenet
+
+    output_mapping: organism_margin
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+
