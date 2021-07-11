@@ -1,5 +1,5 @@
 #@  def get_config_parameters():
-#@      models = ["wide_resnet50_2", "resnet18", "resnet50", "resnext50_32x4d", "efficientnet-b0", "efficientnet-b0-advtrain", "efficientnet-b4", "efficientnet-b4-advtrain", "densenet-121", "squeezenet"]
+#@      models = ["wide_resnet50_2", "resnet18", "resnet50", "resnext50_32x4d", "efficientnet-b0", "efficientnet-b0-advtrain", "densenet-121", "squeezenet"]
 #@      for model in models:
 #@          for epsilon in [3, 10, 20]:
 #@              yield {"model": model, "epsilon": epsilon}
@@ -45,8 +45,6 @@ attack_regime:
       - resnext50_32x4d
       - efficientnet-b0
       - efficientnet-b0-advtrain
-      - efficientnet-b4
-      - efficientnet-b4-advtrain
       - densenet-121
       - squeezenet
 
