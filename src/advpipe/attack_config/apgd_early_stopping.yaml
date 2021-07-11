@@ -1,0 +1,57 @@
+#@  def get_config_parameters():
+#@      models = ["wide_resnet50_2", "resnet18", "resnet50", "resnext50_32x4d", "efficientnet-b0", "efficientnet-b0-advtrain", "densenet-121", "squeezenet"]
+#@      for early_stop_at in [3, 10, 25, 50]:
+#@          for model in models:
+#@              yield {"model": model, "early_stop_at": early_stop_at}
+
+---
+
+attack_regime:
+  name : transfer-regime-multiple-targets
+  show_images : False
+  skip_already_adversarial: False
+  dont_save_images: True
+  results_dir: results/apgd_early_stopping/stop_at_{early_stop_at}/surrogate_{model}
+
+  attack_algorithm: 
+    name: apgd
+    n_iters: 100
+    early_stop_at: {early_stop_at}
+
+  epsilon: 10
+  norm: l2
+  batch_size: 64
+
+  surrogate:
+    model_type: local
+    name: {model}
+    output_mapping: organism_margin
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+
+  dataset_config:
+    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped_first_2000
+    dataset_type: imagenet-validation
+    load_only_organisms: True
+    size_limit: 500
+
+  multiple_target_configs:
+    model_type: local
+    names:
+      - wide_resnet50_2
+      - resnet18
+      - resnet50
+      - resnext50_32x4d
+      - efficientnet-b0
+      - efficientnet-b0-advtrain
+      - densenet-121
+      - squeezenet
+
+    output_mapping: organism_margin
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+

@@ -24,7 +24,7 @@ class APGDAutoAttack(BlackBoxTransferAlgorithm):
         self.config = config
 
         # APGDAttack offers two losses: cross-entropy (ce) and DRL loss, but DRL is unusable for us, because it requires at least 3 output categories (we have only 2)
-        self.attack = APGDAttack(surrogate, norm=self.config.metric, eps=self.config.epsilon, n_iter=self.config.n_iters, n_restarts = self.config.n_restarts, loss="ce", device="cuda", verbose=True)
+        self.attack = APGDAttack(surrogate, norm=self.config.metric, eps=self.config.epsilon, n_iter=self.config.n_iters, n_restarts = self.config.n_restarts, early_stop_at=self.config.early_stop_at, loss="ce", device="cuda", verbose=True)
 
     def run(self, images: torch.Tensor, labels: torch.Tensor) -> torch.Tensor:
 
@@ -51,7 +51,7 @@ import torch.nn.functional as F
     
 class APGDAttack():
     def __init__(self, model, n_iter=100, norm='Linf', n_restarts=1, eps=None,
-                 seed=0, loss='ce', eot_iter=1, rho=.75, verbose=False,
+                 seed=0, loss='ce', eot_iter=1, rho=.75, verbose=False, early_stop_at=None,
                  device='cuda'):
         self.model = model
         self.n_iter = n_iter
@@ -64,6 +64,7 @@ class APGDAttack():
         self.thr_decr = rho
         self.verbose = verbose
         self.device = device
+        self.early_stop_at = early_stop_at
     
     def check_oscillation(self, x, j, k, y5, k3=0.75):
         t = np.zeros(x.shape[1])
@@ -118,10 +119,13 @@ class APGDAttack():
                 loss = loss_indiv.sum()
                     
             grad += torch.autograd.grad(loss, [x_adv])[0].detach() # 1 backward pass (eot_iter = 1)
-            
         grad /= float(self.eot_iter)
         grad_best = grad.clone()
-        
+
+        # TODO: make this work with stochastic networks
+        if self.early_stop_at is not None:
+            idx_to_fool = loss_indiv.detach() < self.early_stop_at
+
         acc = logits.detach().max(1)[1] == y
         acc_steps[0] = acc + 0
         loss_best = loss_indiv.detach().clone()
@@ -164,7 +168,7 @@ class APGDAttack():
                         self.eps * torch.ones(x.shape).to(self.device).detach(), ((x_adv_1 - x) ** 2).sum(dim=(1, 2, 3), keepdim=True).sqrt() + 1e-12), 0.0, 1.0)
                     # assert not torch.isnan(x_adv_1.max())
                     
-                x_adv = x_adv_1 + 0.
+                x_adv[idx_to_fool] = x_adv_1[idx_to_fool] + 0.
                 # assert not torch.isnan(x_adv_1.max())
             
             ### get gradient
@@ -183,6 +187,13 @@ class APGDAttack():
 
             # sometimes if the loss gets too big, gradient becomes NaN
             # just stop the gradient descent when that happens
+            if self.early_stop_at is not None:
+                # print(f"Losses: {loss_indiv}")
+                idx_to_fool = loss_indiv.detach() < self.early_stop_at
+                # print(f"Idx to fool: {idx_to_fool}")
+                if idx_to_fool.sum() == 0:
+                    print(f"Early Stopping at loss {self.early_stop_at}")
+                    break
             
             grad /= float(self.eot_iter)
             

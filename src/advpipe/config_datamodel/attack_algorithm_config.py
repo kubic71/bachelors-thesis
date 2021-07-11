@@ -6,6 +6,7 @@ from advpipe import utils
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from typing_extensions import Literal
+    from typing import Optional
     from advpipe.utils import LossCallCounter
     import torch
     from advpipe.attack_algorithms import BlackBoxIterativeAlgorithm, BlackBoxTransferAlgorithm
@@ -134,13 +135,14 @@ class APGDAlgorithmConfig(TransferAttackAlgorithmConfig):
     metric: Literal["L2", "Linf"]
     n_iters: int = 100
     n_restarts: int = 1
+    early_stop_at: Optional[int] = None
     # surrogate_output
 
     def __init__(self, attack_config: Munch):
         super().__init__(attack_config)
         self.metric = {"l2": "L2", "linf": "Linf"}[self.norm.name] # type: ignore
         self.n_iters = attack_config.n_iters
-
+        self.early_stop_at = utils.get_config_attr(attack_config, "early_stop_at", APGDAlgorithmConfig.early_stop_at)
 
     def getAttackAlgorithmInstance(self, surrogate: LocalModel) -> APGDAutoAttack:
         return APGDAutoAttack(surrogate, self)
