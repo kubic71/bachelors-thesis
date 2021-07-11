@@ -1,5 +1,4 @@
 from __future__ import annotations
-from advpipe.blackbox.local import LocalModel
 import foolbox as fb
 from advpipe.attack_algorithms import BlackBoxTransferAlgorithm
 

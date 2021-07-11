@@ -41,7 +41,7 @@ class DataLoader:
 
 
     @staticmethod
-    def create_batches(loader: DataLoader, bs: int = 16) -> Iterator: 
+    def create_batches(loader: DataLoader, bs: int = 16) -> Iterator[Tuple[Sequence[str], torch.Tensor, torch.Tensor, Sequence[str]]]: 
         for batch in utils.batches(loader, bs):
             paths = [p for p, _, _, _ in batch]
             imgs = torch.stack([img for _, img, _, _ in batch])

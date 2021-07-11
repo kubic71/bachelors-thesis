@@ -21,7 +21,7 @@ from advpipe.blackbox import TargetModel, BlackboxLabels
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from advpipe.config_datamodel import LocalModelConfig
+    from advpipe.config_datamodel import LocalModelConfig, DummySurrogateConfig
     from typing import Tuple, Iterator, Dict, Any, Callable, Text, Sequence, List
     from typing_extensions import Literal
 
@@ -84,6 +84,23 @@ def get_pytorch_model_map() -> Dict[str, Any]:
         torch_models[f"{efnet_name}-advtrain"] = functools.partial(EfficientNet.from_pretrained,
                                                                    model_name=efnet_name,
                                                                    advprop=True)
+
+    # TODO: requires different input shape 
+    # torch_models["inception_v3"] = functools.partial(getattr(torchvision.models, "inception_v3"), pretrained=True)
+
+    torch_models["squeezenet"] = functools.partial(getattr(torchvision.models, "squeezenet1_0"), pretrained=True)
+    torch_models["vgg16"] = functools.partial(getattr(torchvision.models, "vgg16"), pretrained=True)
+    torch_models["densenet-121"] = functools.partial(getattr(torchvision.models, "densenet121"), pretrained=True)
+    torch_models["googlenet"] = functools.partial(getattr(torchvision.models, "googlenet"), pretrained=True)
+    torch_models["shufflenet"] = functools.partial(getattr(torchvision.models, "shufflenet_v2_x1_0"), pretrained=True)
+
+    torch_models["mobilenet_v2"] = functools.partial(getattr(torchvision.models, "mobilenet_v2"), pretrained=True)
+    torch_models["mobilenet_v3_large"] = functools.partial(getattr(torchvision.models, "mobilenet_v3_large"), pretrained=True)
+    torch_models["mobilenet_v3_small"] = functools.partial(getattr(torchvision.models, "mobilenet_v3_small"), pretrained=True)
+    torch_models["resnext50_32x4d"] = functools.partial(getattr(torchvision.models, "resnext50_32x4d"), pretrained=True)
+    torch_models["wide_resnet50_2"] = functools.partial(getattr(torchvision.models, "wide_resnet50_2"), pretrained=True)
+
+    torch_models["mnasnet"] = functools.partial(getattr(torchvision.models, "mnasnet1_0"), pretrained=True)
 
     return torch_models
 
@@ -212,6 +229,13 @@ class PytorchModel(torch.nn.Module):
 
 # ------------Local BlackBox------------
 # - BlackBox wrapping around LocalModel
+
+class DummyModel(TargetModel):
+    # Dummy model passed to passthrough attack
+    def __init__(self, dummy_config: DummySurrogateConfig) -> None:
+        super(DummyModel, self).__init__(dummy_config)
+
+
 class LocalModel(TargetModel):
     """ wraps standard ImageNet pytorch model and maps its outputs to {object, organism} categories
         args:

@@ -4,11 +4,14 @@ attack_regime:
   name : transfer-regime 
   show_images : False
   skip_already_adversarial: False
+  dont_save_images: True
+  results_dir: results/baseline_test
 
   attack_algorithm: 
     name: passthrough 
 
   epsilon: 0.0
+  batch_size: 20
   norm: linf
 
   dataset_config:
@@ -17,13 +20,11 @@ attack_regime:
     load_only_organism: True
     size_limit: 10000
 
-  target_blackbox_config:
-    blackbox_type: local
+  target_model_config:
+    model_type: local
     name: resnet18
-    resize_and_center_crop: False
+    output_mapping: "organism_margin"
 
     loss:
       name: margin_loss
       margin: 0.0
-
-

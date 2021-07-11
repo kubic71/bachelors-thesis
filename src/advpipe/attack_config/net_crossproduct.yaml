@@ -1,0 +1,55 @@
+#@  def get_config_parameters():
+#@      models = ["resnet18", "resnet50", "resnext50_32x4d", "efficientnet-b0", "efficientnet-b0-advtrain", "densenet-121", "squeezenet"]
+#@      for surrogate in models:
+#@          for target in models:
+#@              yield {"surrogate": surrogate, "target": target}
+
+---
+
+attack_regime:
+  name : transfer-regime 
+  show_images : False
+  skip_already_adversarial: False
+  dont_save_images: False
+  results_dir: results/nets_crossproduct_apgd/surrogate_{surrogate}/target_{target}
+
+  attack_algorithm: 
+    name: apgd
+    n_iters: 25
+
+  epsilon: 10
+  norm: l2
+  batch_size: 16
+
+  surrogate:
+    model_type: local
+    name: {surrogate}
+    output_mapping: organism_margin
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+
+  dataset_config:
+    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped
+    dataset_type: imagenet-validation
+    load_only_organisms: True
+    size_limit: 1
+
+  multiple_target_configs:
+    model_type: local
+    names:
+      - resnet18
+      - resnet50
+      - resnext50_32x4d
+      - efficientnet-b0
+      - efficientnet-b0-advtrain
+      - densenet-121
+      - squeezenet
+
+    output_mapping: organism_margin
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+

@@ -26,27 +26,25 @@ class AttackRegime(ABC):
         self.regime_config = attack_regime_config
         self.dataloader = self.regime_config.dataset_config.getDatasetInstance()
 
+        self.init_target()
+        self.create_results_dir()
+        self.copy_config_to_results_dir()
+
+    def init_target(self) -> None:
         # Initialize the connection to the target model
         self.target_model = self.regime_config.target_model_config.getModelInstance()
-
-        self.create_results_dir()
-        self.create_adv_img_dir()
-        self.copy_config_to_results_dir()
 
     @abstractmethod
     def run(self) -> None:
         ...
 
-    def create_adv_img_dir(self) -> None:
-        self.adv_img_dir = self.regime_config.results_dir + "/adv_examples"
-        utils.mkdir_p(self.adv_img_dir)
-
-    def save_adv_img(self, x_adv: np.ndarray, img_fn: str) -> None:
+    def save_adv_img(self, x_adv: np.ndarray, img_fn: str, dest_dir: str) -> None:
         """Saves successful adversarial image to results directory"""
+        utils.mkdir_p(dest_dir)
         if self.regime_config.dont_save_images:
             return
         img_fn = img_fn.split(".")[0] + ".png"
-        imageio.imwrite(self.adv_img_dir + "/" + img_fn, x_adv)
+        imageio.imwrite(dest_dir + "/" + img_fn, x_adv)
 
     def create_results_dir(self) -> None:
         if path.exists(self.regime_config.results_dir):
@@ -68,5 +66,8 @@ class AttackRegime(ABC):
             yaml.dump(unmunched, stream=f)
 
 
+# attack regimes are exported to advpipe.attack_regimes module namespace
+# they are imported from this namespace by AdvPipeConfig, when it creates the regime instance (def getAttackInstance(self) -> AttackRegime)
 from .simple_iterative_regime import SimpleIterativeRegime
 from .simple_transfer_regime import SimpleTransferRegime
+from .transfer_regime_multiple_targets import TransferRegimeMultipleTargets

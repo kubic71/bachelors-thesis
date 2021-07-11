@@ -68,7 +68,7 @@ class AdvPipeConfig:
 
 
 # add regime config to namespace
-from .regime_config import AttackRegimeConfig, IterativeRegimeConfig, TransferRegimeConfig
+from .regime_config import AttackRegimeConfig, IterativeRegimeConfig, TransferRegimeConfig, TransferRegimeMultipleTargetsConfig
 
 #  add attack algorithm config to namespace
 from .attack_algorithm_config import AttackAlgorithmConfig, RaySAlgorithmConfig
@@ -76,6 +76,6 @@ from .attack_algorithm_config import AttackAlgorithmConfig, RaySAlgorithmConfig
 #  add blackbox config to namespace
 from .blackbox_config import TargetModelConfig, LocalModelConfig, CloudBlackBoxConfig
 
-from advpipe.attack_regimes import SimpleIterativeRegime, SimpleTransferRegime
+from advpipe.attack_regimes import SimpleIterativeRegime, SimpleTransferRegime, TransferRegimeMultipleTargets
 
-ATTACK_REGIMES = {IterativeRegimeConfig.name: SimpleIterativeRegime, TransferRegimeConfig.name: SimpleTransferRegime}
+ATTACK_REGIMES = {IterativeRegimeConfig.name: SimpleIterativeRegime, TransferRegimeConfig.name: SimpleTransferRegime, TransferRegimeMultipleTargetsConfig.name: TransferRegimeMultipleTargets}

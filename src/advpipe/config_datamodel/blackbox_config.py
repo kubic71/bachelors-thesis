@@ -8,13 +8,13 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from advpipe.utils import LossCallCounter
-    from advpipe.blackbox.local import LocalModel
+    from advpipe.blackbox.local import LocalModel, DummyModel
     from advpipe.blackbox.cloud import CloudBlackBox
     from advpipe.blackbox import TargetModel
     from munch import Munch
     from typing import Type, Dict, Optional, Tuple, Text
 
-MODEL_TYPE = Literal["cloud", "local"]
+MODEL_TYPE = Literal["cloud", "local", "dummy"]
 
 
 class TargetModelConfig(ABC):
@@ -67,6 +67,16 @@ class LocalModelConfig(TargetModelConfig):
         return model
 
 
+class DummySurrogateConfig(TargetModelConfig):
+    model_type: MODEL_TYPE = "dummy"
+    name: str = "dummy_model_name"
+
+    def __init__(self) -> None:
+        pass
+
+    def getModelInstance(self) -> DummyModel:
+        return DummyModel(self)
+
 
 class CloudBlackBoxConfig(TargetModelConfig):
     model_type: MODEL_TYPE = "cloud"
@@ -83,6 +93,6 @@ class CloudBlackBoxConfig(TargetModelConfig):
         return CLOUD_BLACKBOXES[self.name](self)
 
 
-from advpipe.blackbox.local import LocalModel
+from advpipe.blackbox.local import LocalModel, DummyModel
 
 CLOUD_BLACKBOXES = {GVisionBlackBox.name: GVisionBlackBox}

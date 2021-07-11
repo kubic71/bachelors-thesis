@@ -1,6 +1,6 @@
 from __future__ import annotations
 from advpipe.config_datamodel import DatasetConfig
-from advpipe.log import CloudDataLogger
+from advpipe.log import CloudDataLogger, logger
 from datetime import datetime
 import os
 from advpipe import utils
@@ -10,7 +10,7 @@ from advpipe.attack_algorithms import Norm
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from munch import Munch
-    from typing import Optional
+    from typing import Optional, Sequence
     from .attack_algorithm_config import AttackAlgorithmConfig
 
 
@@ -45,8 +45,14 @@ class AttackRegimeConfig:
         self.show_images = utils.get_config_attr(attack_regime_config, "show_images", self.show_images)
         self.dataset_config = DatasetConfig.loadFromYamlConfig(attack_regime_config.dataset_config)
 
-        self.target_model_config = TargetModelConfig.loadFromYamlConfig(
-            attack_regime_config.target_model_config)
+        try:
+            target_config = getattr(attack_regime_config, "target_model_config")
+            self.target_model_config = TargetModelConfig.loadFromYamlConfig(target_config)
+        except AttributeError:
+            # Multiple targets regime, assigning None
+            # Works only with local models currently
+            logger.debug("Mutliple-targets regime")
+            self.target_model_config = None # type: ignore
 
         default_exp_name = self.config_filename.split(".")[0]
         self.results_dir = utils.convert_to_absolute_path(
@@ -96,8 +102,9 @@ class IterativeRegimeConfig(AttackRegimeConfig):
 
 
 class TransferRegimeConfig(AttackRegimeConfig):
+
     name: str = "transfer-regime"
-    surrogate_config: Optional[LocalModelConfig]
+    surrogate_config: TargetModelConfig
     attack_algorithm_config: TransferAttackAlgorithmConfig
     batch_size: int = 16
 
@@ -112,13 +119,34 @@ class TransferRegimeConfig(AttackRegimeConfig):
         if utils.get_config_attr(attack_regime_config, "surrogate", None):
             self.surrogate_config = LocalModelConfig(attack_regime_config.surrogate)
         else:
-            self.surrogate_config = None
+            self.surrogate_config = DummySurrogateConfig()
 
+
+class TransferRegimeMultipleTargetsConfig(TransferRegimeConfig):
+    # Works only with local models currently
+
+    name: str = "transfer-regime-multiple-targets"
+    multiple_target_configs: Sequence[LocalModelConfig]
+
+    def __init__(self, attack_regime_config: Munch):
+        super().__init__(attack_regime_config)
+
+        self.multiple_target_configs = []
+        for target_name in attack_regime_config.multiple_target_configs.names:
+            # substitute target name
+            attack_regime_config.multiple_target_configs.name = target_name
+
+            # and parse it in a standard way
+            self.multiple_target_configs.append(LocalModelConfig(attack_regime_config.multiple_target_configs))
+
+        
+        
 
 ATTACK_REGIME_CONFIGS = {
     IterativeRegimeConfig.name: IterativeRegimeConfig,
-    TransferRegimeConfig.name: TransferRegimeConfig
+    TransferRegimeConfig.name: TransferRegimeConfig,
+    TransferRegimeMultipleTargetsConfig.name: TransferRegimeMultipleTargetsConfig
 }
 
-from .blackbox_config import TargetModelConfig, CloudBlackBoxConfig, LocalModelConfig
+from .blackbox_config import TargetModelConfig, CloudBlackBoxConfig, LocalModelConfig, DummySurrogateConfig
 from .attack_algorithm_config import AttackAlgorithmConfig, IterativeAttackAlgorithmConfig, TransferAttackAlgorithmConfig
