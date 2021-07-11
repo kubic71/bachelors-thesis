@@ -34,7 +34,7 @@ attack_regime:
     data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped_first_2000
     dataset_type: imagenet-validation
     load_only_organisms: True
-    size_limit: 1000
+    size_limit: 500
 
   multiple_target_configs:
     model_type: local
