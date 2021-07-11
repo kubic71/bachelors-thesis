@@ -179,13 +179,10 @@ class APGDAttack():
                     loss = loss_indiv.sum()
                     # assert not torch.isnan(loss.max())
                 
-                grad += torch.autograd.grad(loss, [x_adv])[0].detach() # 1 backward pass (eot_iter = 1)
+                grad += torch.nan_to_num(torch.autograd.grad(loss, [x_adv])[0].detach()) # 1 backward pass (eot_iter = 1)
 
             # sometimes if the loss gets too big, gradient becomes NaN
             # just stop the gradient descent when that happens
-            if torch.isnan(grad.max()):
-                break
-                
             
             grad /= float(self.eot_iter)
             

@@ -1,0 +1,56 @@
+#@  def get_config_parameters():
+#@      models = ["wide_resnet50_2", "resnet18", "resnet50", "resnext50_32x4d", "efficientnet-b0", "efficientnet-b0-advtrain", "densenet-121", "squeezenet"]
+#@      for n_iters in [1, 3, 10, 30, 100, 300]:
+#@          for model in models:
+#@              yield {"model": model, "n_iters": n_iters}
+
+---
+
+attack_regime:
+  name : transfer-regime-multiple-targets
+  show_images : False
+  skip_already_adversarial: False
+  dont_save_images: True
+  results_dir: results/apgd_n_iters_exp/n_iters_{n_iters}/surrogate_{model}
+
+  attack_algorithm: 
+    name: apgd
+    n_iters: {n_iters}
+
+  epsilon: 10
+  norm: l2
+  batch_size: 64
+
+  surrogate:
+    model_type: local
+    name: {model}
+    output_mapping: organism_margin
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+
+  dataset_config:
+    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped_first_2000
+    dataset_type: imagenet-validation
+    load_only_organisms: True
+    size_limit: 500
+
+  multiple_target_configs:
+    model_type: local
+    names:
+      - wide_resnet50_2
+      - resnet18
+      - resnet50
+      - resnext50_32x4d
+      - efficientnet-b0
+      - efficientnet-b0-advtrain
+      - densenet-121
+      - squeezenet
+
+    output_mapping: organism_margin
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+
