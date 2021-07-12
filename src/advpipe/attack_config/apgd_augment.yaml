@@ -1,9 +1,9 @@
 #@  def get_config_parameters():
 #@      for surrogate in ["resnet18", "efficientnet-b0"]:
 #@          for std in [2, 4, 8, 16, 32, 64]:
-#@              yield {"surrogate": surrogate, "augment_name": "gaussian-noise", "param": std, "param_yaml": "std: " + str(std)}
-#@          for kernel_size in [2, 3, 5, 10, 20]:
-#@              yield {"surrogate": surrogate, "augment_name": "box-blur", "param": kernel_size, "param_yaml": "kernel_size: " + str(kernel_size)}
+#@              yield {"eot_iter": 10, "surrogate": surrogate, "augment_name": "gaussian-noise", "param": std, "param_yaml": "std: " + str(std)}
+#@          for kernel_size in [2, 3, 4, 5, 7, 10, 13, 16, 20, 25, 30, 40, 50]:
+#@              yield {"eot_iter": 1, "surrogate": surrogate, "augment_name": "box-blur", "param": kernel_size, "param_yaml": "kernel_size: " + str(kernel_size)}
 
 ---
 
@@ -17,11 +17,11 @@ attack_regime:
   attack_algorithm: 
     name: apgd
     n_iters: 25
-    eot_iter: 10
+    eot_iter: {eot_iter}
 
   epsilon: 10
   norm: l2
-  batch_size: 128
+  batch_size: 256
 
   surrogate:
     model_type: local

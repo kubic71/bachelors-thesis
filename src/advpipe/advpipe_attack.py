@@ -134,6 +134,7 @@ def run_attacks(config_files: Sequence[str], batch_size_override=None) -> None:
 
         advpipe_config = AdvPipeConfig(config_fn)
         batch_size = batch_size_override or advpipe_config.attack_regime_config.batch_size
+        advpipe_config.attack_regime_config.batch_size = batch_size
 
         while True:
             try: 
