@@ -125,6 +125,8 @@ class APGDAttack():
         # TODO: make this work with stochastic networks
         if self.early_stop_at is not None:
             idx_to_fool = loss_indiv.detach() < self.early_stop_at
+        else:
+            idx_to_fool = ~torch.zeros_like(loss_indiv, dtype=torch.bool)
 
         acc = logits.detach().max(1)[1] == y
         acc_steps[0] = acc + 0
@@ -203,6 +205,7 @@ class APGDAttack():
             x_best_adv[(pred == 0).nonzero().squeeze()] = x_adv[(pred == 0).nonzero().squeeze()] + 0.
             if self.verbose:
                 print('iteration: {} - Best loss: {:.6f}'.format(i, loss_best.sum()))
+                print('best losses:', loss_best)
             
             ### check step size
             with torch.no_grad():

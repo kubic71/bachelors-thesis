@@ -2,6 +2,7 @@ from __future__ import annotations
 import argparse
 from advpipe import utils
 from advpipe.config_datamodel import AdvPipeConfig
+import torch
 from advpipe.log import logger
 import time
 import os
@@ -132,18 +133,25 @@ def run_attacks(config_files: Sequence[str]) -> None:
         start = time.time()
 
         advpipe_config = AdvPipeConfig(config_fn)
-        logger.info(f"Results directory: {advpipe_config.attack_regime_config.results_dir}")
+        batch_size = advpipe_config.attack_regime_config.batch_size
 
         while True:
             try: 
+                torch.cuda.empty_cache()
+                logger.info(f"Results directory: {advpipe_config.attack_regime_config.results_dir}")
                 attack = advpipe_config.getAttackInstance()
                 attack.run()
                 break
             except RuntimeError:
                 traceback.print_exc()
-                advpipe_config.attack_regime_config.batch_size //= 2
+                # Deallocate all CUDA resoursces
                 del attack
-                logger.error(f"Maybe CUDA error, lowering batch size to {advpipe_config.attack_regime_config.batch_size}") 
+                del advpipe_config
+                batch_size = int(batch_size * 0.75)
+                logger.error(f"Maybe CUDA error, lowering batch size to {batch_size}") 
+
+                advpipe_config = AdvPipeConfig(config_fn)
+                advpipe_config.attack_regime_config.batch_size = batch_size
 
 
         duration = time.time() - start
