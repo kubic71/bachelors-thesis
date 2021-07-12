@@ -1,0 +1,2 @@
+trasfer attack from squeezenet to resnext50_32x4d
+successfully transferred / total = 158/500 = 31.60%

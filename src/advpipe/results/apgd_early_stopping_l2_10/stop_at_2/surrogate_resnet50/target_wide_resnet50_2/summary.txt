@@ -1,0 +1,2 @@
+trasfer attack from resnet50 to wide_resnet50_2
+successfully transferred / total = 127/500 = 25.40%

@@ -1,0 +1,2 @@
+trasfer attack from wide_resnet50_2 to squeezenet
+successfully transferred / total = 75/500 = 15.00%

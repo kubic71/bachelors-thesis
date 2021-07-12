@@ -40,6 +40,11 @@ def generate_all_heatmaps() -> None:
 
     plot_details = []
 
+    # APGD early stopping 
+    for early_stop in [2, 4, 8, 16, 32, 64]:
+        plot_details.append(
+        (f"APGD - margin_map, early_stop_at={early_stop}, l2_norm=10", f"plots/transfer_attacks/transfer_heatmap/apgd_l2_margin_early_stop_{early_stop}_eps_10.png", f"../results/apgd_early_stopping_l2_10/stop_at_{early_stop}"))
+
     
     ### Square autoattack ###
     for norm, eps in [('l2', "10"), ('linf', "0.05")]:
