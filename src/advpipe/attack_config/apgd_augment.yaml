@@ -37,7 +37,7 @@ attack_regime:
         {param_yaml}
 
   dataset_config:
-    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped
+    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped_first_2000
     dataset_type: imagenet-validation
     load_only_organisms: True
     size_limit: 500
@@ -59,3 +59,4 @@ attack_regime:
     loss:
       name: margin_loss
       margin: 0.0
+
