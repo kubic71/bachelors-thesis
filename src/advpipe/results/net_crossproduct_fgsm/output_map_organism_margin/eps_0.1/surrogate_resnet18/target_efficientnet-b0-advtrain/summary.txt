@@ -1,0 +1,2 @@
+trasfer attack from resnet18 to efficientnet-b0-advtrain
+successfully transferred / total = 61/500 = 12.20%

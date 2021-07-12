@@ -1,0 +1,2 @@
+trasfer attack from efficientnet-b4 to efficientnet-b0
+successfully transferred / total = 15/500 = 3.00%

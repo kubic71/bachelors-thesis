@@ -1,0 +1,2 @@
+trasfer attack from efficientnet-b0-advtrain to densenet-121
+successfully transferred / total = 53/500 = 10.60%

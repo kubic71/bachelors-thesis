@@ -1,0 +1,43 @@
+attack_algorithm:
+  epsilon: 0.01
+  name: fgsm
+  norm: linf
+batch_size: 128
+config_filename: /content/bachelors-thesis/src/advpipe/.exported_configs/net_crossproduct_fgsm_model=squeezenet_epsilon=0.01_output_map=probs.yaml
+dataset_config:
+  data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped_first_2000
+  dataset_type: imagenet-validation
+  load_only_organisms: true
+  size_limit: 500
+dont_save_images: true
+epsilon: 0.01
+multiple_target_configs:
+  loss:
+    margin: 0.0
+    name: margin_loss
+  model_type: local
+  name: squeezenet
+  names:
+  - wide_resnet50_2
+  - resnet18
+  - resnet50
+  - resnext50_32x4d
+  - efficientnet-b0
+  - efficientnet-b0-advtrain
+  - efficientnet-b4
+  - efficientnet-b4-advtrain
+  - densenet-121
+  - squeezenet
+  output_mapping: organism_margin
+name: transfer-regime-multiple-targets
+norm: linf
+results_dir: results/nets_crossproduct_fgsm/output_map_probs/eps_0.01/surrogate_squeezenet
+show_images: false
+skip_already_adversarial: false
+surrogate:
+  loss:
+    margin: 0.0
+    name: margin_loss
+  model_type: local
+  name: squeezenet
+  output_mapping: probs

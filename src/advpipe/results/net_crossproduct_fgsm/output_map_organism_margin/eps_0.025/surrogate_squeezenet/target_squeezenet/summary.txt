@@ -1,0 +1,2 @@
+trasfer attack from squeezenet to squeezenet
+successfully transferred / total = 355/500 = 71.00%

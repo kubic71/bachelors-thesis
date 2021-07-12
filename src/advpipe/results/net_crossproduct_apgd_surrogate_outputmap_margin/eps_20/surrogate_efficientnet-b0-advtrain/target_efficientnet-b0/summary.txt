@@ -1,0 +1,2 @@
+trasfer attack from efficientnet-b0-advtrain to efficientnet-b0
+successfully transferred / total = 465/500 = 93.00%

@@ -1,0 +1,2 @@
+trasfer attack from efficientnet-b4 to densenet-121
+successfully transferred / total = 25/500 = 5.00%

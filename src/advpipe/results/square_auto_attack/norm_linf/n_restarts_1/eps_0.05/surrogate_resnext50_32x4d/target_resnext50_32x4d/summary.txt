@@ -1,0 +1,2 @@
+trasfer attack from resnext50_32x4d to resnext50_32x4d
+successfully transferred / total = 421/500 = 84.20%

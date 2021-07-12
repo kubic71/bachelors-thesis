@@ -1,0 +1,2 @@
+trasfer attack from wide_resnet50_2 to efficientnet-b4
+successfully transferred / total = 39/500 = 7.80%

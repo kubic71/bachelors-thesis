@@ -1,0 +1,2 @@
+trasfer attack from squeezenet to efficientnet-b0-advtrain
+successfully transferred / total = 9/500 = 1.80%

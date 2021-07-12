@@ -1,0 +1,2 @@
+trasfer attack from densenet-121 to squeezenet
+successfully transferred / total = 374/500 = 74.80%

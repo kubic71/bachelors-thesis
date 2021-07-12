@@ -1,0 +1,2 @@
+trasfer attack from resnet18 to resnet50
+successfully transferred / total = 320/500 = 64.00%

@@ -1,0 +1,2 @@
+trasfer attack from efficientnet-b4 to resnet50
+successfully transferred / total = 227/500 = 45.40%

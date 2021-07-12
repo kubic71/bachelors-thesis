@@ -1,0 +1,2 @@
+trasfer attack from resnext50_32x4d to efficientnet-b4-advtrain
+successfully transferred / total = 15/500 = 3.00%

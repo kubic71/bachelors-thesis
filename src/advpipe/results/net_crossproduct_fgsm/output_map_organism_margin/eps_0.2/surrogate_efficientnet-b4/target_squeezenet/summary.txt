@@ -1,0 +1,2 @@
+trasfer attack from efficientnet-b4 to squeezenet
+successfully transferred / total = 491/500 = 98.20%

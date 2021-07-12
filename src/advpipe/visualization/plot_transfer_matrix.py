@@ -20,7 +20,7 @@ def plot_matrix(data: pd.DataFrame, plot_fn: str, title: str = "") -> Any:
     
     pd_matrix = pd.DataFrame(data_rows).pivot(index="surrogate", columns="target", values="foolrate")
 
-    plt.figure()
+    plt.figure(figsize=(6, 6))
     sns.set_theme(style="darkgrid")
     ax= sns.heatmap(pd_matrix, fmt='.1%', annot=True, xticklabels=True, yticklabels=True, square=True, cbar=False, annot_kws={"fontsize":8})
     ax.set(xlabel="Target")
@@ -37,7 +37,17 @@ def plot_matrix(data: pd.DataFrame, plot_fn: str, title: str = "") -> Any:
 
 def generate_all_heatmaps() -> None:
     # format: (title, plot_filename, source_results_dir)
-    plot_details = [
+
+    plot_details = []
+
+    
+    ### Square autoattack ###
+    for norm, eps in [('l2', "10"), ('linf', "0.05")]:
+        for n_restarts in [1, 2, 4]:
+            plot_details.append((f"SquareAttack, n_images=500, l{norm}_norm={eps}, n_restarts={n_restarts}", f"plots/transfer_attacks/transfer_heatmap/square_{norm}_eps_{eps}_n_restarts_{n_restarts}.png", f"../results/square_auto_attack/norm_{norm}/n_restarts_{n_restarts}/eps_{eps}"))
+
+        
+    plot_details += [
         #### APGD L2 ####
 
         # output-mapping margin
@@ -65,8 +75,10 @@ def generate_all_heatmaps() -> None:
         ("FGSM, margin output mapping, n_images=500, linf_norm=0.05", "plots/transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.050.png", "../results/net_crossproduct_fgsm/output_map_organism_margin/eps_0.05"),
         ("FGSM, margin output mapping, n_images=500, linf_norm=0.1", "plots/transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.100.png", "../results/net_crossproduct_fgsm/output_map_organism_margin/eps_0.1"),
         ("FGSM, margin output mapping, n_images=500, linf_norm=0.2", "plots/transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.200.png", "../results/net_crossproduct_fgsm/output_map_organism_margin/eps_0.2"),
-        # ("APGD demo", "apgd_demo.png", "../results/net_crossproduct_apgd_demo"),
      ]
+
+
+
 
     for title, plot_fn, res_dir in plot_details:
         print(f"Title: {title}, plot filename: {plot_fn}, source_dir: {res_dir}")

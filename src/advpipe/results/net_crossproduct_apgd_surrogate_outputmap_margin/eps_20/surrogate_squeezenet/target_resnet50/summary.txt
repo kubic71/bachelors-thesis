@@ -1,0 +1,2 @@
+trasfer attack from squeezenet to resnet50
+successfully transferred / total = 361/500 = 72.20%

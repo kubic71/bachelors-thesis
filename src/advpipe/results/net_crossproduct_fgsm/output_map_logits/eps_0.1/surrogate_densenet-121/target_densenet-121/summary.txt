@@ -1,0 +1,2 @@
+trasfer attack from densenet-121 to densenet-121
+successfully transferred / total = 127/500 = 25.40%

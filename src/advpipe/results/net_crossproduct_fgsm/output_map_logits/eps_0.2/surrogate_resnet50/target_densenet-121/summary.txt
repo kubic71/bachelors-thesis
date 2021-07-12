@@ -1,0 +1,2 @@
+trasfer attack from resnet50 to densenet-121
+successfully transferred / total = 175/500 = 35.00%
