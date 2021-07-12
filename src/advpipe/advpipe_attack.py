@@ -123,7 +123,7 @@ def preprocess_config(config_fn: str) -> Sequence[str]:
     return config_fns
 
 
-def run_attacks(config_files: Sequence[str]) -> None:
+def run_attacks(config_files: Sequence[str], batch_size_override=None) -> None:
     start_all_experiments = time.time()
     runtimes: List[Tuple[str, float]] = []
 
@@ -133,7 +133,7 @@ def run_attacks(config_files: Sequence[str]) -> None:
         start = time.time()
 
         advpipe_config = AdvPipeConfig(config_fn)
-        batch_size = advpipe_config.attack_regime_config.batch_size
+        batch_size = batch_size_override or advpipe_config.attack_regime_config.batch_size
 
         while True:
             try: 
@@ -182,6 +182,7 @@ if __name__ == "__main__":
                         default=utils.convert_to_absolute_path("attack_config/test.yaml"),
                         help='AdvPipe attack YAML config file')
 
+    parser.add_argument('--batch_size', default=None, help='override config batchsize')
     parser.add_argument('--loglevel',
                         default=None,
                         choices=["debug", "info", "error"],
@@ -192,4 +193,4 @@ if __name__ == "__main__":
     set_log_level(args)
 
     config_fns = preprocess_config(args.config)
-    run_attacks(config_fns)
+    run_attacks(config_fns, args.batch_size)
