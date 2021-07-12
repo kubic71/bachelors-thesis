@@ -1,6 +1,6 @@
 #@  def get_config_parameters():
 #@      models = ["wide_resnet50_2", "resnet18", "resnet50", "resnext50_32x4d", "efficientnet-b0", "efficientnet-b0-advtrain", "densenet-121", "squeezenet"]
-#@      for early_stop_at in [3, 10, 25, 50]:
+#@      for early_stop_at in [2, 4, 8, 16, 32, 64]:
 #@          for model in models:
 #@              yield {"model": model, "early_stop_at": early_stop_at}
 
@@ -15,12 +15,12 @@ attack_regime:
 
   attack_algorithm: 
     name: apgd
-    n_iters: 100
+    n_iters: 300
     early_stop_at: {early_stop_at}
 
   epsilon: 10
   norm: l2
-  batch_size: 64
+  batch_size: 128
 
   surrogate:
     model_type: local
