@@ -24,7 +24,7 @@ class APGDAutoAttack(BlackBoxTransferAlgorithm):
         self.config = config
 
         # APGDAttack offers two losses: cross-entropy (ce) and DRL loss, but DRL is unusable for us, because it requires at least 3 output categories (we have only 2)
-        self.attack = APGDAttack(surrogate, norm=self.config.metric, eps=self.config.epsilon, n_iter=self.config.n_iters, n_restarts = self.config.n_restarts, early_stop_at=self.config.early_stop_at, loss="ce", device="cuda", verbose=True)
+        self.attack = APGDAttack(surrogate, norm=self.config.metric, eps=self.config.epsilon, n_iter=self.config.n_iters, eot_iter=self.config.eot_iter, n_restarts = self.config.n_restarts, early_stop_at=self.config.early_stop_at, loss="ce", device="cuda", verbose=True)
 
     def run(self, images: torch.Tensor, labels: torch.Tensor) -> torch.Tensor:
 

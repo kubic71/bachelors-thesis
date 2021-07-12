@@ -85,7 +85,7 @@ def get_pytorch_model_map() -> Dict[str, Any]:
                                                                    model_name=efnet_name,
                                                                    advprop=True)
 
-    # TODO: requires different input shape 
+    # TODO: requires different input shape
     # torch_models["inception_v3"] = functools.partial(getattr(torchvision.models, "inception_v3"), pretrained=True)
 
     torch_models["squeezenet"] = functools.partial(getattr(torchvision.models, "squeezenet1_0"), pretrained=True)
@@ -95,8 +95,10 @@ def get_pytorch_model_map() -> Dict[str, Any]:
     torch_models["shufflenet"] = functools.partial(getattr(torchvision.models, "shufflenet_v2_x1_0"), pretrained=True)
 
     torch_models["mobilenet_v2"] = functools.partial(getattr(torchvision.models, "mobilenet_v2"), pretrained=True)
-    torch_models["mobilenet_v3_large"] = functools.partial(getattr(torchvision.models, "mobilenet_v3_large"), pretrained=True)
-    torch_models["mobilenet_v3_small"] = functools.partial(getattr(torchvision.models, "mobilenet_v3_small"), pretrained=True)
+    torch_models["mobilenet_v3_large"] = functools.partial(getattr(torchvision.models, "mobilenet_v3_large"),
+                                                           pretrained=True)
+    torch_models["mobilenet_v3_small"] = functools.partial(getattr(torchvision.models, "mobilenet_v3_small"),
+                                                           pretrained=True)
     torch_models["resnext50_32x4d"] = functools.partial(getattr(torchvision.models, "resnext50_32x4d"), pretrained=True)
     torch_models["wide_resnet50_2"] = functools.partial(getattr(torchvision.models, "wide_resnet50_2"), pretrained=True)
 
@@ -170,9 +172,10 @@ class PytorchModel(torch.nn.Module):
         self.adv_train = pytorch_model_name.endswith("advtrain")
         self.device = device
 
-        self.preprocess_transforms = preprocess_transforms + [functools.partial(normalize, adv_train=self.adv_train)
-                                                              ]    # every model needs normalization
+        self.preprocess_transforms = preprocess_transforms    
         self.preprocess = torchvision.transforms.Compose(self.preprocess_transforms)
+
+        self.normalizitaion = functools.partial(normalize, adv_train=self.adv_train) # every model needs normalization
 
         # Debug
         if self.adv_train:
@@ -181,7 +184,8 @@ class PytorchModel(torch.nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         inp = self.preprocess(x)
-        return self.model(inp)    # type: ignore
+        # utils.show_img(inp.detach().cpu().numpy()[0].transpose(1, 2, 0))
+        return self.model(self.normalizitaion(inp))    # type: ignore
 
     # def _convert_to_tensor(self, np_img: np.ndarray) -> torch.Tensor:
     #     # torch does wierd in-place things with tensors loaded from numpy
@@ -230,6 +234,7 @@ class PytorchModel(torch.nn.Module):
 # ------------Local BlackBox------------
 # - BlackBox wrapping around LocalModel
 
+
 class DummyModel(TargetModel):
     # Dummy model passed to passthrough attack
     def __init__(self, dummy_config: DummySurrogateConfig) -> None:
@@ -264,9 +269,13 @@ class LocalModel(TargetModel):
     def __init__(self, local_model_config: LocalModelConfig):
         super(LocalModel, self).__init__(local_model_config)
 
-        self.imagenet_model = PytorchModel(local_model_config.name,
-                                           preprocess_transforms=[resize_and_center_crop_transform]
-                                           if local_model_config.resize_and_center_crop else [])
+        transforms = [resize_and_center_crop_transform] if local_model_config.resize_and_center_crop else []
+        transforms += local_model_config.augmentations
+
+        # model name contains description of augmentations, so strip that
+        pytorch_model_name = local_model_config.name.split(".")[0]
+
+        self.imagenet_model = PytorchModel(pytorch_model_name, preprocess_transforms=transforms)
 
         self.output_mapping = {
             "logits": imagenet_logits_to_simulated_organism_logits,
@@ -284,5 +293,5 @@ class LocalModel(TargetModel):
             logits = self.imagenet_model(pertubed_image)
             self.last_query_result = LocalLabels(logits)
 
-            return (self.last_query_result.get_top_organism_logits() - # type: ignore
-                    self.last_query_result.get_top_object_logits()) + self.model_config.loss.margin    
+            return (self.last_query_result.get_top_organism_logits() -    # type: ignore
+                    self.last_query_result.get_top_object_logits()) + self.model_config.loss.margin

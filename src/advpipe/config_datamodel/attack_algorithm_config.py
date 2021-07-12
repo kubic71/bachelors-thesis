@@ -134,6 +134,7 @@ class APGDAlgorithmConfig(TransferAttackAlgorithmConfig):
     name: str = "apgd"
     metric: Literal["L2", "Linf"]
     n_iters: int = 100
+    eot_iter: int = 1
     n_restarts: int = 1
     early_stop_at: Optional[int] = None
     # surrogate_output
@@ -143,6 +144,7 @@ class APGDAlgorithmConfig(TransferAttackAlgorithmConfig):
         self.metric = {"l2": "L2", "linf": "Linf"}[self.norm.name] # type: ignore
         self.n_iters = attack_config.n_iters
         self.early_stop_at = utils.get_config_attr(attack_config, "early_stop_at", APGDAlgorithmConfig.early_stop_at)
+        self.eot_iter = utils.get_config_attr(attack_config, "eot_iter", APGDAlgorithmConfig.eot_iter)
 
     def getAttackAlgorithmInstance(self, surrogate: LocalModel) -> APGDAutoAttack:
         return APGDAutoAttack(surrogate, self)

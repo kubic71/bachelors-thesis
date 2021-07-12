@@ -4,6 +4,7 @@ from advpipe.log import CloudDataLogger
 from typing_extensions import Literal
 from advpipe import utils
 from abc import ABC, abstractmethod
+import kornia as K
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
@@ -12,7 +13,8 @@ if TYPE_CHECKING:
     from advpipe.blackbox.cloud import CloudBlackBox
     from advpipe.blackbox import TargetModel
     from munch import Munch
-    from typing import Type, Dict, Optional, Tuple, Text
+    from typing import Type, Dict, Optional, Tuple, Text, Callable, Sequence, List
+    import torch
 
 MODEL_TYPE = Literal["cloud", "local", "dummy"]
 
@@ -45,6 +47,15 @@ class TargetModelConfig(ABC):
         ...
 
 
+def get_image_augmentation(config: Munch) -> Tuple[str, Callable[[torch.Tensor], torch.Tensor]]:
+    if config.name == "box-blur":
+        return (f"blur-{config.kernel_size}", K.augmentation.RandomBoxBlur(kernel_size=(config.kernel_size, config.kernel_size), border_type="reflect", normalized=True, return_transform=False, same_on_batch=True, p=1))
+    elif config.name == "gaussian-noise":
+        return (f"noise-{config.std}", K.augmentation.RandomGaussianNoise(mean=0.0, std=config.std/255, return_transform=False, same_on_batch=True, p=1))
+    else:
+        raise NotImplementedError
+
+
 class LocalModelConfig(TargetModelConfig):
     model_type: MODEL_TYPE = "local"
 
@@ -53,10 +64,22 @@ class LocalModelConfig(TargetModelConfig):
     resize_and_center_crop: bool = False
     output_mapping: Literal["logits", "probs", "organism_margin"]
 
+    augmentations: List[Callable[[torch.Tensor], torch.Tensor]]
+
     def __init__(self, local_model_config: Munch):
         super().__init__(local_model_config)
         self.resize_and_center_crop = utils.get_config_attr(local_model_config, "resize_and_center_crop",
                                                             self.resize_and_center_crop)
+
+        self.augmentations = []
+        augmentations_desc = []
+        for aug_conf in utils.get_config_attr(local_model_config, "augmentations", []):
+            desc, func = get_image_augmentation(aug_conf)
+            augmentations_desc.append(desc)
+            self.augmentations.append(func.cuda()) # type: ignore
+
+        if len(augmentations_desc) > 0:
+            self.name += "." + ",".join(augmentations_desc)
 
         self.output_mapping = local_model_config.output_mapping
 
@@ -65,6 +88,13 @@ class LocalModelConfig(TargetModelConfig):
         model.cuda()
         model.eval()
         return model
+
+
+# AUGMENTATIONS = {"box-blur": RandomBoxBlur(kernel_size=(3, 3), border_type='reflect', normalized=True, return_transform=False, same_on_batch=True, p=1) }
+# class AugmentationConfig():
+    # def __init__(self, augment_conf: Munch):
+        # pass
+
 
 
 class DummySurrogateConfig(TargetModelConfig):
