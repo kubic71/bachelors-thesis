@@ -1,9 +1,11 @@
 #@  def get_config_parameters():
 #@      for surrogate in ["resnet18", "efficientnet-b0"]:
-#@          for std in [2, 4, 8, 16, 32, 64]:
-#@              yield {"eot_iter": 10, "surrogate": surrogate, "augment_name": "gaussian-noise", "param": std, "param_yaml": "std: " + str(std)}
-#@          for kernel_size in [2, 3, 4, 5, 7, 10, 13, 16, 20, 25, 30, 40, 50]:
-#@              yield {"eot_iter": 1, "surrogate": surrogate, "augment_name": "box-blur", "param": kernel_size, "param_yaml": "kernel_size: " + str(kernel_size)}
+#@          for std in [4, 8, 16, 32]:
+#@              yield {"eot_iter": 10, "n_iters": 25, "surrogate": surrogate, "augment_name": "gaussian-noise", "param": std, "param_yaml": "std: " + str(std)}
+#@          for std in [4, 8, 16, 32]:
+#@              yield {"eot_iter": 1, "n_iters": 250, "surrogate": surrogate, "augment_name": "gaussian-noise", "param": std, "param_yaml": "std: " + str(std)}
+#@          for kernel_size in [1, 2, 3, 4, 5, 7, 10, 20]:
+#@              yield {"eot_iter": 1, "n_iters": 50, "surrogate": surrogate, "augment_name": "box-blur", "param": kernel_size, "param_yaml": "kernel_size: " + str(kernel_size)}
 
 ---
 
@@ -12,11 +14,11 @@ attack_regime:
   show_images : False
   skip_already_adversarial: False
   dont_save_images: True
-  results_dir: results/apgd_augment/surrogate_{surrogate}/{augment_name}/{param}
+  results_dir: results/apgd_augment/surrogate_{surrogate}/{augment_name}_eot_iter_{eot_iter}_n_iters_{n_iters}/{param}
 
   attack_algorithm: 
     name: apgd
-    n_iters: 25
+    n_iters: {n_iters}
     eot_iter: {eot_iter}
 
   epsilon: 10
