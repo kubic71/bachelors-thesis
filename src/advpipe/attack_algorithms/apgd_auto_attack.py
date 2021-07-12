@@ -28,7 +28,7 @@ class APGDAutoAttack(BlackBoxTransferAlgorithm):
 
     def run(self, images: torch.Tensor, labels: torch.Tensor) -> torch.Tensor:
 
-        acc, x_adv = self.attack.perturb(images, labels) 
+        acc, x_adv = self.attack.perturb(images, labels, best_loss=True) 
         return x_adv
         
 
@@ -83,6 +83,7 @@ class APGDAttack():
         return -(x[np.arange(x.shape[0]), y] - x_sorted[:, -2] * ind - x_sorted[:, -1] * (1. - ind)) / (x_sorted[:, -1] - x_sorted[:, -3] + 1e-12)
     
     def attack_single_run(self, x_in, y_in):
+        print("APGD single run")
         x = x_in.clone() if len(x_in.shape) == 4 else x_in.clone().unsqueeze(0)
         y = y_in.clone() if len(y_in.shape) == 1 else y_in.clone().unsqueeze(0)
         
@@ -128,6 +129,7 @@ class APGDAttack():
         else:
             idx_to_fool = ~torch.zeros_like(loss_indiv, dtype=torch.bool)
 
+        print("Idx to fool: ", idx_to_fool)
         acc = logits.detach().max(1)[1] == y
         acc_steps[0] = acc + 0
         loss_best = loss_indiv.detach().clone()
