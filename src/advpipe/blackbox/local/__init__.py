@@ -15,13 +15,14 @@ from PIL import Image
 import eagerpy as ep
 import kornia as K
 import functools
+import torchensemble
 
 from advpipe.imagenet_utils import get_human_readable_label, get_object_indeces, get_organism_indeces
 from advpipe.blackbox import TargetModel, BlackboxLabels
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from advpipe.config_datamodel import LocalModelConfig, DummySurrogateConfig
+    from advpipe.config_datamodel import LocalModelConfig, EnsembleConfig, DummySurrogateConfig
     from typing import Tuple, Iterator, Dict, Any, Callable, Text, Sequence, List
     from typing_extensions import Literal
 
@@ -291,6 +292,61 @@ class LocalModel(TargetModel):
     def loss(self, pertubed_image: torch.Tensor) -> torch.Tensor:
         with torch.no_grad():    # type: ignore
             logits = self.imagenet_model(pertubed_image)
+            self.last_query_result = LocalLabels(logits)
+
+            return (self.last_query_result.get_top_organism_logits() -    # type: ignore
+                    self.last_query_result.get_top_object_logits()) + self.model_config.loss.margin
+
+
+
+class EnsembleModel(TargetModel):
+
+    imagenet_models: Sequence[PytorchModel]
+    model_config: EnsembleConfig
+    last_query_result: LocalLabels
+
+    def __init__(self, ensemble_config: EnsembleConfig):
+        super(EnsembleModel, self).__init__(ensemble_config)
+
+        # same augmentation are applied across all ensemble models
+        # transforms = [resize_and_center_crop_transform] if local_model_config.resize_and_center_crop else []
+        self.preprocess = torchvision.transforms.Compose(ensemble_config.augmentations)
+
+        self.imagenet_models = []
+        for m_conf in ensemble_config.model_configs:
+            self.imagenet_models.append(PytorchModel(m_conf.name))
+
+        self.output_mapping = {
+            "logits": imagenet_logits_to_simulated_organism_logits,
+            "probs": imagenet_logits_to_organism_probs,
+            "organism_margin": imagenet_logits_to_max_logits
+        }[ensemble_config.output_mapping]
+
+
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        logits = self.forward_fused(x)
+        self.last_query_result = LocalLabels(logits)
+        return self.output_mapping(logits)
+
+    def forward_fused(self, x: torch.Tensor) -> torch.Tensor:
+        # preprocess with augmentations
+        x = self.preprocess(x)
+
+        # fuse logits with avg-pool
+        logits = torch.zeros(size=(x.shape[0], 1000)).cuda()
+        for model in self.imagenet_models:
+            logits += model(x)
+
+        # normalize
+        logits /= len(self.imagenet_models)
+        return logits
+
+
+    def loss(self, pertubed_image: torch.Tensor) -> torch.Tensor:
+        with torch.no_grad():    # type: ignore
+            
+            logits = self.forward_fused(pertubed_image)
             self.last_query_result = LocalLabels(logits)
 
             return (self.last_query_result.get_top_organism_logits() -    # type: ignore

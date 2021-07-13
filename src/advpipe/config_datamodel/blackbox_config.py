@@ -4,6 +4,7 @@ from advpipe.log import CloudDataLogger
 from typing_extensions import Literal
 from advpipe import utils
 from abc import ABC, abstractmethod
+from munch import Munch
 import kornia as K
 
 from typing import TYPE_CHECKING
@@ -12,11 +13,10 @@ if TYPE_CHECKING:
     from advpipe.blackbox.local import LocalModel, DummyModel
     from advpipe.blackbox.cloud import CloudBlackBox
     from advpipe.blackbox import TargetModel
-    from munch import Munch
     from typing import Type, Dict, Optional, Tuple, Text, Callable, Sequence, List
     import torch
 
-MODEL_TYPE = Literal["cloud", "local", "dummy"]
+MODEL_TYPE = Literal["cloud", "local", "ensemble", "dummy"]
 
 
 class TargetModelConfig(ABC):
@@ -26,7 +26,11 @@ class TargetModelConfig(ABC):
 
     def __init__(self, target_model_config: Munch):
         self.name = target_model_config.name
-        self.loss = target_model_config.loss
+
+        default_loss = Munch.fromDict({"name": "margin_loss", "margin": 0})
+        self.loss = utils.get_config_attr(target_model_config, "loss", default_loss)
+
+
 
     @staticmethod
     def loadFromYamlConfig(target_model_config: Munch) -> TargetModelConfig:
@@ -39,6 +43,8 @@ class TargetModelConfig(ABC):
             return CloudBlackBoxConfig(target_model_config)
         elif m_type == LocalModelConfig.model_type:
             return LocalModelConfig(target_model_config)
+        elif m_type == EnsembleConfig.model_type:
+            return EnsembleConfig(target_model_config)
         else:
             raise ValueError(f"Invalid model type: {m_type}")
 
@@ -58,6 +64,47 @@ def get_image_augmentation(config: Munch) -> Tuple[str, Callable[[torch.Tensor],
         raise NotImplementedError
 
 
+class EnsembleConfig(TargetModelConfig):
+    model_type: MODEL_TYPE = "ensemble"
+    model_configs: Sequence[TargetModelConfig]
+    name: str 
+
+
+    def __init__(self, ensemble_config: Munch):
+        self.model_configs = []
+
+        names = []
+        for model_config in ensemble_config.model_configs:
+            self.model_configs.append(TargetModelConfig.loadFromYamlConfig(model_config))
+            names.append(model_config.name)
+        self.name = ",".join(names)
+        self.loss = ensemble_config.loss
+
+
+        self.augmentations, aug_desc = load_augmentations(ensemble_config)
+        if aug_desc != "":
+            self.name += "." +  aug_desc
+
+        self.output_mapping = ensemble_config.output_mapping
+
+
+    def getModelInstance(self) -> EnsembleModel:
+        model = EnsembleModel(self)
+        model.cuda()
+        model.eval()
+        return model
+
+def load_augmentations(model_conf: Munch) -> Tuple[List, str]:
+    augmentations = [] # type: ignore
+    augmentations_desc = []
+    for aug_conf in utils.get_config_attr(model_conf, "augmentations", []):
+        desc, func = get_image_augmentation(aug_conf)
+        augmentations_desc.append(desc)
+        augmentations.append(func.cuda()) # type: ignore
+
+    return augmentations, ",".join(augmentations_desc)
+
+
 class LocalModelConfig(TargetModelConfig):
     model_type: MODEL_TYPE = "local"
 
@@ -73,17 +120,11 @@ class LocalModelConfig(TargetModelConfig):
         self.resize_and_center_crop = utils.get_config_attr(local_model_config, "resize_and_center_crop",
                                                             self.resize_and_center_crop)
 
-        self.augmentations = []
-        augmentations_desc = []
-        for aug_conf in utils.get_config_attr(local_model_config, "augmentations", []):
-            desc, func = get_image_augmentation(aug_conf)
-            augmentations_desc.append(desc)
-            self.augmentations.append(func.cuda()) # type: ignore
+        self.augmentations, aug_desc = load_augmentations(local_model_config)
+        if aug_desc != "":
+            self.name += "." +  aug_desc
 
-        if len(augmentations_desc) > 0:
-            self.name += "." + ",".join(augmentations_desc)
-
-        self.output_mapping = local_model_config.output_mapping
+        self.output_mapping = utils.get_config_attr(local_model_config, "output_mapping", "organism_margin")
 
     def getModelInstance(self) -> LocalModel:
         model = LocalModel(self)
@@ -125,6 +166,6 @@ class CloudBlackBoxConfig(TargetModelConfig):
         return CLOUD_BLACKBOXES[self.name](self)
 
 
-from advpipe.blackbox.local import LocalModel, DummyModel
+from advpipe.blackbox.local import LocalModel, EnsembleModel, DummyModel
 
 CLOUD_BLACKBOXES = {GVisionBlackBox.name: GVisionBlackBox}

@@ -116,7 +116,7 @@ class TransferRegimeConfig(AttackRegimeConfig):
 
         # passthrough attack doesn't need surrogate
         if utils.get_config_attr(attack_regime_config, "surrogate", None):
-            self.surrogate_config = LocalModelConfig(attack_regime_config.surrogate)
+            self.surrogate_config = TargetModelConfig.loadFromYamlConfig(attack_regime_config.surrogate)
         else:
             self.surrogate_config = DummySurrogateConfig()
 

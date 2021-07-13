@@ -1,0 +1,73 @@
+#@  def get_config_parameters():
+#@      budget = 2000
+#@      for std in [0, 5, 10, 15, 25]:
+#@          eot_iter = max(int(std**2 / 10), 1)
+#@          n_iters = min(100, int(budget / eot_iter))
+#@          yield {"eot_iter": eot_iter, "n_iters": n_iters, "augment_name": "gaussian-noise", "param": std, "param_yaml": "std: " + str(std)}
+
+---
+
+attack_regime:
+  name : transfer-regime-multiple-targets
+  show_images : False
+  skip_already_adversarial: False
+  dont_save_images: True
+  results_dir: results/ensemble_exp/wide_resnet50_2_efficientnet-b0-advtrain_squeezenet/{augment_name}_eot_iter_{eot_iter}_n_iters_{n_iters}/{param}
+
+  attack_algorithm: 
+    name: apgd
+    n_iters: {n_iters}
+    eot_iter: {eot_iter}
+
+  epsilon: 10
+  norm: l2
+  batch_size: 64
+  # batch_size: 2
+
+  surrogate:
+    model_type: ensemble
+    model_configs:
+      - name: wide_resnet50_2
+        model_type: local
+
+      - name: efficientnet-b0-advtrain
+        model_type: local
+
+      - name: squeezenet
+        model_type: local
+
+    output_mapping: organism_margin
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+    
+    augmentations:
+      - name: {augment_name}
+        {param_yaml}
+
+  dataset_config:
+    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped_first_2000
+    dataset_type: imagenet-validation
+    load_only_organisms: True
+    size_limit: 500
+    # size_limit: 2
+
+  multiple_target_configs:
+    model_type: local
+    names:
+      - wide_resnet50_2
+      - resnet18
+      - resnet50
+      - resnext50_32x4d
+      - efficientnet-b0
+      - efficientnet-b0-advtrain
+      - densenet-121
+      - squeezenet
+
+    output_mapping: organism_margin
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+
