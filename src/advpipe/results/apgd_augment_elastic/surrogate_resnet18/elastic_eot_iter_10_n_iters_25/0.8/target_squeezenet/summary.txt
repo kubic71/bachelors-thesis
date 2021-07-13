@@ -1,0 +1,2 @@
+trasfer attack from resnet18.elastic-000.80 to squeezenet
+successfully transferred / total = 408/500 = 81.60%

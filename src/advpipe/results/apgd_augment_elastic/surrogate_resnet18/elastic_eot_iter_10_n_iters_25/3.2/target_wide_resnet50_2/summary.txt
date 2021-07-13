@@ -1,0 +1,2 @@
+trasfer attack from resnet18.elastic-003.20 to wide_resnet50_2
+successfully transferred / total = 423/500 = 84.60%

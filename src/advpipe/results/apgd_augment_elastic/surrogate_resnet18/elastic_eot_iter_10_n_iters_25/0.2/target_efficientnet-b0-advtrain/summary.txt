@@ -1,0 +1,2 @@
+trasfer attack from resnet18.elastic-000.20 to efficientnet-b0-advtrain
+successfully transferred / total = 90/500 = 18.00%

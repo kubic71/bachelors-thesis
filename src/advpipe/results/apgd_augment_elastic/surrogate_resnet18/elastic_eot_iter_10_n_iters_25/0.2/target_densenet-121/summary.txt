@@ -1,0 +1,2 @@
+trasfer attack from resnet18.elastic-000.20 to densenet-121
+successfully transferred / total = 332/500 = 66.40%

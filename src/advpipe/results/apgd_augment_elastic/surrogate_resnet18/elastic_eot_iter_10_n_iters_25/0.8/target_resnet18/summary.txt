@@ -1,0 +1,2 @@
+trasfer attack from resnet18.elastic-000.80 to resnet18
+successfully transferred / total = 500/500 = 100.00%

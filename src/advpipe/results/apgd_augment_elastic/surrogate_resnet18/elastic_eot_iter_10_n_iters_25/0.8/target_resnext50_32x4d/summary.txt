@@ -1,0 +1,2 @@
+trasfer attack from resnet18.elastic-000.80 to resnext50_32x4d
+successfully transferred / total = 438/500 = 87.60%
