@@ -1,9 +1,11 @@
 #@  def get_config_parameters():
-#@      budget = 2000
-#@      for std in [0, 5, 10, 15, 25]:
-#@          eot_iter = max(int(std**2 / 10), 1)
-#@          n_iters = min(100, int(budget / eot_iter))
-#@          yield {"eot_iter": eot_iter, "n_iters": n_iters, "augment_name": "gaussian-noise", "param": std, "param_yaml": "std: " + str(std)}
+#@      std = 15
+#@      yield {"eot_iter": 10, "n_iters": 25, "augment_name": "gaussian-noise", "param": 15, "param_yaml": "std: " + str(std)}
+#@      std = 0
+#@      yield {"eot_iter": 1, "n_iters": 16, "augment_name": "gaussian-noise", "param": 0, "param_yaml": "std: " + str(std)}
+#@      yield {"eot_iter": 1, "n_iters": 32, "augment_name": "gaussian-noise", "param": 0, "param_yaml": "std: " + str(std)}
+#@      yield {"eot_iter": 1, "n_iters": 64, "augment_name": "gaussian-noise", "param": 0, "param_yaml": "std: " + str(std)}
+#@      yield {"eot_iter": 1, "n_iters": 128, "augment_name": "gaussian-noise", "param": 0, "param_yaml": "std: " + str(std)}
 
 ---
 
@@ -12,7 +14,7 @@ attack_regime:
   show_images : False
   skip_already_adversarial: False
   dont_save_images: True
-  results_dir: results/ensemble_exp/wide_resnet50_2_efficientnet-b0-advtrain_squeezenet/{augment_name}_eot_iter_{eot_iter}_n_iters_{n_iters}/{param}
+  results_dir: results/ensemble_exp/wide_resnet50_2_efficientnet-b0-advtrain_squeezenet/{augment_name}_{param}_eot_iter_{eot_iter}_n_iters_{n_iters}/
 
   attack_algorithm: 
     name: apgd
@@ -22,7 +24,7 @@ attack_regime:
   epsilon: 10
   norm: l2
   batch_size: 64
-  # batch_size: 2
+  # batch_size: 1
 
   surrogate:
     model_type: ensemble
