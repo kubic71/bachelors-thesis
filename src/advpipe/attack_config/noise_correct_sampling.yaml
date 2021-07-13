@@ -1,6 +1,6 @@
 #@  def get_config_parameters():
 #@      for std in [0, 15, 32, 48, 64]:
-#@          eot_iter = max(int(std**2 / 10), 1)   # to keep constant the std of estimated gradient
+#@          eot_iter = max(int(std**2 / 100), 1)   # to keep constant the std of estimated gradient
 #@          n_iters = 100     # enough computation for such a large noise regularization
 #@          yield {"eot_iter": eot_iter, "n_iters": n_iters, "augment_name": "gaussian-noise", "param": std, "param_yaml": "std: " + str(std), "surrogate": "resnet18"}
 
