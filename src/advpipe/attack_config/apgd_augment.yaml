@@ -1,8 +1,8 @@
 #@  def get_config_parameters():
 #@      for surrogate in ["resnet18", "efficientnet-b0"]:
-#@          for std in [4, 8, 16, 32]:
+#@          for std in [8, 12, 18, 28]:
 #@              yield {"eot_iter": 10, "n_iters": 25, "surrogate": surrogate, "augment_name": "gaussian-noise", "param": std, "param_yaml": "std: " + str(std)}
-#@          for std in [4, 8, 16, 32]:
+#@          for std in [8, 12, 18, 28]:
 #@              yield {"eot_iter": 1, "n_iters": 250, "surrogate": surrogate, "augment_name": "gaussian-noise", "param": std, "param_yaml": "std: " + str(std)}
 #@          for kernel_size in [1, 2, 3, 4, 5, 7, 10, 20]:
 #@              yield {"eot_iter": 1, "n_iters": 50, "surrogate": surrogate, "augment_name": "box-blur", "param": kernel_size, "param_yaml": "kernel_size: " + str(kernel_size)}
