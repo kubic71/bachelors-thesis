@@ -1,0 +1,2 @@
+trasfer attack from resnet18.noise-64 to squeezenet
+successfully transferred / total = 34/500 = 6.80%

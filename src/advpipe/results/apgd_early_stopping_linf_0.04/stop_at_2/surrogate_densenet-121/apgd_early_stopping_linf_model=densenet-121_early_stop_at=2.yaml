@@ -1,0 +1,43 @@
+attack_algorithm:
+  early_stop_at: 2
+  epsilon: 0.04
+  n_iters: 300
+  name: apgd
+  norm: linf
+batch_size: 128
+config_filename: /content/bachelors-thesis/src/advpipe/.exported_configs/apgd_early_stopping_linf_model=densenet-121_early_stop_at=2.yaml
+dataset_config:
+  data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped_first_2000
+  dataset_type: imagenet-validation
+  load_only_organisms: true
+  size_limit: 500
+dont_save_images: true
+epsilon: 0.04
+multiple_target_configs:
+  loss:
+    margin: 0.0
+    name: margin_loss
+  model_type: local
+  name: squeezenet
+  names:
+  - wide_resnet50_2
+  - resnet18
+  - resnet50
+  - resnext50_32x4d
+  - efficientnet-b0
+  - efficientnet-b0-advtrain
+  - densenet-121
+  - squeezenet
+  output_mapping: organism_margin
+name: transfer-regime-multiple-targets
+norm: linf
+results_dir: results/apgd_early_stopping_linf_0.04/stop_at_2/surrogate_densenet-121
+show_images: false
+skip_already_adversarial: false
+surrogate:
+  loss:
+    margin: 0.0
+    name: margin_loss
+  model_type: local
+  name: densenet-121
+  output_mapping: organism_margin

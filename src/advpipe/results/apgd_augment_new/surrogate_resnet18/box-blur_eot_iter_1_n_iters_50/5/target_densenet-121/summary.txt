@@ -1,0 +1,2 @@
+trasfer attack from resnet18.blur-5 to densenet-121
+successfully transferred / total = 113/500 = 22.60%

@@ -1,0 +1,2 @@
+trasfer attack from resnet18.blur-5 to squeezenet
+successfully transferred / total = 160/500 = 32.00%

@@ -1,0 +1,2 @@
+trasfer attack from resnet18.blur-5 to resnext50_32x4d
+successfully transferred / total = 107/500 = 21.40%

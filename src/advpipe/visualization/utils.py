@@ -2,12 +2,15 @@ from __future__ import annotations
 
 import pandas as pd
 import yaml
+import pathlib
 import os
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from typing import Callable, Dict, Optional, Sequence, Iterator
 
+def mkdir_p(dir_path: str) -> None:
+    pathlib.Path(dir_path).mkdir(parents=True, exist_ok=True)
 
 def get_config(res_dir: str) -> Optional[Dict]:
     for filename in os.listdir(res_dir):
@@ -24,6 +27,7 @@ def get_all_csvs(res_dir: str) -> Iterator[str]:
                 # sub_dir = sub_dir[len(res_dir) + 1:]
                 # print(res_dir, sub_dir, filename)
                 yield os.path.join(sub_dir, filename)
+
 
 
 def gather_results(

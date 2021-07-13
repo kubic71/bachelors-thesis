@@ -1,0 +1,2 @@
+trasfer attack from resnet18.noise-4 to densenet-121
+successfully transferred / total = 278/500 = 55.60%

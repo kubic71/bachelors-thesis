@@ -1,0 +1,46 @@
+attack_algorithm:
+  eot_iter: 1
+  epsilon: 10
+  n_iters: 50
+  name: apgd
+  norm: l2
+batch_size: 256
+config_filename: /content/bachelors-thesis/src/advpipe/.exported_configs/apgd_augment_eot_iter=1_n_iters=50_surrogate=resnet18_augment_name=box-blur_param=4_param_yaml=kernel_size:-4.yaml
+dataset_config:
+  data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped_first_2000
+  dataset_type: imagenet-validation
+  load_only_organisms: true
+  size_limit: 500
+dont_save_images: true
+epsilon: 10
+multiple_target_configs:
+  loss:
+    margin: 0.0
+    name: margin_loss
+  model_type: local
+  name: squeezenet
+  names:
+  - wide_resnet50_2
+  - resnet18
+  - resnet50
+  - resnext50_32x4d
+  - efficientnet-b0
+  - efficientnet-b0-advtrain
+  - densenet-121
+  - squeezenet
+  output_mapping: organism_margin
+name: transfer-regime-multiple-targets
+norm: l2
+results_dir: results/apgd_augment/surrogate_resnet18/box-blur_eot_iter_1_n_iters_50/4
+show_images: false
+skip_already_adversarial: false
+surrogate:
+  augmentations:
+  - kernel_size: 4
+    name: box-blur
+  loss:
+    margin: 0.0
+    name: margin_loss
+  model_type: local
+  name: resnet18
+  output_mapping: organism_margin

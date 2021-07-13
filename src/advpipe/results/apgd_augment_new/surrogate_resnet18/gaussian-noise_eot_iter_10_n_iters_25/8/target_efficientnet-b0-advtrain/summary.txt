@@ -1,0 +1,2 @@
+trasfer attack from resnet18.noise-8 to efficientnet-b0-advtrain
+successfully transferred / total = 89/500 = 17.80%

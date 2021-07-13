@@ -1,0 +1,2 @@
+trasfer attack from resnet18.blur-20 to resnet50
+successfully transferred / total = 16/500 = 3.20%

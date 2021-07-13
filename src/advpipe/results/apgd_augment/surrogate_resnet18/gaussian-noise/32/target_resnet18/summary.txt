@@ -1,0 +1,2 @@
+trasfer attack from resnet18.noise-32 to resnet18
+successfully transferred / total = 453/500 = 90.60%

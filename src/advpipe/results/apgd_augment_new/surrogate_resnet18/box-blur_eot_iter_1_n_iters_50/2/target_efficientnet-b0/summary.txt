@@ -1,0 +1,2 @@
+trasfer attack from resnet18.blur-2 to efficientnet-b0
+successfully transferred / total = 136/500 = 27.20%

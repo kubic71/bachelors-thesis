@@ -1,0 +1,2 @@
+trasfer attack from resnet18.noise-12 to efficientnet-b0
+successfully transferred / total = 123/500 = 24.60%

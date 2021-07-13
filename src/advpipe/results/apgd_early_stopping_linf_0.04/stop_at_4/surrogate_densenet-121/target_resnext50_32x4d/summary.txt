@@ -1,0 +1,2 @@
+trasfer attack from densenet-121 to resnext50_32x4d
+successfully transferred / total = 62/500 = 12.40%
