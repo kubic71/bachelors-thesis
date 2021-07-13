@@ -19,6 +19,7 @@ if TYPE_CHECKING:
     from typing import Callable, Optional, Iterator, Any
     from advpipe.types import TensorTypeVar
 
+
 def batches(seq: Iterator[Any], bs: int = 16) -> Iterator[Sequence]:
     batch = []
     while True:
@@ -51,6 +52,9 @@ def tensor_batches(tensor_iter: Iterator[TensorTypeVar], bs: int = 16) -> Iterat
         yield ep.concatenate(batch).raw
 
 
+def zfill_align_float(param: float, length: int = 6) -> str:
+    return f"{param:.2f}".zfill(length)
+
 
 def scale_img(img: Image, target_size: int) -> Image:
     """Re-scale image while preserving its aspect ratio"""
@@ -73,14 +77,14 @@ def quantize_img(img: TensorTypeVar, round: bool = True) -> TensorTypeVar:
     if ep_img.max() <= 1:
         ep_img *= 255
 
-    # we have to convert it first to numpy, because eagerpy doesn't have round function, and also eagerpy's .astype(dtype) has 
+    # we have to convert it first to numpy, because eagerpy doesn't have round function, and also eagerpy's .astype(dtype) has
     # tensortype-dependent dtype argument
     if round:
         np_img = np.asarray(np.round(ep_img.numpy()), dtype=np.uint8)
     else:
         np_img = np.asarray(ep_img.numpy(), dtype=np.uint8)
 
-    return restore_func(ep.astensor(np_img)) # type: ignore
+    return restore_func(ep.astensor(np_img))    # type: ignore
 
 
 def mkdir_p(dir_path: str) -> None:
@@ -113,10 +117,13 @@ def load_image_to_numpy(img_path: str) -> np.ndarray:
     np_img = np.asarray(image, dtype=np.float32) / 255
     return np_img
 
+
 _to_tensor = transforms.ToTensor()
+
+
 def load_image_to_torch(img_path: str) -> torch.Tensor:
     image = Image.open(img_path)
-    return _to_tensor(image) # type: ignore
+    return _to_tensor(image)    # type: ignore
 
 
 def write_text_to_img(img: Image, text: str, max_lines: int = 20) -> Image:
@@ -205,6 +212,14 @@ class LossCallCounter:
         self.last_loss_val = self.loss_fn(pertubed_image)
         self.last_img = pertubed_image
         return self.last_loss_val
+
+
+def config_attr_exists(conf: Munch, attr_name: str) -> bool:
+    try:
+        _ = conf.__getattr__(attr_name)
+        return True
+    except AttributeError:
+        return False
 
 
 def get_config_attr(conf: Munch, attr_name: str, default_val: Any) -> Any:
