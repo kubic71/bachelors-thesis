@@ -183,7 +183,7 @@ if __name__ == "__main__":
                         default=utils.convert_to_absolute_path("attack_config/test.yaml"),
                         help='AdvPipe attack YAML config file')
 
-    parser.add_argument('--batch_size', default=None, help='override config batchsize')
+    parser.add_argument('--batch_size', default=None, type=int, help='override config batchsize')
     parser.add_argument('--loglevel',
                         default=None,
                         choices=["debug", "info", "error"],
