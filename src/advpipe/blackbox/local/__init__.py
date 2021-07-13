@@ -15,7 +15,6 @@ from PIL import Image
 import eagerpy as ep
 import kornia as K
 import functools
-import torchensemble
 
 from advpipe.imagenet_utils import get_human_readable_label, get_object_indeces, get_organism_indeces
 from advpipe.blackbox import TargetModel, BlackboxLabels
