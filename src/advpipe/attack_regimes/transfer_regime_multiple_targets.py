@@ -73,7 +73,6 @@ class TransferRegimeMultipleTargets(SimpleTransferRegime):
 
             self.total += len(img_paths)
             x_advs = self.transfer_algorithm.run(imgs, labels)
-            print(x_advs.requires_grad)
 
             for target_name, target_model in self.target_models.items():
                 results = self.evaluate_batch_on_target(target_model, x_advs, imgs, img_fns, human_readable_labels)

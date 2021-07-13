@@ -49,9 +49,11 @@ class TargetModelConfig(ABC):
 
 def get_image_augmentation(config: Munch) -> Tuple[str, Callable[[torch.Tensor], torch.Tensor]]:
     if config.name == "box-blur":
-        return (f"blur-{config.kernel_size}", K.augmentation.RandomBoxBlur(kernel_size=(config.kernel_size, config.kernel_size), border_type="reflect", normalized=True, return_transform=False, same_on_batch=True, p=1))
+        return (f"blur-{utils.zfill_align_float(config.kernel_size)}", K.augmentation.RandomBoxBlur(kernel_size=(config.kernel_size, config.kernel_size), border_type="reflect", normalized=True, return_transform=False, same_on_batch=True, p=1))
     elif config.name == "gaussian-noise":
-        return (f"noise-{config.std}", K.augmentation.RandomGaussianNoise(mean=0.0, std=config.std/255, return_transform=False, same_on_batch=True, p=1))
+        return (f"noise-{utils.zfill_align_float(config.std)}", K.augmentation.RandomGaussianNoise(mean=0.0, std=config.std/255, return_transform=False, same_on_batch=True, p=1))
+    elif config.name == "elastic":
+        return (f"elastic-{utils.zfill_align_float(config.alpha)}" , K.augmentation.RandomElasticTransform(kernel_size=(63, 63), sigma=(32.0, 32.0), alpha=(config.alpha, config.alpha), align_corners=False, mode='bilinear', return_transform=False, same_on_batch=True, p=1))
     else:
         raise NotImplementedError
 
