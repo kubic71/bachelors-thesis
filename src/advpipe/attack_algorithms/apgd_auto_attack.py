@@ -179,15 +179,16 @@ class APGDAttack():
             x_adv_to_fool = x_adv[idx_to_fool]
             x_adv_to_fool.requires_grad_()
             grad_to_fool = torch.zeros_like(x_adv_to_fool)
+            # time.sleep(0.3)
             for _ in range(self.eot_iter):
                 with torch.enable_grad():
                     logits_to_fool = self.model(x_adv_to_fool) # 1 forward pass (eot_iter = 1)
                     # assert not torch.isnan(logits.max())
                     loss_indiv_to_fool = criterion_indiv(logits_to_fool, y[idx_to_fool])
-                    print(loss_indiv_to_fool)
+                    # print(loss_indiv_to_fool)
                     # assert not torch.isnan(loss_indiv.max())
                     loss = loss_indiv_to_fool.sum()
-                    print(loss)
+                    # print(loss)
                     # assert not torch.isnan(loss.max())
                 
                 grad_to_fool += torch.nan_to_num(torch.autograd.grad(loss, [x_adv_to_fool])[0].detach()) # 1 backward pass (eot_iter = 1)
@@ -202,7 +203,6 @@ class APGDAttack():
             # sometimes if the loss gets too big, gradient becomes NaN
             # just stop the gradient descent when that happens
             if self.early_stop_at is not None:
-                print(f"Losses: {loss_best}")
                 idx_to_fool = loss_best.detach() < self.early_stop_at
                 print(f"Idx to fool: {idx_to_fool}")
                 if idx_to_fool.sum() == 0:
@@ -215,7 +215,7 @@ class APGDAttack():
             x_best_adv[(pred == 0).nonzero().squeeze()] = x_adv[(pred == 0).nonzero().squeeze()] + 0.
             if self.verbose:
                 print('iteration: {} - Best loss: {:.6f}'.format(i, loss_best.sum()))
-                # print('best losses:', loss_best)
+                print('best losses:', loss_best)
             
             ### check step size
             with torch.no_grad():
