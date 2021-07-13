@@ -1,0 +1,88 @@
+\chapter{Our approach}
+
+\section{Adapting off-the-shelf attack algorithms to partial-information setting}
+Cloud-based image classifier don't usually classify input images into a fixed number of classes. They instead output variable-length list of probable labels with scores. And what's worse, those scores aren't even probabilities, because they don't sum up to one. 
+
+Most of current score-based SoTA adversarial attacks assume that we have access to all output logits of the attacked target classifier. If we want to use them, we need to map somehow the cloud's variable-length score-output to fixed-length vector, which will simulate output of a standard CNN classifier.
+
+\subsection{Object-organism binary classification mapping}
+To simplify the experiments, we define a simple benchmark attack scenario. Given an image containing a living thing, fool the target into classifying it as a non-living object.
+
+We chose this split, because ImageNet dataset is relatively balanced between those two semantic categories. Why ImageNet? Despite the dataset being quite old, it is still the most heavily used dataset in the research community and the majority of freely available pretrained models are pretrained on it.
+
+\subsubsection{Imagenet category mapping}
+Classic ImageNet dataset contains real-world photos, each corresponding to one and only one classification category out of 1000 possible categories. Each ImageNet category $c$ corresponds to a unique wordnet synset $S(c)$. These synsets are rather specific, but we can take a look at their set of hypernyms $h(S(c))$. If this hypernym set $h(S(c))$ contains the $organism$ synset, it should be an organism, otherwise $c$ is probably an object. 
+
+Writen more rigorously, we map each ImageNet category $c$ into $\{organism, object\}$ using the following maping $M(c)$:
+
+\[ M(c) = \begin{cases} 
+      organism & organism \in h(S(c)) \\
+      object & organism \notin h(S(c)) \\
+   \end{cases}
+\]
+
+
+\subsubsection{Cloud label mapping}
+This situation isn't so clear-cut in the case of general labels returned by cloud classifier. Labels might not even be single words, but whole sentences. Therefore we use a powerful GPT-2 transformer to encode text labels into embedding vector space and then compute their similarity with carefully chosen set of 4 labels: $\{animal, species, object, instrument\}$. Resulting mapping is the $argmax$ over those 4 similarity scores.
+
+
+\section{PoC black-box GVision attacks}
+We first explored the viability and sample-efficiency of current SoTA black-box attacks. We ran the following against Google Vision API image classifier.
+
+\begin{itemize}
+    \item TREMBA
+    \item RayS
+    \item SquareAttack
+    \item Sparse-RS
+\end{itemize}
+
+TODO: describe each attack and show sample images
+
+\subsection{TREMBA}
+\subsection{RayS}
+\subsection{SquareAttack}
+\subsection{Sparse-RS}
+
+
+\section{The need for query-efficient attack}
+
+% The are many problems with the number of queries being in the hundreds/thousands.
+
+\begin{itemize}
+    \item{High cost - 1.5\$ per 1000 queries}
+    \item{Raising suspicion}
+    \item{Unrealistic in practical settings}
+\end{itemize}
+
+\section{Leveraging transferability}
+Saves queries. Output of transfer-attack can be good starting point for blackbox attack (citation needed).
+
+\subsection{Train, validate, test}
+There is a weak analogy between the crafting of an adversarial example and the training of machine learning model. ML model weights are first fitted againt specified loss contraint. This constraint is (among other things) a function of training data. The weights are then validated and checked against overfitting on a slightly different constraint, which now depends on a validation dataset. When all is good, model is happily deployed to production.
+
+With a bit of imagination, ML model weights correspond to pixel values of an adversarial image. The pixels are first trained by gradient descent on training loss provided by a surrogate model. They are validated against ensemble set of diverse indepenent classifiers, and when the foolrate is good, the are sent for test evaluation to the cloud. 
+
+\subsection{Local training and validation is cheap}
+We want to offload the cloud query-stress to local simulation as much as possible.
+
+\subsection{Multiple candidates save queries}
+Iterative black-box attacks usually have query-distrubutions which are tail-heavy. In other words, the median queries needed to create a successful adversarial image are much lower than the average queries.
+
+Let's image an attack scenario, where we want to submit a photo to a platform with automatic content moderation mechanism. Querying the target hundreds of times would certainly attract unwanted attention and our heavy attack queries can quickly trigger human evaluation. If our primary goal is to craft only one adversarial image and as much as possible evade detection, having multiple candidate images would give us another degree of freedom and it could potentially mitigate the heavy-tail problem.
+
+\section{The need for attack pipeline}
+As of now, there isn't any general whitebox/blackbox attack pipeline which would combine different algorithms and allow us attacking cloud services in a practical way.
+
+\subsection{The need for unified attack API}
+Such that we can combine multiple attack approaches and create useful diverse toolbox.
+
+\subsection{Possibility of multiple candidate images}
+Practical in real-world setting. We need to be able to run attacks in paralel and have some meta-controller orchestrating individual attack algorithms such that we minimize queries to the target and efficiently make use of the additional degree of freedom.
+
+\subsection{AdvPipe - the vision}
+Show what was the plan.
+
+\subsection{AdvPipe - the reality}
+This is sad. :(
+
+Make some excuses why you didn't make it in time.
