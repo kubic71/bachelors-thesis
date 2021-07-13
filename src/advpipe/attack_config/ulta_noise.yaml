@@ -1,0 +1,60 @@
+#@  def get_config_parameters():
+#@      for surrogate in ["resnet18"]:
+#@          for std in [80]:
+#@              yield {"eot_iter": 20, "n_iters": 200, "surrogate": surrogate, "augment_name": "gaussian-noise", "param": std, "param_yaml": "std: " + str(std)}
+
+---
+
+attack_regime:
+  name : transfer-regime-multiple-targets
+  show_images : False
+  skip_already_adversarial: False
+  dont_save_images: False
+  results_dir: results/ultra_noise/surrogate_{surrogate}/{augment_name}/{param}
+
+  attack_algorithm: 
+    name: apgd
+    n_iters: 500
+    eot_iter: {eot_iter}
+
+  epsilon: 10
+  norm: l2
+  batch_size: 256
+
+  surrogate:
+    model_type: local
+    name: {surrogate}
+    output_mapping: organism_margin
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+    
+    augmentations:
+      - name: {augment_name}
+        {param_yaml}
+
+  dataset_config:
+    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped_first_2000
+    dataset_type: imagenet-validation
+    load_only_organisms: True
+    size_limit: 256
+
+  multiple_target_configs:
+    model_type: local
+    names:
+      - wide_resnet50_2
+      - resnet18
+      - resnet50
+      - resnext50_32x4d
+      - efficientnet-b0
+      - efficientnet-b0-advtrain
+      - densenet-121
+      - squeezenet
+
+    output_mapping: organism_margin
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+
