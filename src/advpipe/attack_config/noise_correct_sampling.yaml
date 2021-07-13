@@ -1,0 +1,64 @@
+#@  def get_config_parameters():
+#@      for std in [64, 0, 15, 32, 48, 64]:
+#@          eot_iter = max(int(std**2 / 10), 1)   # to keep constant the std of estimated gradient
+#@          n_iters = 100     # enough computation for such a large noise regularization
+#@          yield {"eot_iter": eot_iter, "n_iters": n_iters, "augment_name": "gaussian-noise", "param": std, "param_yaml": "std: " + str(std), "surrogate": "resnet18"}
+
+---
+
+attack_regime:
+  name : transfer-regime-multiple-targets
+  show_images : False
+  skip_already_adversarial: False
+  dont_save_images: True
+  results_dir: results/noise_correct_sampling/{surrogate}/std_{param}_eot_iter_{eot_iter}_n_iters_{n_iters}
+
+  attack_algorithm: 
+    name: apgd
+    n_iters: {n_iters}
+    eot_iter: {eot_iter}
+
+  epsilon: 10
+  norm: l2
+  batch_size: 256
+  # batch_size: 2
+
+  surrogate:
+    model_type: local
+    name: {surrogate}
+
+    output_mapping: organism_margin
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+    
+    augmentations:
+      - name: {augment_name}
+        {param_yaml}
+
+  dataset_config:
+    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped_first_2000
+    dataset_type: imagenet-validation
+    load_only_organisms: True
+    size_limit: 500
+    # size_limit: 2
+
+  multiple_target_configs:
+    model_type: local
+    names:
+      - wide_resnet50_2
+      - resnet18
+      - resnet50
+      - resnext50_32x4d
+      - efficientnet-b0
+      - efficientnet-b0-advtrain
+      - densenet-121
+      - squeezenet
+
+    output_mapping: organism_margin
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+
