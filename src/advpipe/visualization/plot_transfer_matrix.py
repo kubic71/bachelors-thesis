@@ -8,7 +8,6 @@ from functools import lru_cache
 from typing import Any, Callable, Dict
 
 
-
 def plot_matrix(data: pd.DataFrame, plot_fn: str, title: str = "") -> Any:
     data_rows = []
 
@@ -47,6 +46,7 @@ def plot_matrix(data: pd.DataFrame, plot_fn: str, title: str = "") -> Any:
     plt.savefig(plot_fn)
     return ax
 
+
 @lru_cache(maxsize=None)
 def augmentation_surrogate_name_remap(surrogate_name: str) -> str:
     # Names of augmented surrogated are not nicely alphabetically sorted, because augmentation params are not zero-padded
@@ -58,20 +58,17 @@ def augmentation_surrogate_name_remap(surrogate_name: str) -> str:
 
     new_name = m_name + "."
     parts = []
-    for  p in augment_params.split(","):
+    for p in augment_params.split(","):
         pname, val = p.split("-")
         parts.append(pname + "-" + f"{int(val):02d}")
 
     new_name += ",".join(parts)
     return new_name
 
+
 def fix_augmentation_dataframe(df: pd.DataFrame, _: Dict) -> pd.DataFrame:
     df["surrogate"] = df["surrogate"].map(augmentation_surrogate_name_remap)
     return df
-        
-
-    
-
 
 
 def generate_augment_heatmaps() -> None:
@@ -79,18 +76,19 @@ def generate_augment_heatmaps() -> None:
     # Augmentation experiment
     plot_details += [
         (f"Gaussian-noise augmentations (old-experiment) - APGD - resnet18\n - margin_map, n_iters=25, l2_norm=10",
-         f"plots/transfer_attacks/transfer_heatmap/_augment_noise_old_apgd_l2_margin_eps_10.png", f"../results/apgd_augment"), 
-
+         f"plots/transfer_attacks/transfer_heatmap/_augment_noise_old_apgd_l2_margin_eps_10.png",
+         f"../results/apgd_augment"),
         (f"Gaussian-noise augmentations - APGD - resnet18\n margin_map, n_iters=25, eot_iters=10, l2_norm=10",
-         f"plots/transfer_attacks/transfer_heatmap/augment_noise_apgd_l2_margin_n_iters_25_eot_iters_10_eps_10.png", f"../results/apgd_augment_new/surrogate_resnet18/gaussian-noise_eot_iter_10_n_iters_25"),
-
+         f"plots/transfer_attacks/transfer_heatmap/augment_noise_apgd_l2_margin_n_iters_25_eot_iters_10_eps_10.png",
+         f"../results/apgd_augment_new/surrogate_resnet18/gaussian-noise_eot_iter_10_n_iters_25"),
         (f"Gaussian-noise augmentations (noisy gradient) - APGD - resnet18\n margin_map, n_iters=250, eot_iters=1, l2_norm=10",
-         f"plots/transfer_attacks/transfer_heatmap/augment_noise_apgd_l2_margin_n_iters_250_eot_iters_1_eps_10.png", f"../results/apgd_augment_new/surrogate_resnet18/gaussian-noise_eot_iter_1_n_iters_250"),
-
+         f"plots/transfer_attacks/transfer_heatmap/augment_noise_apgd_l2_margin_n_iters_250_eot_iters_1_eps_10.png",
+         f"../results/apgd_augment_new/surrogate_resnet18/gaussian-noise_eot_iter_1_n_iters_250"),
         (f"Box-blur augmentations - APGD - resnet18\n margin_map, n_iters=50, l2_norm=10",
-         f"plots/transfer_attacks/transfer_heatmap/augment_blur_apgd_l2_margin_n_iters_50_eps_10.png", f"../results/apgd_augment_new/surrogate_resnet18/box-blur_eot_iter_1_n_iters_50"),
+         f"plots/transfer_attacks/transfer_heatmap/augment_blur_apgd_l2_margin_n_iters_50_eps_10.png",
+         f"../results/apgd_augment_new/surrogate_resnet18/box-blur_eot_iter_1_n_iters_50"),
     ]
-        
+
     for title, plot_fn, res_dir in plot_details:
         gather_and_plot(title, plot_fn, res_dir, dataframe_transform=fix_augmentation_dataframe)
 
@@ -101,12 +99,16 @@ def generate_all_heatmaps() -> None:
 
     plot_details = []
 
+    plot_details.append(
+        ("Elastic transform augmentation - APGD - resnet18\n margin_map, n_iters=25, eot_iters=10, l2_norm=10",
+         "plots/transfer_attacks/transfer_heatmap/augment_elastic_apgd_l2_margin_n_iters_25_eot_iters_10_eps_10.png",
+         "../results/apgd_augment_elastic"))
+
     # APGD n-iters L2
     for n_iter in [1, 2, 4, 8, 16, 32, 64]:
         plot_details.append((f"n-iters={n_iter}, APGD - margin_map, l2_norm=10",
                              f"plots/transfer_attacks/transfer_heatmap/apgd_margin_l2_eps_10_n_iters_{n_iter:04d}.png",
                              f"../results/apgd_n_iters_exp_l2/n_iters_{n_iter}"))
-
 
     # APGD early stopping
     for early_stop in [2, 4, 8, 16, 32, 64]:
@@ -114,10 +116,10 @@ def generate_all_heatmaps() -> None:
             (f"early_stop_at={early_stop}, APGD - margin_map, l2_norm=10",
              f"plots/transfer_attacks/transfer_heatmap/apgd_l2_margin_early_stop_{early_stop}_eps_10.png",
              f"../results/apgd_early_stopping_l2_10/stop_at_{early_stop}"),
-
             (f"early_stop_at={early_stop}, APGD - margin_map, linf_norm=0.04",
              f"plots/transfer_attacks/transfer_heatmap/apgd_linf_margin_early_stop_{early_stop}_eps_0.04.png",
-             f"../results/apgd_early_stopping_linf_0.04/stop_at_{early_stop}")]
+             f"../results/apgd_early_stopping_linf_0.04/stop_at_{early_stop}")
+        ]
 
     ### Square autoattack ###
     for norm, eps in [('l2', "10"), ('linf', "0.05")]:
@@ -190,7 +192,6 @@ def generate_all_heatmaps() -> None:
 
     for title, plot_fn, res_dir in plot_details:
         gather_and_plot(title, plot_fn, res_dir)
-        
 
 
 def gather_and_plot(
