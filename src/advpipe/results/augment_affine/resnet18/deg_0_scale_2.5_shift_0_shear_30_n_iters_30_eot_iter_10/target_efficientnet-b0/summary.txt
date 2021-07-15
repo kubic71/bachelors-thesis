@@ -1,0 +1,2 @@
+trasfer attack from resnet18.affine-deg-000.00-shift-000.00-scale-002.50-shear-030.00 to efficientnet-b0
+successfully transferred / total = 104/256 = 40.62%

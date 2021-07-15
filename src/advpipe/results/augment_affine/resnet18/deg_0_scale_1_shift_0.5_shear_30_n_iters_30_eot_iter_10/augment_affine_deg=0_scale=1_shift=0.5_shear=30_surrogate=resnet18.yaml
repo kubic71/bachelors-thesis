@@ -1,0 +1,49 @@
+attack_algorithm:
+  eot_iter: 10
+  epsilon: 10
+  n_iters: 30
+  name: apgd
+  norm: l2
+batch_size: 256
+config_filename: /content/bachelors-thesis/src/advpipe/.exported_configs/augment_affine_deg=0_scale=1_shift=0.5_shear=30_surrogate=resnet18.yaml
+dataset_config:
+  data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped_first_2000
+  dataset_type: imagenet-validation
+  load_only_organisms: true
+  size_limit: 256
+dont_save_images: true
+epsilon: 10
+multiple_target_configs:
+  loss:
+    margin: 0.0
+    name: margin_loss
+  model_type: local
+  name: squeezenet
+  names:
+  - wide_resnet50_2
+  - resnet18
+  - resnet50
+  - resnext50_32x4d
+  - efficientnet-b0
+  - efficientnet-b0-advtrain
+  - densenet-121
+  - squeezenet
+  output_mapping: organism_margin
+name: transfer-regime-multiple-targets
+norm: l2
+results_dir: results/augment_affine/resnet18/deg_0_scale_1_shift_0.5_shear_30_n_iters_30_eot_iter_10
+show_images: false
+skip_already_adversarial: false
+surrogate:
+  augmentations:
+  - degrees: 0
+    name: affine
+    scale: 1
+    shear: 30
+    shift: 0.5
+  loss:
+    margin: 0.0
+    name: margin_loss
+  model_type: local
+  name: resnet18
+  output_mapping: organism_margin

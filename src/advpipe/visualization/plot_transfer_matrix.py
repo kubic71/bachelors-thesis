@@ -8,7 +8,7 @@ from functools import lru_cache
 from typing import Any, Callable, Dict
 
 
-def plot_matrix(data: pd.DataFrame, plot_fn: str, title: str = "") -> Any:
+def plot_matrix(data: pd.DataFrame, plot_fn: str, title: str = "", figsize=(6, 6), square=True) -> Any:
     data_rows = []
 
     for surrogate in data["surrogate"].unique():
@@ -21,14 +21,14 @@ def plot_matrix(data: pd.DataFrame, plot_fn: str, title: str = "") -> Any:
 
     pd_matrix = pd.DataFrame(data_rows).pivot(index="surrogate", columns="target", values="foolrate")
 
-    plt.figure(figsize=(6, 6))
+    plt.figure(figsize=figsize)
     sns.set_theme(style="darkgrid")
     ax = sns.heatmap(pd_matrix,
                      fmt='.1%',
                      annot=True,
                      xticklabels=True,
                      yticklabels=True,
-                     square=True,
+                     square=square,
                      cbar=False,
                      annot_kws={"fontsize": 8})
     ax.set(xlabel="Target")
@@ -66,14 +66,41 @@ def augmentation_surrogate_name_remap(surrogate_name: str) -> str:
     return new_name
 
 
-def fix_augmentation_dataframe(df: pd.DataFrame, _: Dict) -> pd.DataFrame:
-    df["surrogate"] = df["surrogate"].map(augmentation_surrogate_name_remap)
-    return df
+def generate_noise_eot_iter_exp() -> None:
+    title = "Gaussian noise agumentation - std=35, n_iter=30\nNumber of gradient samples vs. transferability"
+    plot_fn = f"plots/transfer_attacks/transfer_heatmap/noise_eot_iter_exp_resnet18.png"
+    dfs = []
+    for eot_iter in [1 ,3, 10, 30, 100]:
+        res_dir = f"../results/noise_eot_iter_exp/resnet18/eot_iter_{eot_iter}_n_iters_30_std_35"
 
+        def add_n_iter_to_surrogate_name(df: pd.DataFrame, _: Dict) -> pd.DataFrame:
+            df["surrogate"] = df["surrogate"].map(lambda s_name: s_name + f",gradient_samples={eot_iter:03d}")
+            return df
+
+        dfs.append(gather_results(res_dir, dataframe_transform=add_n_iter_to_surrogate_name))
+
+    plot_matrix(pd.concat(dfs), plot_fn, title, figsize=(6, 6), square=True)
+
+def generate_augment_affine_exp() -> None:
+    # Affine-transform augmentation experiment
+
+    title = "Affine-transform augmentations - resnet18\nn_iters=30,grad_samples=10"
+    plot_fn = "plots/transfer_attacks/transfer_heatmap/augment_affine_n_iters_30_eot_iters_10_eps_10.png"
+    res_dir = "../results/augment_affine"
+
+    df = gather_results(res_dir)
+    plot_matrix(df, plot_fn, title, figsize=(9, 6), square=False)
 
 def generate_augment_heatmaps() -> None:
+    def fix_augmentation_dataframe(df: pd.DataFrame, _: Dict) -> pd.DataFrame:
+        df["surrogate"] = df["surrogate"].map(augmentation_surrogate_name_remap)
+        return df
+
     plot_details = []
-    # Augmentation experiment
+
+
+
+    # Gaussian-noise Augmentation experiment
     plot_details += [
         (f"Gaussian-noise augmentations (old-experiment) - APGD - resnet18\n - margin_map, n_iters=25, l2_norm=10",
          f"plots/transfer_attacks/transfer_heatmap/_augment_noise_old_apgd_l2_margin_eps_10.png",
@@ -84,6 +111,10 @@ def generate_augment_heatmaps() -> None:
         (f"Gaussian-noise augmentations (noisy gradient) - APGD - resnet18\n margin_map, n_iters=250, eot_iters=1, l2_norm=10",
          f"plots/transfer_attacks/transfer_heatmap/augment_noise_apgd_l2_margin_n_iters_250_eot_iters_1_eps_10.png",
          f"../results/apgd_augment_new/surrogate_resnet18/gaussian-noise_eot_iter_1_n_iters_250"),
+    ]
+
+    # Box-blur augmentation experiment
+    plot_details += [
         (f"Box-blur augmentations - APGD - resnet18\n margin_map, n_iters=50, l2_norm=10",
          f"plots/transfer_attacks/transfer_heatmap/augment_blur_apgd_l2_margin_n_iters_50_eps_10.png",
          f"../results/apgd_augment_new/surrogate_resnet18/box-blur_eot_iter_1_n_iters_50"),
@@ -95,9 +126,20 @@ def generate_augment_heatmaps() -> None:
 
 def generate_all_heatmaps() -> None:
     # format: (title, plot_filename, source_results_dir)
-    generate_augment_heatmaps()
+    generate_augment_affine_exp()
 
     plot_details = []
+
+
+    plot_details.append((f"Gaussian-noise augmentations - correct sampling - resnet18\n margin_map, n_iters=100, l2_norm=10",
+         f"plots/transfer_attacks/transfer_heatmap/augment_noise_correct_sampling_apgd_l2_margin_n_iters_100_eps_10.png",
+         f"../results/noise_correct_sampling"))
+
+    for n in [32, 64]:
+        plot_details.append(
+        (f"DEBUG ensemble elastic transform test - APGD \n margin_map, n_iters={n}, eot_iters=15, l2_norm=10",
+         f"plots/transfer_attacks/transfer_heatmap/ensemble_elastic_test_apgd_l2_margin_n_iters_{n}_eot_iters_15_eps_10.png",
+         f"../results/ensemble_elastic_test/elastic_3.5_eot_iter_15_n_iters_{n}"))
 
     plot_details.append(
         ("Elastic transform augmentation - APGD - resnet18\n margin_map, n_iters=25, eot_iters=10, l2_norm=10",
@@ -193,6 +235,8 @@ def generate_all_heatmaps() -> None:
     for title, plot_fn, res_dir in plot_details:
         gather_and_plot(title, plot_fn, res_dir)
 
+    generate_noise_eot_iter_exp()
+    generate_augment_heatmaps()
 
 def gather_and_plot(
         title: str,

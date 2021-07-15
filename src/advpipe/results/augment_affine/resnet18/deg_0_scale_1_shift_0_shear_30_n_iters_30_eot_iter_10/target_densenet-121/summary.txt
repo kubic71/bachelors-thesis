@@ -1,0 +1,2 @@
+trasfer attack from resnet18.affine-deg-000.00-shift-000.00-scale-001.00-shear-030.00 to densenet-121
+successfully transferred / total = 228/256 = 89.06%

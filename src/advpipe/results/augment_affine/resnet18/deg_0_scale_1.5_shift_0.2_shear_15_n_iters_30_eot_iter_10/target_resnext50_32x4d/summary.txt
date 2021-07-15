@@ -1,0 +1,2 @@
+trasfer attack from resnet18.affine-deg-000.00-shift-000.20-scale-001.50-shear-015.00 to resnext50_32x4d
+successfully transferred / total = 247/256 = 96.48%
