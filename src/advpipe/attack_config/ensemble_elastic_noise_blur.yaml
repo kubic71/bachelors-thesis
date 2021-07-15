@@ -1,6 +1,6 @@
 #@  def get_config_parameters():
 #@      for alpha in [3.2]:
-#@          yield {"eot_iter": 20, "n_iters": 64, "augment_name": "elastic", "param": alpha, "param_yaml": "alpha: " + str(alpha)}
+#@          yield {"eot_iter": 100, "n_iters": 16, "augment_name": "elastic", "param": alpha, "param_yaml": "alpha: " + str(alpha)}
 
 ---
 
