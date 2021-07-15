@@ -112,6 +112,22 @@ class FgsmTransferAlgorithmConfig(TransferAttackAlgorithmConfig):
         return FgsmTransferAlgorithm(surrogate, self.epsilon)
 
 
+class AdamPGDConfig(TransferAttackAlgorithmConfig):
+    name: str = "adam-pgd"
+    n_iters: int
+    gradient_samples: int
+    lr: float
+
+    def __init__(self, attack_config: Munch):
+        super().__init__(attack_config)
+        self.n_iters = attack_config.n_iters
+        self.gradient_samples = attack_config.gradient_samples
+        self.lr = attack_config.lr
+
+    def getAttackAlgorithmInstance(self, surrogate: LocalModel) -> FgsmTransferAlgorithm:
+        return AdamPGD(surrogate, self.epsilon, self.n_iters, self.lr, gradient_samples=self.gradient_samples) # type: ignore
+
+
 class SquareAutoAttackConfig(TransferAttackAlgorithmConfig):
     name: str = "square-autoattack"
     metric: Literal["L1", "L2", "Linf"]
@@ -153,6 +169,7 @@ from advpipe.attack_algorithms.rays import RaySAttackAlgorithm
 from advpipe.attack_algorithms.square_attack import SquareL2AttackAlgorithm
 from advpipe.attack_algorithms.passthrough_attack import PassthroughTransferAttackAlgorithm
 from advpipe.attack_algorithms.fgsm import FgsmTransferAlgorithm
+from advpipe.attack_algorithms.adam_pgd import AdamPGD
 from advpipe.attack_algorithms.square_auto_attack import SquareAutoAttack
 from advpipe.attack_algorithms.apgd_auto_attack import APGDAutoAttack
 
@@ -166,5 +183,6 @@ TRANSFER_ATTACK_ALGORITHM_CONFIGS = {
     FgsmTransferAlgorithmConfig.name: FgsmTransferAlgorithmConfig,
     PassthroughTransferAlgorithmConfig.name: PassthroughTransferAlgorithmConfig,
     SquareAutoAttackConfig.name: SquareAutoAttackConfig,
-    APGDAlgorithmConfig.name: APGDAlgorithmConfig
+    APGDAlgorithmConfig.name: APGDAlgorithmConfig,
+    AdamPGDConfig.name: AdamPGDConfig
 }

@@ -1,0 +1,67 @@
+#@  def get_config_parameters():
+#@      for surrogate in ["resnet18"]:
+#@          for deg in [0, 15, 30]:
+#@              for scale in [1, 1.5, 2.5]:
+#@                  for shift in [0, 0.2, 0.5]:
+#@                      for shear in [0, 15, 30]:
+#@                          yield {"deg": deg, "scale": scale, "shift": shift, "shear": shear, "surrogate": surrogate}
+
+---
+
+attack_regime:
+  name : transfer-regime-multiple-targets
+  show_images : False
+  skip_already_adversarial: False
+  dont_save_images: True
+  results_dir: results/augment_affine/{surrogate}/deg_{deg}_scale_{scale}_shift_{shift}_shear_{shear}_n_iters_30_eot_iter_20
+
+  attack_algorithm: 
+    name: apgd
+    n_iters: 30
+    eot_iter: 20
+
+  epsilon: 10
+  norm: l2
+  batch_size: 256
+  # batch_size: 2
+
+  surrogate:
+    model_type: local
+    name: {surrogate}
+    output_mapping: organism_margin
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+    
+    augmentations:
+      - name: affine
+        degrees: {deg}
+        scale: {scale}
+        shift: {shift}
+        shear: {shear}
+
+  dataset_config:
+    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped_first_2000
+    dataset_type: imagenet-validation
+    load_only_organisms: True
+    size_limit: 500
+
+  multiple_target_configs:
+    model_type: local
+    names:
+      - wide_resnet50_2
+      - resnet18
+      - resnet50
+      - resnext50_32x4d
+      - efficientnet-b0
+      - efficientnet-b0-advtrain
+      - densenet-121
+      - squeezenet
+
+    output_mapping: organism_margin
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+

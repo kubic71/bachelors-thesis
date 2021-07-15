@@ -6,6 +6,7 @@ from advpipe import utils
 from abc import ABC, abstractmethod
 from munch import Munch
 import kornia as K
+import torch.distributions
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
@@ -55,11 +56,20 @@ class TargetModelConfig(ABC):
 
 def get_image_augmentation(config: Munch) -> Tuple[str, Callable[[torch.Tensor], torch.Tensor]]:
     if config.name == "box-blur":
-        return (f"blur-{utils.zfill_align_float(config.kernel_size)}", K.augmentation.RandomBoxBlur(kernel_size=(config.kernel_size, config.kernel_size), border_type="reflect", normalized=True, return_transform=False, same_on_batch=True, p=1))
+        return (f"blur-{utils.zfill_align_float(config.kernel_size)}", K.augmentation.RandomBoxBlur(kernel_size=(config.kernel_size, config.kernel_size), border_type="reflect", normalized=True, return_transform=False, same_on_batch=True, p=1).cuda())
     elif config.name == "gaussian-noise":
-        return (f"noise-{utils.zfill_align_float(config.std)}", K.augmentation.RandomGaussianNoise(mean=0.0, std=config.std/255, return_transform=False, same_on_batch=True, p=1))
+        def reparametrized_gaussian_noise(inp: torch.Tensor) -> torch.Tensor:
+            n_dist = torch.distributions.Normal(inp, config.std/255) # type: ignore
+            return n_dist.rsample() # type: ignore
+
+        # to my knowledge, kornia doesn't make use of reparametrization trick in differentiating through the gaussian noise, which is very sample-inefficient
+        # transform = K.augmentation.RandomGaussianNoise(mean=0.0, std=config.std/255, return_transform=False, same_on_batch=True, p=1).cuda()
+        transform = reparametrized_gaussian_noise
+        return (f"noise-{utils.zfill_align_float(config.std)}", transform)
     elif config.name == "elastic":
-        return (f"elastic-{utils.zfill_align_float(config.alpha)}" , K.augmentation.RandomElasticTransform(kernel_size=(63, 63), sigma=(32.0, 32.0), alpha=(config.alpha, config.alpha), align_corners=False, mode='bilinear', return_transform=False, same_on_batch=True, p=1))
+        return (f"elastic-{utils.zfill_align_float(config.alpha)}" , K.augmentation.RandomElasticTransform(kernel_size=(63, 63), sigma=(32.0, 32.0), alpha=(config.alpha, config.alpha), align_corners=False, mode='bilinear', return_transform=False, same_on_batch=True, p=1).cuda())
+    elif config.name == "affine":
+        return f"affine-deg-{utils.zfill_align_float(config.degrees)}-shift-{utils.zfill_align_float(config.shift)}-scale-{utils.zfill_align_float(config.scale)}-shear-{utils.zfill_align_float(config.shear)}", K.augmentation.RandomAffine(config.degrees, translate=(config.shift, config.shift), scale=(1, config.scale), shear=config.shear, resample='BILINEAR', return_transform=False, same_on_batch=True, align_corners=False, padding_mode='ZEROS', p=1, keepdim=True)
     else:
         raise NotImplementedError
 
@@ -100,7 +110,7 @@ def load_augmentations(model_conf: Munch) -> Tuple[List, str]:
     for aug_conf in utils.get_config_attr(model_conf, "augmentations", []):
         desc, func = get_image_augmentation(aug_conf)
         augmentations_desc.append(desc)
-        augmentations.append(func.cuda()) # type: ignore
+        augmentations.append(func) # type: ignore
 
     return augmentations, ",".join(augmentations_desc)
 
