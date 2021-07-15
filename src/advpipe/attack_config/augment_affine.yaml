@@ -13,12 +13,12 @@ attack_regime:
   show_images : False
   skip_already_adversarial: False
   dont_save_images: True
-  results_dir: results/augment_affine/{surrogate}/deg_{deg}_scale_{scale}_shift_{shift}_shear_{shear}_n_iters_30_eot_iter_20
+  results_dir: results/augment_affine/{surrogate}/deg_{deg}_scale_{scale}_shift_{shift}_shear_{shear}_n_iters_30_eot_iter_10
 
   attack_algorithm: 
     name: apgd
     n_iters: 30
-    eot_iter: 20
+    eot_iter: 10
 
   epsilon: 10
   norm: l2
@@ -45,7 +45,7 @@ attack_regime:
     data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped_first_2000
     dataset_type: imagenet-validation
     load_only_organisms: True
-    size_limit: 500
+    size_limit: 256
 
   multiple_target_configs:
     model_type: local
