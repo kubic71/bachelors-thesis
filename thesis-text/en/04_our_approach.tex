@@ -1,7 +1,7 @@
 \chapter{Our approach}
 
 \section{Adapting off-the-shelf attack algorithms to partial-information setting}
-Cloud-based image classifier don't usually classify input images into a fixed number of classes. They instead output variable-length list of probable labels with scores. And what's worse, those scores aren't even probabilities, because they don't sum up to one. 
+Cloud-based image classifiers don't usually classify input images into a fixed number of classes. They instead output variable-length list of probable labels with scores. And what's worse, those scores aren't even probabilities, because they don't sum up to one. 
 
 Most of current score-based SoTA adversarial attacks assume that we have access to all output logits of the attacked target classifier. If we want to use them, we need to map somehow the cloud's variable-length score-output to fixed-length vector, which will simulate output of a standard CNN classifier.
 
@@ -9,6 +9,10 @@ Most of current score-based SoTA adversarial attacks assume that we have access 
 To simplify the experiments, we define a simple benchmark attack scenario. Given an image containing a living thing, fool the target into classifying it as a non-living object.
 
 We chose this split, because ImageNet dataset is relatively balanced between those two semantic categories. Why ImageNet? Despite the dataset being quite old, it is still the most heavily used dataset in the research community and the majority of freely available pretrained models are pretrained on it.
+
+Furthermore, when $\|C\| = 2$ (where $C$ is a set of output categories), targeted and untargeted attack scenarios don't differ anymore and are neatly unified.
+
+Adapting the attack algorithm to a different attack objective only requires swapping the label mapping layer.
 
 \subsubsection{Imagenet category mapping}
 Classic ImageNet dataset contains real-world photos, each corresponding to one and only one classification category out of 1000 possible categories. Each ImageNet category $c$ corresponds to a unique wordnet synset $S(c)$. These synsets are rather specific, but we can take a look at their set of hypernyms $h(S(c))$. If this hypernym set $h(S(c))$ contains the $organism$ synset, it should be an organism, otherwise $c$ is probably an object. 
@@ -27,62 +31,88 @@ This situation isn't so clear-cut in the case of general labels returned by clou
 
 
 \section{PoC black-box GVision attacks}
+\label{poc_gvision_attacks}
 We first explored the viability and sample-efficiency of current SoTA black-box attacks. We ran the following against Google Vision API image classifier.
 
 \begin{itemize}
-    \item TREMBA
-    \item RayS
-    \item SquareAttack
-    \item Sparse-RS
+    \item \ref{tremba_poc} TREMBA (\cite{Huang2020BlackBoxAA})
+    \item \ref{rays_poc} RayS (\cite{Chen2020RaySAR})
+    \item \ref{square_poc} SquareAttack (\cite{Andriushchenko2020SquareAA})
+    \item \ref{sparse_rs_poc} Sparse-RS (\cite{Croce2020SparseRSAV})
 \end{itemize}
 
-TODO: describe each attack and show sample images
+TODO: describe each attack briefly and show sample images
 
 \subsection{TREMBA}
+\label{tremba_poc}
 \subsection{RayS}
+\label{rays_poc}
 \subsection{SquareAttack}
+\label{square_poc}
 \subsection{Sparse-RS}
+\label{sparse_rs_poc}
+
+We go into more details in the Experiments \ref{experiments_chap}
 
 
 \section{The need for query-efficient attack}
-
 % The are many problems with the number of queries being in the hundreds/thousands.
+In the previous section \ref{poc_gvision_attacks} we empirically showed, that Google Vision API isn't 100\% robust to iterative blackbox atttacks. But although the previously mentioned black-box attacks are often successful in producing adversarial image, query count to the target may be often unacceptably high. The problem is that these blackbox attacks (with the exception of TREMBA) mostly rely on random search and don't make use of the gradient similarity of various CNN models. In princinple, they cannot do much better alone. Huge query stress to the target is troublesome for several reasons:
 
 \begin{itemize}
     \item{High cost - 1.5\$ per 1000 queries}
     \item{Raising suspicion}
-    \item{Unrealistic in practical settings}
+    \item{Often unrealistic in practical setting}
 \end{itemize}
 
 \section{Leveraging transferability}
-Saves queries. Output of transfer-attack can be good starting point for blackbox attack (citation needed).
+\label{Leveraging_transferability}
+After these early experiments that proved the concept, we focused our attention on transferability, which has a huge potential to save queries.
+
+\subsection{Transfer attacks provide better seeds for blackbox optimization}
+\label{transfer_attack_seeds}
+Even if the localy-produced adversarial images don't transfer directly to the target, \cite{Suya2020HybridBA} showed, that the output of transfer-attack can provide better starting seeds for blackbox optimization attacks and improve their query efficiency, which basically adds a degree of freedom to the blackbox optimization. They also discuss different prioritization strategies, as the the number of seeds produced isn't limited by target queries and we can therefore afford to produce as many candidate starting points as we like.
 
 \subsection{Train, validate, test}
 There is a weak analogy between the crafting of an adversarial example and the training of machine learning model. ML model weights are first fitted againt specified loss contraint. This constraint is (among other things) a function of training data. The weights are then validated and checked against overfitting on a slightly different constraint, which now depends on a validation dataset. When all is good, model is happily deployed to production.
 
-With a bit of imagination, ML model weights correspond to pixel values of an adversarial image. The pixels are first trained by gradient descent on training loss provided by a surrogate model. They are validated against ensemble set of diverse indepenent classifiers, and when the foolrate is good, the are sent for test evaluation to the cloud. 
+With a bit of imagination, ML model weights correspond to pixel values of an adversarial image. The pixels are first trained by gradient descent on training loss provided by a surrogate model. They are validated against ensemble set of diverse indepenent classifiers, and when the foolrate is good, they are sent for test evaluation to the cloud. 
 
 \subsection{Local training and validation is cheap}
-We want to offload the cloud query-stress to local simulation as much as possible.
+We want to offload the cloud query-stress to local simulation as much as possible. An attacker can often afford to spend orders of magnitude more queries to local surrogates and validation models than to the actual target.
 
 \subsection{Multiple candidates save queries}
 Iterative black-box attacks usually have query-distrubutions which are tail-heavy. In other words, the median queries needed to create a successful adversarial image are much lower than the average queries.
 
-Let's image an attack scenario, where we want to submit a photo to a platform with automatic content moderation mechanism. Querying the target hundreds of times would certainly attract unwanted attention and our heavy attack queries can quickly trigger human evaluation. If our primary goal is to craft only one adversarial image and as much as possible evade detection, having multiple candidate images would give us another degree of freedom and it could potentially mitigate the heavy-tail problem.
+Let's image an attack scenario, where we want to submit a photo to a platform with automatic content moderation mechanism. Querying the target hundreds of times would certainly attract unwanted attention and our heavy queries can quickly trigger human evaluation. If our primary goal is to craft only one adversarial image and as much as possible evade detection, having multiple candidate images would give us another degree of freedom and it could potentially mitigate the heavy-tail problem. This approach can be in principle transparently combined with the multiple-seed candidate suggestions mentioned in \ref{Leveraging_transferability} using the same prioritization candidate scoring mechanism.
+
 
 \section{The need for attack pipeline}
-As of now, there isn't any general whitebox/blackbox attack pipeline which would combine different algorithms and allow us attacking cloud services in a practical way.
+We argued in \ref{Leveraging_transferability} that combining multiple whitebox and blackbox attack approaches could create more powerful attack as well as giving us more freedom and flexibility to tailor this combination to a specific attack scenario constraints. As of now, there isn't any general whitebox/blackbox attack pipeline which would combine different algorithms and allow us attacking cloud services in a practical way.
 
-\subsection{The need for unified attack API}
-Such that we can combine multiple attack approaches and create useful diverse toolbox.
+\subsection{Possibility of multiple blackbox workers}
+We can also image running multiple different attacks in paralel and having some meta-controller orchestrating individual attack algorithms such that we minimize queries to the target and efficiently make use of the additional degrees of freedom.
 
-\subsection{Possibility of multiple candidate images}
-Practical in real-world setting. We need to be able to run attacks in paralel and have some meta-controller orchestrating individual attack algorithms such that we minimize queries to the target and efficiently make use of the additional degree of freedom.
 
-\subsection{AdvPipe - the vision}
+\subsection{The need for unified attack and model API}
+There are sereval frameworks unifing whitebox/blackbox attacks. To name a few, there is 
+FoolBox (\cite{Rauber2020FoolboxNF}) or AutoAttack (\cite{DBLP:journals/corr/abs-2003-01690}). 
+
+Although they are excellent at testing the robust of local models, they don't give us the flexibility we need to implement all the pipeline features mentioned previously. They cannot be used without some modification to attack cloud models and their optimization attacks cannot be cooperatively scheduled step by step, which is what would be required for effective multi-attack orchestration.
+
+\section{AdvPipe}
+
+\subsection{The vision}
+
 Show what was the plan.
 
-\subsection{AdvPipe - the reality}
+\subsection{The reality}
 This is sad. :(
 
 Make some excuses why you didn't make it in time.
+
+Make some flowchart of what is actually working.
+
+
+\subsection{Implementation}
+
