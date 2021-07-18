@@ -11,6 +11,11 @@
 %
 %  ===========================================================================
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%% Generic ML and DL references %%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 @book{Goodfellow-et-al-2016,
     title={Deep Learning},
     author={Ian Goodfellow and Yoshua Bengio and Aaron Courville},
@@ -18,6 +23,14 @@
     note={\url{http://www.deeplearningbook.org}},
     year={2016}
 }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%% Adversarial attack papers %%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 @article{Chen2020RaySAR,
   title={RayS: A Ray Searching Method for Hard-label Adversarial Attack},
@@ -51,20 +64,14 @@
   pages={2607}
 }
 
-@article{DBLP:journals/corr/abs-2003-01690,
-  author    = {Francesco Croce and
-               Matthias Hein},
-  title     = {Reliable evaluation of adversarial robustness with an ensemble of
-               diverse parameter-free attacks},
-  journal   = {CoRR},
-  volume    = {abs/2003.01690},
-  year      = {2020},
-  url       = {https://arxiv.org/abs/2003.01690},
-  archivePrefix = {arXiv},
-  eprint    = {2003.01690},
-  timestamp = {Tue, 10 Mar 2020 13:33:48 +0100},
-  biburl    = {https://dblp.org/rec/journals/corr/abs-2003-01690.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
+
+@misc{croce2020reliable,
+      title={Reliable evaluation of adversarial robustness with an ensemble of diverse parameter-free attacks}, 
+      author={Francesco Croce and Matthias Hein},
+      year={2020},
+      eprint={2003.01690},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
 }
 
 
@@ -83,7 +90,149 @@
   year={2020},
   volume={abs/1911.07140}
 }
+
+
+@inproceedings{deng2009imagenet,
+  title={Imagenet: A large-scale hierarchical image database},
+  author={Deng, Jia and Dong, Wei and Socher, Richard and Li, Li-Jia and Li, Kai and Fei-Fei, Li},
+  booktitle={2009 IEEE conference on computer vision and pattern recognition},
+  pages={248--255},
+  year={2009},
+  organization={Ieee}
+}
+
+@misc{carlini2017evaluating,
+      title={Towards Evaluating the Robustness of Neural Networks}, 
+      author={Nicholas Carlini and David Wagner},
+      year={2017},
+      eprint={1608.04644},
+      archivePrefix={arXiv},
+      primaryClass={cs.CR}
+}
+
+% adversarial training defense
+@misc{tramer2020ensemble,
+      title={Ensemble Adversarial Training: Attacks and Defenses}, 
+      author={Florian Tramèr and Alexey Kurakin and Nicolas Papernot and Ian Goodfellow and Dan Boneh and Patrick McDaniel},
+      year={2020},
+      eprint={1705.07204},
+      archivePrefix={arXiv},
+      primaryClass={stat.ML}
+}
+
+
+@article{Chen2017ZOOZO,
+  title={ZOO: Zeroth Order Optimization Based Black-box Attacks to Deep Neural Networks without Training Substitute Models},
+  author={Pin-Yu Chen and Huan Zhang and Yash Sharma and Jinfeng Yi and Cho-Jui Hsieh},
+  journal={Proceedings of the 10th ACM Workshop on Artificial Intelligence and Security},
+  year={2017}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%% End of adversarial attack papers %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%% references to local pretrained models %%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ResNet
+@misc{he2015deep,
+      title={Deep Residual Learning for Image Recognition}, 
+      author={Kaiming He and Xiangyu Zhang and Shaoqing Ren and Jian Sun},
+      year={2015},
+      eprint={1512.03385},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+
+% ResNeXt
+@misc{xie2017aggregated,
+      title={Aggregated Residual Transformations for Deep Neural Networks}, 
+      author={Saining Xie and Ross Girshick and Piotr Dollár and Zhuowen Tu and Kaiming He},
+      year={2017},
+      eprint={1611.05431},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+} 
+
+% WideResnet-50-2
+@misc{zagoruyko2017wide,
+      title={Wide Residual Networks}, 
+      author={Sergey Zagoruyko and Nikos Komodakis},
+      year={2017},
+      eprint={1605.07146},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+
   
+% squeezenet
+@misc{iandola2016squeezenet,
+      title={SqueezeNet: AlexNet-level accuracy with 50x fewer parameters and <0.5MB model size}, 
+      author={Forrest N. Iandola and Song Han and Matthew W. Moskewicz and Khalid Ashraf and William J. Dally and Kurt Keutzer},
+      year={2016},
+      eprint={1602.07360},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+
+% densenet
+@misc{huang2018densely,
+      title={Densely Connected Convolutional Networks}, 
+      author={Gao Huang and Zhuang Liu and Laurens van der Maaten and Kilian Q. Weinberger},
+      year={2018},
+      eprint={1608.06993},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+
+% efficient-net
+@misc{tan2020efficientnet,
+      title={EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks}, 
+      author={Mingxing Tan and Quoc V. Le},
+      year={2020},
+      eprint={1905.11946},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+
+% huggingface
+@misc{wolf2020huggingfaces,
+      title={HuggingFace's Transformers: State-of-the-art Natural Language Processing}, 
+      author={Thomas Wolf and Lysandre Debut and Victor Sanh and Julien Chaumond and Clement Delangue and Anthony Moi and Pierric Cistac and Tim Rault and Rémi Louf and Morgan Funtowicz and Joe Davison and Sam Shleifer and Patrick von Platen and Clara Ma and Yacine Jernite and Julien Plu and Canwen Xu and Teven Le Scao and Sylvain Gugger and Mariama Drame and Quentin Lhoest and Alexander M. Rush},
+      year={2020},
+      eprint={1910.03771},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
+
+% GPT-2
+@article{radford2019language,
+  title={Language Models are Unsupervised Multitask Learners},
+  author={Radford, Alec and Wu, Jeff and Child, Rewon and Luan, David and Amodei, Dario and Sutskever, Ilya},
+  year={2019}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% Some example bibtex references %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 @BOOK{Andel07,
   title = {Základy matematické statistiky},
   publisher = {Matfyzpress},

@@ -3,31 +3,71 @@
 \section{Adapting off-the-shelf attack algorithms to partial-information setting}
 Cloud-based image classifiers don't usually classify input images into a fixed number of classes. They instead output variable-length list of probable labels with scores. And what's worse, those scores aren't even probabilities, because they don't sum up to one. 
 
-Most of current score-based SoTA adversarial attacks assume that we have access to all output logits of the attacked target classifier. If we want to use them, we need to map somehow the cloud's variable-length score-output to fixed-length vector, which will simulate output of a standard CNN classifier.
+Most of current score-based SoTA adversarial attacks assume that we have access to all output logits of the attacked target classifier. If we want to use them, we need to map somehow the cloud's variable-length score-output to fixed-length vector, which will simulate logits output of a standard CNN classifier.
+
 
 \subsection{Object-organism binary classification mapping}
-To simplify the experiments, we define a simple benchmark attack scenario. Given an image containing a living thing, fool the target into classifying it as a non-living object.
+To simplify the experiments, we define a simple benchmarking attack scenario:
 
-We chose this split, because ImageNet dataset is relatively balanced between those two semantic categories. Why ImageNet? Despite the dataset being quite old, it is still the most heavily used dataset in the research community and the majority of freely available pretrained models are pretrained on it.
+\begin{nscenter}
+\bfseries Given an image containing a living thing, fool the target into classifying it as a non-living object.
+\end{nscenter}
+
+This choice makes our simulated classifier a binary one. It should assign each input image $(x)$ an organism score $o_{organism}(x)$ and object score $o_{object}(x)$. This 2-D score vector $(o_{object}(x), o_{organism}(x))$ is further denoted by $o(x)$ for simlicity.
+
+We chose this split, because we perform majority of our experiments on ImageNet validation dataset (\cite{deng2009imagenet}) and ImageNet is relatively balanced between those two semantic categories. 
+
+Why ImageNet? Despite the dataset being quite old, it is still the most heavily used dataset in the research community and the majority of freely available pretrained models are pretrained on it.
 
 Furthermore, when $\|C\| = 2$ (where $C$ is a set of output categories), targeted and untargeted attack scenarios don't differ anymore and are neatly unified.
 
 Adapting the attack algorithm to a different attack objective only requires swapping the label mapping layer.
 
 \subsubsection{Imagenet category mapping}
-Classic ImageNet dataset contains real-world photos, each corresponding to one and only one classification category out of 1000 possible categories. Each ImageNet category $c$ corresponds to a unique wordnet synset $S(c)$. These synsets are rather specific, but we can take a look at their set of hypernyms $h(S(c))$. If this hypernym set $h(S(c))$ contains the $organism$ synset, it should be an organism, otherwise $c$ is probably an object. 
+Classic ImageNet dataset contains real-world photos, each corresponding to one and only one classification category out of 1000 possible categories. Each ImageNet category $c$ corresponds to a unique wordnet synset $w(c)$. These synsets are rather specific, but we can take a look at their set of hypernyms $h(w(c))$. If this hypernym set $h(w(c))$ contains the $organism$ synset, it should be an organism, otherwise $c$ is probably an object. 
 
-Writen more rigorously, we map each ImageNet category $c$ into $\{organism, object\}$ using the following maping $M(c)$:
+Writen more rigorously, we map each ImageNet category $c$ into $\{organism, object\}$ using the following maping $m_{local}(c)$:
 
-\[ M(c) = \begin{cases} 
-      organism & organism \in h(S(c)) \\
-      object & organism \notin h(S(c)) \\
+\[ m_{local}(c) = \begin{cases} 
+      organism & organism \in h(w(c)) \\
+      object & organism \notin h(w(c)) \\
    \end{cases}
 \]
 
 
 \subsubsection{Cloud label mapping}
-This situation isn't so clear-cut in the case of general labels returned by cloud classifier. Labels might not even be single words, but whole sentences. Therefore we use a powerful GPT-2 transformer to encode text labels into embedding vector space and then compute their similarity with carefully chosen set of 4 labels: $\{animal, species, object, instrument\}$. Resulting mapping is the $argmax$ over those 4 similarity scores.
+This situation isn't so clear-cut in the case of general labels returned by cloud classifier. Labels might not even be single words, but whole sentences. We therefore resort to a more powerful label classification method and use a GPT-2 transformer (\cite{radford2019language}) for this matter. More specifically, we use the HuggingFace (\cite{wolf2020huggingfaces}) \href{https://joeddav.github.io/blog/2020/05/29/ZSL.html}{zero-shot classification pipeline} to encode text labels into embedding vector space and then compute their similarity $s(l_{cloud}, l_{gold})$ with carefully chosen set of organism labels $L_{organism} = \{animal, species\}$ and with a set of object labels $L_{object} = \{object, instrument\}$. The resulting binary cloud label mapping $m_{cloud}(l_{cloud})$ is defined as follows:
+
+\[ m_{cloud}(l_{cloud}) = \begin{cases} 
+      organism & \argmax{c \in (L_{organism} \bigcup L_{object})} s(l_{cloud}, c) \in L_{organism} \\
+      object & \argmax{c \in (L_{organism} \bigcup L_{object})} s(l_{cloud}, c) \in L_{object} \\
+   \end{cases}
+\]
+
+From now on, by $m(c)$ we mean either $m_{local}(c)$ or $m_{cloud}(l_{cloud})$ where the distinction wouldn't make any difference.
+
+\subsubsection{Computing the adversarial loss}
+There is one more step we have to do to transparently simulate a binary classifier with 2 output logits.
+
+By passing the model outputs through the separation mapping $m(c)$ we obtain two score sets: $S_{organism}$ and $S_{object}$. In the local case:
+$$\|S_{organism}\| + \|S_{object}\| = \|L_{\text{ImageNet}}\| = 1000$$.
+
+In the case of a general cloud classifier these sets have variable sizes and one or both can be even empty.
+
+There are multiple sensible ways to produce output logits vector $o(x)$ that would roughly correspond to an organism binary classifier output and which could be attacked using standard untargeted adversarial attacks.
+
+Just to name a few choices for $o(x)$ that could intuitively work:
+\begin{enumerate}
+    \item top-1 score: $\max S$ 
+    \item sum of logits: $\sum S$
+    \item sum of un-normalized probabilities: $\sum exp(S)$
+    \item log-sum of probabilities: $\log \sum softmax(S)$
+    \item ...
+\end{enumerate}
+
+But in the end we want to achive a misclasification of the original organism image $x_{org}$. \\ If we go with 1) and produce output vector $o(x) = (\max S_{object}, \max S_{organism})$, misclasification is achived when $o(x)_0 > o(x)_1$. We can define a margin loss objective $\mathcal{L}_{margin}(x, \kappa) = \max S_{organism}(x) - \max S_{object}(x) + \kappa$ with additional parameter $\kappa$, by which we adjust our requirement for the degree of misclasification.
+
+Another hint that this might be a solid choice comes from the \cite{carlini2017evaluating}, where they discuss the choice of optimization objective. They try a number of different alternatives, but in the end they conclude that optimizing the margin loss works the best, so we stick with it.
 
 
 \section{PoC black-box GVision attacks}
@@ -57,13 +97,17 @@ We go into more details in the Experiments \ref{experiments_chap}
 
 \section{The need for query-efficient attack}
 % The are many problems with the number of queries being in the hundreds/thousands.
-In the previous section \ref{poc_gvision_attacks} we empirically showed, that Google Vision API isn't 100\% robust to iterative blackbox atttacks. But although the previously mentioned black-box attacks are often successful in producing adversarial image, query count to the target may be often unacceptably high. The problem is that these blackbox attacks (with the exception of TREMBA) mostly rely on random search and don't make use of the gradient similarity of various CNN models. In princinple, they cannot do much better alone. Huge query stress to the target is troublesome for several reasons:
+In the previous section \ref{poc_gvision_attacks} we empirically showed, that Google Vision API isn't 100\% robust to iterative blackbox atttacks. But although the previously mentioned blackbox attacks are often successful in producing adversarial image, query count to the target may be often unacceptably high. Huge query stress to the target is troublesome for several reasons:
 
 \begin{itemize}
     \item{High cost - 1.5\$ per 1000 queries}
     \item{Raising suspicion}
     \item{Often unrealistic in practical setting}
 \end{itemize}
+
+
+The problem is that these blackbox attacks (with the exception of TREMBA) mostly rely on random search and don't make use of the gradient similarity of various CNN models. The high dimensionality of the input data doesn't make the blackbox optimization task easy. Current SoTA blackbox attacks that don't use any gradient priors are already at the query efficiency limit with their medium queries being often less than 100 (but that of course depends on the precise threat-model under which the attack is evaluated). Even though the median in the hundreds is amazing when compared to early attempts like \cite{Chen2017ZOOZO} which required queries on the order of $10^4$, it is still not satisfactory for a practical use. 
+
 
 \section{Leveraging transferability}
 \label{Leveraging_transferability}
@@ -96,23 +140,32 @@ We can also image running multiple different attacks in paralel and having some 
 
 \subsection{The need for unified attack and model API}
 There are sereval frameworks unifing whitebox/blackbox attacks. To name a few, there is 
-FoolBox (\cite{Rauber2020FoolboxNF}) or AutoAttack (\cite{DBLP:journals/corr/abs-2003-01690}). 
+FoolBox (\cite{Rauber2020FoolboxNF}) or AutoAttack (\cite{croce2020reliable}). 
 
-Although they are excellent at testing the robust of local models, they don't give us the flexibility we need to implement all the pipeline features mentioned previously. They cannot be used without some modification to attack cloud models and their optimization attacks cannot be cooperatively scheduled step by step, which is what would be required for effective multi-attack orchestration.
+Although they are excellent at testing the robustness of local models, they don't give us the flexibility we need to implement all the pipeline features mentioned previously. They cannot be used without some modification to attack cloud models and their optimization attacks cannot be cooperatively scheduled step by step, which is what would be required for effective multi-attack orchestration.
 
 \section{AdvPipe}
 
 \subsection{The vision}
-
-Show what was the plan.
+Solves all our problems. At least in theory.
 
 \subsection{The reality}
-This is sad. :(
+Solves some of our problems. Like 10\%.
 
-Make some excuses why you didn't make it in time.
+TODO: Make some excuses why you didn't make it in time.
 
-Make some flowchart of what is actually working.
+TODO: Make some flowchart of what is actually working.
 
 
-\subsection{Implementation}
+\section{Implementation}
+
+
+
+
+\subsection{Wrapping whitebox and blackbox models}
+All models (cloud, local) are wrapped as PyTorch \codeword{torch.nn.Modules}. This way they can be used in and plug-and-play manner and passed easily to existing attack algorithms.
+
+Let $L(label)$
+
+\subsubsection{Wrapping cloud models}
 

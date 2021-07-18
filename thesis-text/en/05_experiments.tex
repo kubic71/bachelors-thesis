@@ -32,8 +32,25 @@ Here go all the different transfer-matrices
 
 \subsection{Choice of dataset}
 
-\subsection{Choice of classifies}
+\subsection{Choice of local models}
+We performed all our experiments on the following pretrained PyTorch ImageNet models.
 
+\begin{itemize}
+    \item ResNet-18, ResNet-50 (\cite{he2015deep})
+    \item ResNeXt-50 (32x4d) (\cite{xie2017aggregated})
+    \item Wide-ResNet-50-2 (\cite{zagoruyko2017wide})
+    \item Squeezenet (\cite{iandola2016squeezenet})
+    \item DenseNet-121 (\cite{huang2018densely})
+    \item EfficientNet-b0 (\cite{tan2020efficientnet})
+    \item EfficientNet-b0 adversarially trained (\cite{tramer2020ensemble})
+\end{itemize}
+
+
+Apart from EfficientNets, all models were taken from the \href{https://pytorch.org/vision/stable/models.html}{torchvision.models} Python package. For the EfficientNets we used \href{https://github.com/lukemelas/EfficientNet-PyTorch}{github.com/lukemelas/EfficientNet-PyTorch} reimplementation, because the original implementation uses in Tensorflow.
+
+\subsection{Baseline}
+\subsection{Baseline}
+\subsection{Baseline}
 \subsection{Baseline}
 
 \section{Transferability evaluation on GVision}
