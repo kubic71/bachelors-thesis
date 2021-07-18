@@ -7,6 +7,7 @@ Most of current score-based SoTA adversarial attacks assume that we have access 
 
 
 \subsection{Object-organism binary classification mapping}
+\label{label_mapping}
 To simplify the experiments, we define a simple benchmarking attack scenario:
 
 \begin{nscenter}
@@ -158,14 +159,34 @@ TODO: Make some flowchart of what is actually working.
 
 
 \section{Implementation}
+AdvPipe is implemented in Python 3.8 and uses primarily PyTorch 1.9.0 (\cite{paszke2019pytorch}) and NVIDIA Cuda as the computational backend.
+
+\subsection{Attack regimes}
+\subsubsection{Cooperative iterative regime}
+\subsubsection{Transfer regime}
+\subsubsection{Transfer regime with multiple targets}
 
 
-
+\subsection{Attack algorithms}
+\subsubsection{Whitebox}
+\subsubsection{Blackbox}
 
 \subsection{Wrapping whitebox and blackbox models}
-All models (cloud, local) are wrapped as PyTorch \codeword{torch.nn.Modules}. This way they can be used in and plug-and-play manner and passed easily to existing attack algorithms.
+All models (cloud, local) are wrapped as PyTorch \codeword{torch.nn.Modules}. This way they can be used in a plug-and-play manner and passed easily to existing attack algorithms or frameworks like FoolBox (\cite{Rauber2020FoolboxNF}). Model outputs are mapped to a 2-D score vector using the mapping discussed in \ref{label_mapping}, which allows us to optimize our custom binary objective.
 
-Let $L(label)$
+Cloud models are compatible with any blackbox attacks, as long as the attacks don't require the gradients (which they shouldn't anyway).
 
-\subsubsection{Wrapping cloud models}
+Local models are on the other hand fully differentiable, so we can attack them with whitebox attacks on top of the standard blackbox attacks. 
 
+\subsubsection{Preprocessing}
+In chapter \ref{experiments_chap} we thoroughly explore the effects of different augmentation and regularization techniques to enhance transferability. These are often implemented as stochastic preprocessing layers which are differentiable. For this purpose we mostly use Kornia \textendash \space differentiable computer vision library for PyTorch (\cite{riba2019kornia}).
+
+\subsection{Configuration}
+AdvPipe is highly configurable by using YAML config files. These are parsed and checked by \codeword{config\_datamodel.py}.
+
+
+\subsubsection{Config templating}
+The YAML configs files also support simple templating mechanism, which can be used to run multiple experiments with slightly different hyperparameters. This is in line with the DRY pricinple and helps to keep the number of configuration files in sane numbers.
+
+\subsection{Dependency management}
+As our experiments were being run on a number of differrent machines with different environments, easily installing AdvPipe reliably and escaping dependency hell became our priority number one. We decided to do away with \href{https://pip.pypa.io/en/stable/}{pip}, that can often leave the Python virtual environment in an inconsistent state and decided to manage our dependencies with an excellent pip alternative \href{https://python-poetry.org/}{Poetry}. We never looked back.
