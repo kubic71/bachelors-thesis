@@ -28,9 +28,8 @@ Show an image of nice cat.
 
 
 \section{Local transferability experiments}
-Here go all the different transfer-matrices
+Motivated by the not-ideal query-efficiency of pure-blackbox attacks (\ref{need_for_query_efficiency}), we moved to transfer attacks to see how far we can push the pure transfer threat model.
 
-\subsection{Choice of dataset}
 
 \subsection{Choice of local models}
 We performed all our experiments on the following pretrained PyTorch ImageNet models.
@@ -45,13 +44,106 @@ We performed all our experiments on the following pretrained PyTorch ImageNet mo
     \item EfficientNet-b0 adversarially trained (\cite{tramer2020ensemble})
 \end{itemize}
 
+Apart from EfficientNets, all models were taken from the \href{https://pytorch.org/vision/stable/models.html}{torchvision.models} Python package. For the EfficientNets we used \href{https://github.com/lukemelas/EfficientNet-PyTorch}{github.com/lukemelas/EfficientNet-PyTorch} reimplementation, because the original implementation uses Tensorflow, and PyTorch is just so much better than Tensorflow.
 
-Apart from EfficientNets, all models were taken from the \href{https://pytorch.org/vision/stable/models.html}{torchvision.models} Python package. For the EfficientNets we used \href{https://github.com/lukemelas/EfficientNet-PyTorch}{github.com/lukemelas/EfficientNet-PyTorch} reimplementation, because the original implementation uses in Tensorflow.
 
-\subsection{Baseline}
-\subsection{Baseline}
-\subsection{Baseline}
-\subsection{Baseline}
+\subsection{Choice of dataset}
+We carry out all our experiments with ImageNet validation dataset. We pick out only images containing organism using the mapping $m(c)$ mentioned in \ref{label_mapping} and deem the transfer attack successful if the target loss $\mathcal{L}_{margin}(x_{adv}, 0) < 0$, or in other words the top-1 label is an object label.
+
+For the computation limitations reasons each experiment was conducted with only the first 500 organism ImageNet validation images.
+
+\subsubsection{Dataset preprocessing}
+All the models we use accept input tensors of size $(\text{batch\_size}, 3, 224, 224)$ and they also share the same preprocessing procedure:
+\begin{verbatim}
+from torchvision import transforms
+transform = transforms.Compose([
+ transforms.Resize(256),
+ transforms.CenterCrop(224),
+ transforms.ToTensor(),
+ transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+ ])
+\end{verbatim}
+
+Usually, this preprocessing is handled dynamically either by the dataloader or by the model itself. The user doesn't have to Resize, Crop or Normalize the inputs manually, but can pass in images of any size for inference or training.
+
+However to speed up the experiments a bit we manually resized and center croped all the ImageNet val images, such that no dynamic resizing and cropping is needed. This saves up a surprising amount computation on our limited hardware.
+
+\subsection{Whitebox attack algorithms}
+In the whitebox setting we tried the following whitebox optimization algorithms:
+
+\begin{itemize}
+    \item FGSM (\cite{goodfellow2015explaining})
+    \item Adaptive PGD (APGD) (\cite{croce2020reliable})
+    \item AdamPDG L2
+\end{itemize}
+
+
+\subsubsection{Fast gradient sign method (FGSM)}
+This algorithm needs no introduction.
+It is basically one-step gradient ascent on the cross-entropy loss $J(x)$, that is used to train neural nets. 
+
+$$x_{adv} = clip(x + \epsilon \cdot sign(\nabla J(x)))$$
+
+
+Careful reader might wonder: How do we compute a cross-entropy, when our local model doesn't output logits, but uses the max-logits mapping from \ref{computing_the_loss} instead? Well, we don't. We just pretend our surrogate is outputing what it should and everything is fine. Figures \ref{fig:fgsm_margin_eps_01}, \ref{fig:fgsm_margin_eps_10} and \ref{fig:fgsm_margin_eps_20} show the transferability performance across different local models.
+
+\begin{figure}[!htb]
+\minipage{0.32\textwidth}
+  \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.010.png}
+  \caption{FGSM, $\epsilon = 0.01$}\label{fig:fgsm_margin_eps_01}
+\endminipage\hfill
+\minipage{0.32\textwidth}
+  \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.050.png}
+  \caption{FGSM, $\epsilon = 0.05$}\label{fig:fgsm_margin_eps_05}
+\endminipage\hfill
+\minipage{0.32\textwidth}%
+  \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.200.png}
+  \caption{FGSM, $\epsilon = 0.2$}\label{fig:fgsm_margin_eps_2}
+\endminipage
+\end{figure}
+
+
+To test the impact of different logits mapping function, we also try to pass the logits from the pretrained ImageNet classifier through the $softmax$, sum the two sets of probabilities, take the logarithm and pass that to the FGSM as an attempt to better mimick some binary animal-object classifier.
+
+
+Figures \ref{fig:fgsm_margin_eps_01}, \ref{fig:fgsm_margin_eps_5} and \ref{fig:fgsm_margin_eps_20} preforms quite poorly quite honestly.
+
+\begin{figure}[!htb]
+\minipage{0.32\textwidth}
+  \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_logits_eps_0.010.png}
+  \caption{FGSM, $\epsilon = 0.1$}\label{fig:fgsm_logits_eps_01}
+\endminipage\hfill
+\minipage{0.32\textwidth}
+  \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_logits_eps_0.050.png}
+  \caption{FGSM, $\epsilon = 0.1$}\label{fig:fgsm_logits_eps_10}
+\endminipage\hfill
+\minipage{0.32\textwidth}%
+  \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_logits_eps_0.200.png}
+  \caption{FGSM$\epsilon = 0.1$}\label{label:fgsm_logits_eps_20}
+\endminipage
+\end{figure}
+
+
+If we can make any binary classifier doesn't really output logits, but top-1 score for organism semantic class and object class respectively
+
+
+
+\subsubsection{Adaptive PGD (APGD)}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{transfer_attacks/transfer_heatmap/apgd_l2_margin_n_iters_25_eps_10.png}
+    \caption{}
+    \label{fig:apgd_margin}
+\end{figure}
+
+
+\subsection{Augmentation is all you need!}
+\subsubsection{Guassian-noise augmentation}
+
+\subsubsection{Guassian-noise}
+\subsubsection{Box-blur}
+\subsubsection{Elastic transformation}
+\subsubsection{Elastic transformation}
 
 \section{Transferability evaluation on GVision}
 TODO: just run the images against GVision

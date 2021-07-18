@@ -48,6 +48,7 @@ This situation isn't so clear-cut in the case of general labels returned by clou
 From now on, by $m(c)$ we mean either $m_{local}(c)$ or $m_{cloud}(l_{cloud})$ where the distinction wouldn't make any difference.
 
 \subsubsection{Computing the adversarial loss}
+\label{computing_the_loss}
 There is one more step we have to do to transparently simulate a binary classifier with 2 output logits.
 
 By passing the model outputs through the separation mapping $m(c)$ we obtain two score sets: $S_{organism}$ and $S_{object}$. In the local case:
@@ -97,6 +98,7 @@ We go into more details in the Experiments \ref{experiments_chap}
 
 
 \section{The need for query-efficient attack}
+\label{need_for_query_efficiency}
 % The are many problems with the number of queries being in the hundreds/thousands.
 In the previous section \ref{poc_gvision_attacks} we empirically showed, that Google Vision API isn't 100\% robust to iterative blackbox atttacks. But although the previously mentioned blackbox attacks are often successful in producing adversarial image, query count to the target may be often unacceptably high. Huge query stress to the target is troublesome for several reasons:
 
@@ -189,4 +191,4 @@ AdvPipe is highly configurable by using YAML config files. These are parsed and 
 The YAML configs files also support simple templating mechanism, which can be used to run multiple experiments with slightly different hyperparameters. This is in line with the DRY pricinple and helps to keep the number of configuration files in sane numbers.
 
 \subsection{Dependency management}
-As our experiments were being run on a number of differrent machines with different environments, easily installing AdvPipe reliably and escaping dependency hell became our priority number one. We decided to do away with \href{https://pip.pypa.io/en/stable/}{pip}, that can often leave the Python virtual environment in an inconsistent state and decided to manage our dependencies with an excellent pip alternative \href{https://python-poetry.org/}{Poetry}. We never looked back.
+As our experiments were being run on a number of differrent machines with different environments, easily installing AdvPipe reliably and escaping dependency hell became our priority number one. We decided to do away with \href{https://pip.pypa.io/en/stable/}{pip}, that can often leave the Python virtual environment in an inconsistent state and moved to \href{https://python-poetry.org/}{Poetry} - an excellent pip alternative - to manage our dependencies.
