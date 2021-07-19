@@ -13,34 +13,39 @@
 \appendix
 \chapter{Attachments}
 
-\section{FGSM margin transfer attacks across different Linf pertubation sizes $\epsilon$}
+\section{FGSM local transfer experiments}
+\begin{figure}[!htb]
+\centering
+\subfloat[$\epsilon = 0.01$]{\includegraphics[width=0.38\textwidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.010.png}}\hfill
+\subfloat[$\epsilon = 0.025$]{\includegraphics[width=0.38\textwidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.025.png}}\hfill
+\subfloat[$\epsilon = 0.05$]{\includegraphics[width=0.38\textwidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.050.png}}\hfill
+\subfloat[$\epsilon = 0.1$]{\includegraphics[width=0.38\textwidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.100.png}}\hfill
+\subfloat[$\epsilon = 0.2$]{\includegraphics[width=0.38\textwidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.200.png}}\hfill
+\caption{FGSM, margin output mapping}
+\end{figure}
 
-\begin{figure}[h]
-\minipage{0.48\textwidth}
-  \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.010.png}
-  \caption{FGSM, $\epsilon = 0.01$}
-\endminipage\hfill
-\minipage{0.48\textwidth}
-  \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.025.png}
-  \caption{FGSM, $\epsilon = 0.025$}
-\endminipage\hfill
+\begin{figure}[!htb]
+\centering
+ \subfloat[$\epsilon = 0.01$]{\includegraphics[width=0.38\textwidth]{transfer_attacks/transfer_heatmap/fgsm_logits_eps_0.010.png}}\hfill
+ \subfloat[$\epsilon = 0.025$]{\includegraphics[width=0.38\textwidth]{transfer_attacks/transfer_heatmap/fgsm_logits_eps_0.025.png}}\hfill
+ \subfloat[$\epsilon = 0.05$]{\includegraphics[width=0.38\textwidth]{transfer_attacks/transfer_heatmap/fgsm_logits_eps_0.050.png}}\hfill
+ \subfloat[$\epsilon = 0.1$]{\includegraphics[width=0.38\textwidth]{transfer_attacks/transfer_heatmap/fgsm_logits_eps_0.100.png}}\hfill
+ \subfloat[$\epsilon = 0.2$]{\includegraphics[width=0.38\textwidth]{transfer_attacks/transfer_heatmap/fgsm_logits_eps_0.100.png}}\hfill
+\caption{FGSM, probability sum output mapping}
 \end{figure}
 
 
-\begin{figure}[h]
-\minipage{0.48\textwidth}
-  \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.050.png}
-  \caption{FGSM, $\epsilon = 0.05$}
-\endminipage\hfill
-\minipage{0.48\textwidth}
-  \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.100.png}
-  \caption{FGSM, $\epsilon = 0.1$}
-\endminipage\hfill
-\end{figure}
+%   \caption{FGSM, $\epsilon = 0.05$}
+% \end{subfigure}
 
-\begin{figure}[h]
-\minipage{0.48\textwidth}
-  \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.200.png}
-  \caption{FGSM, $\epsilon = 0.2$}
-\endminipage\hfill
-\end{figure}
+% \begin{subfigure}{.5\textwidth}
+%   \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.100.png}
+%   \caption{FGSM, $\epsilon = 0.1$}
+% \end{subfigure}
+
+% \begin{subfigure}{.5\textwidth}
+%   \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.200.png}
+%   \caption{FGSM, $\epsilon = 0.2$}
+% \end{subfigure}
+
+% \caption{FGSM, margin out mapping, $\epsilon \in \{0.01, 0.025, 0.05, 0.1, 0.2 \}$}

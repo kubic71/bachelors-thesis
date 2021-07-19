@@ -1,7 +1,7 @@
 \chapter{Experiments}
 \label{experiments_chap}
 
-\section{Blackbox PoC}
+\section{Blackbox PoC on GVision}
 Here we go into more technical details about previously mentioned blackbox attacks we initially tried.
 
 \begin{itemize}
@@ -11,19 +11,89 @@ Here we go into more technical details about previously mentioned blackbox attac
     \item Sparse-RS
 \end{itemize}
 
+\subsection{Baseline}
+We picked two sample images (shark and cat), on which we tested these blackbox attacks.
+
+\begin{figure}[!htb]
+\null\hspace{1cm}
+\minipage{0.3\textwidth}
+  \includegraphics[width=\linewidth]{cute_cat.png}
+\endminipage
+\null\hspace{1cm}
+\minipage{0.3\textwidth}
+  \includegraphics[width=\linewidth]{shark.png}
+\endminipage
+\caption{Cat and Shark, GVision baseline}
+\label{fig:cat_shark_original}
+\end{figure}
+
+
+Here's how \href{https://cloud.google.com/vision}{Google Cloud Vision API} classifies the original samples.
+
+\begin{figure}[!htb]
+\minipage{0.49\textwidth}
+  \includegraphics[width=\linewidth]{cute_cat_screenshot.png}
+\endminipage\hfill
+\minipage{0.49\textwidth}
+  \includegraphics[width=\linewidth]{shark_screenshot.png}
+%   \caption{$\epsilon = 0.05$}\label{fig:fgsm_margin_eps_05}
+\endminipage\hfill
+\caption{Cat and Shark, GVision baseline}
+\label{fig:cat_shark_gvision_baseline}
+\end{figure}
+
 \subsection{TREMBA}
 
 \subsection{RayS}
 This one is hard label attack and doesn't use the continuos loss from GVision.
 
 \subsection{SquareAttack}
+Because of high query intensity, we have only tested the sample cat image.
+
 
 \subsubsection{SquareAttack L2}
-Show an image of nice cat.
+\begin{figure}[!htb]
+\null\hspace{1cm}
+\minipage{0.3\textwidth}
+  \includegraphics[width=\linewidth]{square_attack/gvision_cat_l2_7.8_iter_834.png}
+\endminipage
+\null\hspace{1cm}
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{square_attack/gvision_cat_l2_7.8_iter_834_screenshot.png}
+\endminipage
+\caption{SquareAttack, 834 queries, pertubation norm $l_2 = 7.84$ }
+\label{fig:square_cat_l2}
+\end{figure}
 
 \subsubsection{SquareAttack Linf}
 
-\subsubsection{Comparison with local success-rate}
+\begin{figure}[!htb]
+\null\hspace{1cm}
+\minipage{0.3\textwidth}
+  \includegraphics[width=\linewidth]{square_attack/gvision_cat_linf_0.047_iter_1402.png}
+\endminipage
+\null\hspace{1cm}
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{square_attack/gvision_cat_linf_0.047_iter_1402_screenshot.png}
+\endminipage
+\caption{SquareAttack, 1402 queries, pertubation norm $l_{inf} = 0.047$}
+\label{fig:square_cat_linf}
+\end{figure}
+
+\subsubsection{Evaluation of the attack results}
+
+In both L2 and Linf modes we have achived out top-1 misclassification objective and the cat label was taken in both cases to the top-3 place.
+
+In this experiment of sample size = 1 the L2 version of SquareAttack seems to produce much less visually perceptible pertubation and is able to achive the top-1 misclassification with $l_2$ norm of only 7.84.
+
+The Linf version on the other hand had to be given two times larger query budget, but we still had to turn up the $l_{inf}$ pertubation norm to 0.047 to achieve our misclassification objective.
+
+
+This observation made us focus more on the $l_2$ bounded attacks in later local experiments.
+
+\subsubsection{Local query distribution}
+
+
 
 
 
@@ -105,7 +175,7 @@ However to speed up the experiments a bit we manually resized and center croped 
 \end{tabular}
 
 \paragraph{}
-We can see that the models used are pretty good at distinguishing between animate and inanimate things. Any differances in the accuracy (maybe with the exception of Squeezenet) are probably due to the small test set size.
+We can see that the models used are pretty good at distinguishing between animate and inanimate things. Any differances in the accuracy (maybe with the exception of Squeezenet) are probably due to the small test set size. When we evaluate 500 test images and get 1\% foolrate the 99\% binomial confidence interval is (0.216\%, 2.804\%)
 
 \subsection{Whitebox attack algorithms}
 In the whitebox setting we tried the following whitebox optimization algorithms:
@@ -115,9 +185,6 @@ In the whitebox setting we tried the following whitebox optimization algorithms:
     \item Adaptive PGD (APGD) L2 (\cite{croce2020reliable})
     \item AdamPDG L2
 \end{itemize}
-
-
-
 
 
 \subsubsection{Fast gradient sign method (FGSM)}
@@ -147,7 +214,7 @@ Careful reader might wonder: How do we compute a cross-entropy, when our local m
 
 To test the impact of different logits mapping function, we also try to pass the logits from the pretrained ImageNet classifier through the $softmax$, sum the two sets of probabilities, take the logarithm and pass that to the FGSM as an attempt to better mimick some binary animal-object classifier. The motivation here was to allow the gradient to pass through more than 2 output activations of the 1000-D ImageNet output vector, hopefullly to provide more fine-grained optimization information to the one step of FGSM.
 
-But figure \ref{fig:fgsm_prob_sum} shows that if this approach is approximately equal in transferability to the margin mapping, and for some unknown reason fails to produce whitebox adversarial images for the EfficientNets.
+But figure \ref{fig:fgsm_prob_sum} shows that this approach is approximately equal in transferability to the margin mapping, and for some unknown reason fails to produce whitebox adversarial images for the EfficientNets.
 
 \begin{figure}[!htb]
 \minipage{0.32\textwidth}

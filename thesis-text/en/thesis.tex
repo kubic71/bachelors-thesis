@@ -42,7 +42,9 @@
 \usepackage{bm}             % boldface symbols (\bm)
 
 \usepackage{graphicx}       % embedding of pictures
-\graphicspath{ {figures/} } % path to the generated figures
+\graphicspath{ {figures/}, {ae_samples} } % path to the generated figures
+\usepackage{subfig}
+\setcounter{lofdepth}{2} % we want subfigures in the list of figures
 
 \usepackage{fancyvrb}       % improved verbatim environment
 \usepackage{natbib}         % citation style AUTHOR (YEAR), or AUTHOR [NUMBER]
