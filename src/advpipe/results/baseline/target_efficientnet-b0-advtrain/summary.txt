@@ -1,0 +1,2 @@
+trasfer attack from dummy_model_name to efficientnet-b0-advtrain
+successfully transferred / total = 6/500 = 1.20%

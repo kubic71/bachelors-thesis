@@ -1,0 +1,41 @@
+---
+
+attack_regime:
+  name: transfer-regime-multiple-targets
+  results_dir: results/baseline
+  show_images: False
+  skip_already_adversarial: False
+  dont_save_images: True
+
+  attack_algorithm: 
+    name: passthrough
+
+  epsilon: 0
+  norm: linf
+
+  dataset_config:
+    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped_first_2000
+    dataset_type: imagenet-validation
+    load_only_organism: True
+    size_limit: 500
+
+  multiple_target_configs:
+    model_type: local
+    names:
+      - wide_resnet50_2
+      - resnet18
+      - resnet50
+      - resnext50_32x4d
+      - efficientnet-b0
+      - efficientnet-b0-advtrain
+      - efficientnet-b4
+      - efficientnet-b4-advtrain
+      - densenet-121
+      - squeezenet
+
+    output_mapping: organism_margin
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+

@@ -91,6 +91,21 @@ def generate_augment_affine_exp() -> None:
     df = gather_results(res_dir)
     plot_matrix(df, plot_fn, title, figsize=(9, 6), square=False)
 
+
+def generate_ensmble_elastic_noise_blur_exp() -> None:
+    title = f"Ensemble surrogate - wide_resnet50_2, efficientnet-b0-advtrain, squeezenet\naugmentations - gaussian_noise(std=32), box-blur(size=2), elastic_tranform(alpha=3.2)"
+    plot_fn = "plots/transfer_attacks/transfer_heatmap/ensemble_elastic_3.2_noise_32_blur_2.png"
+    dfs = []
+    for n_iters, eot_iter in [(16, 100), (64, 20)]:
+        res_dir = f"../results/ensemble_elastic_noise_blur/eot_iter_{eot_iter}_n_iters_{n_iters}_noise_32"
+        def rename_surrogate(df: pd.DataFrame, _: Dict) -> pd.DataFrame:
+            df["surrogate"] = df["surrogate"].map(lambda s_name: f"n_iters={n_iters}, grad_samples={eot_iter}" + (" (only 192 val images)" if n_iters == 16 else ""))
+            return df
+
+        dfs.append(gather_results(res_dir, dataframe_transform=rename_surrogate))
+
+    plot_matrix(pd.concat(dfs), plot_fn, title, figsize=(8, 4), square=True)
+
 def generate_augment_heatmaps() -> None:
     def fix_augmentation_dataframe(df: pd.DataFrame, _: Dict) -> pd.DataFrame:
         df["surrogate"] = df["surrogate"].map(augmentation_surrogate_name_remap)
@@ -126,10 +141,14 @@ def generate_augment_heatmaps() -> None:
 
 def generate_all_heatmaps() -> None:
     # format: (title, plot_filename, source_results_dir)
-    generate_augment_affine_exp()
-
+    # Baseline
     plot_details = []
 
+    plot_details += [
+        (f"ImageNet val baseline, n_images=500",
+         f"plots/transfer_attacks/transfer_heatmap/baseline.png",
+         f"../results/baseline"),
+    ]
 
     plot_details.append((f"Gaussian-noise augmentations - correct sampling - resnet18\n margin_map, n_iters=100, l2_norm=10",
          f"plots/transfer_attacks/transfer_heatmap/augment_noise_correct_sampling_apgd_l2_margin_n_iters_100_eps_10.png",
@@ -235,6 +254,8 @@ def generate_all_heatmaps() -> None:
     for title, plot_fn, res_dir in plot_details:
         gather_and_plot(title, plot_fn, res_dir)
 
+    generate_ensmble_elastic_noise_blur_exp()
+    generate_augment_affine_exp()
     generate_noise_eot_iter_exp()
     generate_augment_heatmaps()
 

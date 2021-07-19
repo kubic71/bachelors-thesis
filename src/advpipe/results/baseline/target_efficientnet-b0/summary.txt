@@ -1,0 +1,2 @@
+trasfer attack from dummy_model_name to efficientnet-b0
+successfully transferred / total = 5/500 = 1.00%
