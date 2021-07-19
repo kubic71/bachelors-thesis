@@ -214,7 +214,7 @@ Careful reader might wonder: How do we compute a cross-entropy, when our local m
 
 To test the impact of different logits mapping function, we also try to pass the logits from the pretrained ImageNet classifier through the $softmax$, sum the two sets of probabilities, take the logarithm and pass that to the FGSM as an attempt to better mimick some binary animal-object classifier. The motivation here was to allow the gradient to pass through more than 2 output activations of the 1000-D ImageNet output vector, hopefullly to provide more fine-grained optimization information to the one step of FGSM.
 
-But figure \ref{fig:fgsm_prob_sum} shows that this approach is approximately equal in transferability to the margin mapping, and for some unknown reason fails to produce whitebox adversarial images for the EfficientNets.
+But the figure \ref{fig:fgsm_prob_sum} shows that this approach is approximately equal in transferability to the margin mapping, and for some unknown reason fails to produce whitebox adversarial images for the EfficientNets.
 
 \begin{figure}[!htb]
 \minipage{0.32\textwidth}
@@ -231,10 +231,28 @@ But figure \ref{fig:fgsm_prob_sum} shows that this approach is approximately equ
 \end{figure}
 
 
-
-
+\subsubsection{Underfitting vs. overfitting}
+\label{fgsm_underfits}
+FGSM experiment showed that one gradient optimization step isn't quite enough, because ideally we would like to see the whitebox foolrate (the diagonal in the heatmaps) being close to 100\%. If we were to use the analogy from \ref{ml_analogy}, the diagonal would correspond to the training performance. Anything off the diagonal can be though of as validation performance. The training accuracy of FGSM is already quite low, so we cannot expect the validation accuracy to be much higher. In other words, FGSM massively underfits. It is the extreme case of early-stopping, which in classical machine learning is sometimes used to prevent overfitting (\cite{Caruana2000OverfittingIN})
 
 \subsubsection{Adaptive PGD (APGD)}
+We argued in \ref{fgsm_underfits} that FGSM underfits badly even on adversarially undefended whitebox networks. Therefore we probably need a stronger optimization algorithm.
+
+There had been proposed numerous iterative whitebox attack algorithms that are doing in one form or another a gradient descent (or ascent) on the adversarial loss. Just to name a few:
+
+\begin{itemize}
+    \item Basic iterative method - BIM (\cite{Kurakin2017AdversarialEI})
+    \item Projected gradient descent - PGD (\cite{madry2019deep})
+    \item Momentum iterative fast gradient sign method - MI-FGSM (\cite{Dong2018BoostingAA})
+    \item Nesterov Iterative Fast Gradient Sign Method - NI-FGSM (\cite{lin2020nesterov})
+    \item Adaptive PGD - APGD (\cite{croce2020reliable})
+    \item Adam Iterative Fast Gradient Method - AI-FGM (\cite{Yin2021BoostingAA})
+\end{itemize}
+
+
+
+
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.75\textwidth]{transfer_attacks/transfer_heatmap/apgd_l2_margin_n_iters_25_eps_10.png}

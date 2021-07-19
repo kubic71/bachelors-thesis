@@ -62,6 +62,8 @@ Just to name a few choices for $o(x)$ that could intuitively work:
 \begin{enumerate}
     \item top-1 score: $\max S$ 
     \item sum of logits: $\sum S$
+    \item top-1 score for $S_{organism}$, least-likely class for $S_{object}$
+        
     \item sum of un-normalized probabilities: $\sum exp(S)$
     \item log-sum of probabilities: $\log \sum softmax(S)$
     \item ...
@@ -71,6 +73,7 @@ But in the end we want to achive a misclasification of the original organism ima
 
 Another hint that this might be a solid choice comes from the \cite{carlini2017evaluating}, where they discuss the choice of optimization objective. They try a number of different alternatives, but in the end they conclude that optimizing the margin loss works the best, so we stick with it.
 
+In the future 3) might also be worth a try. It is somewhat similar to the objective function of the Iterative least-likely class method introduced in \cite{Kurakin2017AdversarialEI}.
 
 \section{PoC black-box GVision attacks}
 \label{poc_gvision_attacks}
@@ -121,7 +124,8 @@ After these early experiments that proved the concept, we focused our attention 
 Even if the localy-produced adversarial images don't transfer directly to the target, \cite{Suya2020HybridBA} showed, that the output of transfer-attack can provide better starting seeds for blackbox optimization attacks and improve their query efficiency. The option to choose from several starting points basically adds a degree of freedom to the blackbox optimization. They also discuss different prioritization strategies, as the the number of seeds produced isn't limited by target queries and we can therefore afford to produce as many candidate starting points as we like.
 
 \subsection{Train, validate, test}
-There is a weak analogy between the crafting of an adversarial example and the training of machine learning model. ML model weights are first fitted againt specified loss contraint. This constraint is (among other things) a function of training data. The weights are then validated and checked against overfitting on a slightly different constraint, which now depends on a validation dataset. When all is good, model is happily deployed to production.
+\label{ml_analogy}
+There is a loose analogy between the crafting of an adversarial example and the training of machine learning model. ML model weights are first fitted againt specified loss contraint. This constraint is (among other things) a function of training data. The weights are then validated and checked against overfitting on a slightly different constraint, which now depends on a validation dataset. When all is good, model is happily deployed to production.
 
 With a bit of imagination, ML model weights correspond to pixel values of an adversarial image. The pixels are first trained by gradient descent on training loss provided by a surrogate model. They are validated against ensemble set of diverse indepenent classifiers, and when the foolrate is good, they are sent for test evaluation to the cloud. 
 
