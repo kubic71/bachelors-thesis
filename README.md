@@ -1,6 +1,9 @@
 # Exploring the vulnerabilities of commercial AI systems against adversarial attacks
 My bachelor's TeX thesis and other related materials.
 
+## The write-up
+Here's the [thesis PDF](./thesis-text/en/thesis.pdf)
+
 ## AdvPipe
 I set out to explore current state-of-the-art black-box adversarial attacks and how they fare in practical attack scenarios. I want to test out adversarial robustness of some commercial MLaaS cloud services like Google Vision API, Amazon Rekognition, Clarifai, Microsoft Azure AI etc.
 
