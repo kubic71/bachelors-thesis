@@ -40,19 +40,24 @@ We performed all our experiments on the following pretrained PyTorch ImageNet mo
     \item Wide-ResNet-50-2 (\cite{zagoruyko2017wide})
     \item Squeezenet (\cite{iandola2016squeezenet})
     \item DenseNet-121 (\cite{huang2018densely})
-    \item EfficientNet-b0 (\cite{tan2020efficientnet})
-    \item EfficientNet-b0 adversarially trained (\cite{tramer2020ensemble})
+    \item EfficientNet (\cite{tan2020efficientnet})
+    \item EfficientNet adversarially trained (\cite{tramer2020ensemble})
 \end{itemize}
 
 Apart from EfficientNets, all models were taken from the \href{https://pytorch.org/vision/stable/models.html}{torchvision.models} Python package. For the EfficientNets we used \href{https://github.com/lukemelas/EfficientNet-PyTorch}{github.com/lukemelas/EfficientNet-PyTorch} reimplementation, because the original implementation uses Tensorflow, and PyTorch is just so much better than Tensorflow.
 
+To address the particular choice of our model set, we aimed at low model size, such that forward and backward pass fits comfortably in the 2GB of our MX-150 NVIDIA laptop GPU. This requirement for instance ruled out the VGG-style networks (\cite{simonyan2015deep}), the pre-ResNet 2nd-best submission to the ILSVRC 2014 (\cite{russakovsky2015imagenet}). The Wide-ResNet-50-2 (WRN-50-2) is already at the limit with its 68,951,464 trainable parameters. In a standard FP-32 mode the model parameters, forward pass activations and backward pass partial derivatives take up almost 1GB of GPU memory. Adding to this the 620MB of GPU memory consumed by PyTorch at idle meant we could use only batch size of one for this particular Wide ResNet. But looking at the \href{https://robustbench.github.io/}{RobustBench leaderboard} (\cite{croce2021robustbench}), which uses AutoAttack (\cite{croce2020reliable}) suite of parameter-free attacks to benchmark the robustness of various adversarially robust models, one can see the top positions are dominated by WideResNets, so we kept it in our model set despite its large size.
+We also chose models with the same input size, such that the same dataset preprocessing (\ref{dataset_preprocessing}) could be used for all of them and wouldn't complicate things any further. This decision meant we didn't use the popular Inception-v3 (\cite{szegedy2015rethinking}), which takes inputs of size 299x299 instead of 224x224 of all the other models.
+
+
 
 \subsection{Choice of dataset}
-We carry out all our experiments with ImageNet validation dataset. We pick out only images containing organism using the mapping $m(c)$ mentioned in \ref{label_mapping} and deem the transfer attack successful if the target loss $\mathcal{L}_{margin}(x_{adv}, 0) < 0$, or in other words the top-1 label is an object label.
+We carry out all our experiments with ImageNet validation dataset. We pick out only the images containing organism using the mapping $m(c)$ mentioned in \ref{label_mapping} and deem the transfer attack successful if the target loss $\mathcal{L}_{margin}(x_{adv}, 0) < 0$, or in other words the top-1 label is an object label.
 
-For the computation limitations reasons each experiment was conducted with only the first 500 organism ImageNet validation images.
+For the computation limitations reasons, each experiment was conducted with only the first 500 organism ImageNet validation images.
 
 \subsubsection{Dataset preprocessing}
+\label{dataset_preprocessing}
 All the models we use accept input tensors of size $(\text{batch\_size}, 3, 224, 224)$ and they also share the same preprocessing procedure:
 \begin{verbatim}
 from torchvision import transforms
@@ -68,59 +73,94 @@ Usually, this preprocessing is handled dynamically either by the dataloader or b
 
 However to speed up the experiments a bit we manually resized and center croped all the ImageNet val images, such that no dynamic resizing and cropping is needed. This saves up a surprising amount computation on our limited hardware.
 
+
+\subsection{Baseline}
+\begin{tabular}{ ||p{5cm}|p{3cm}|| }
+  \hline
+     \multicolumn{2}{|c|}{Performance on the first 500 ImageNet validation organism images} \\
+ \hline
+ \textbf{Model} & \textbf{Foolrate} \\
+ \hline
+ \hline
+ Densenet-121 & 1.8\%  \\
+ \hline
+ EfficientNet-b0 & 1.0\% \\
+ \hline
+ EfficientNet-b0-advtrain & 1.2\% \\
+ \hline
+ EfficientNet-b4 & 0.8\% \\
+ \hline
+ EfficientNet-b4-advtrain & 2.4\% \\
+ \hline
+ ResNet-18 & 1.8\% \\
+ \hline
+ ResNet-50 & 1.2\% \\
+ \hline
+ ResNeXt-50 (32x4d) & 0.6\% \\
+ \hline
+ Squeezenet & 4.8\% \\
+ \hline
+ Wide-ResNet-50-2 & 1.6\% \\
+ \hline
+\end{tabular}
+
+\paragraph{}
+We can see that the models used are pretty good at distinguishing between animate and inanimate things. Any differances in the accuracy (maybe with the exception of Squeezenet) are probably due to the small test set size.
+
 \subsection{Whitebox attack algorithms}
 In the whitebox setting we tried the following whitebox optimization algorithms:
 
 \begin{itemize}
     \item FGSM (\cite{goodfellow2015explaining})
-    \item Adaptive PGD (APGD) (\cite{croce2020reliable})
+    \item Adaptive PGD (APGD) L2 (\cite{croce2020reliable})
     \item AdamPDG L2
 \end{itemize}
 
 
+
+
+
 \subsubsection{Fast gradient sign method (FGSM)}
 This algorithm needs no introduction.
-It is basically one-step gradient ascent on the cross-entropy loss $J(x)$, that is used to train neural nets. 
+It is basically one-step gradient ascent on the sign of the cross-entropy loss $J(x)$, which would be normally used to train the classifier.
 
 $$x_{adv} = clip(x + \epsilon \cdot sign(\nabla J(x)))$$
 
 
-Careful reader might wonder: How do we compute a cross-entropy, when our local model doesn't output logits, but uses the max-logits mapping from \ref{computing_the_loss} instead? Well, we don't. We just pretend our surrogate is outputing excatly what it should and everything is fine. Figures \ref{fig:fgsm_margin_eps_01}, \ref{fig:fgsm_margin_eps_05} and \ref{fig:fgsm_margin_eps_20} show the transferability performance across different local models.
+Careful reader might wonder: How do we compute a cross-entropy, when our local model doesn't output logits, but uses the max-logits mapping from \ref{computing_the_loss} instead? Well, we don't. We just pretend our surrogate is outputing excatly what it should and everything is fine. Figure \ref{fig:fgsm_margin} shows the transferability performance across different local models with varying amount of pertubation size $\epsilon$.
 
 \begin{figure}[!htb]
 \minipage{0.32\textwidth}
   \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.010.png}
-  \caption{FGSM, $\epsilon = 0.01$}\label{fig:fgsm_margin_eps_01}
 \endminipage\hfill
 \minipage{0.32\textwidth}
   \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.050.png}
-  \caption{FGSM, $\epsilon = 0.05$}\label{fig:fgsm_margin_eps_05}
+%   \caption{$\epsilon = 0.05$}\label{fig:fgsm_margin_eps_05}
 \endminipage\hfill
 \minipage{0.32\textwidth}%
   \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.200.png}
-  \caption{FGSM, $\epsilon = 0.2$}\label{fig:fgsm_margin_eps_20}
+%   \caption{$\epsilon = 0.2$}\label{fig:fgsm_margin_eps_20}
 \endminipage
+\caption{FGSM, margin output mapping}
+\label{fig:fgsm_margin}
 \end{figure}
 
+To test the impact of different logits mapping function, we also try to pass the logits from the pretrained ImageNet classifier through the $softmax$, sum the two sets of probabilities, take the logarithm and pass that to the FGSM as an attempt to better mimick some binary animal-object classifier. The motivation here was to allow the gradient to pass through more than 2 output activations of the 1000-D ImageNet output vector, hopefullly to provide more fine-grained optimization information to the one step of FGSM.
 
-To test the impact of different logits mapping function, we also try to pass the logits from the pretrained ImageNet classifier through the $softmax$, sum the two sets of probabilities, take the logarithm and pass that to the FGSM as an attempt to better mimick some binary animal-object classifier.
-
-
-But figures \ref{fig:fgsm_margin_eps_01}, \ref{fig:fgsm_logits_eps_05} and \ref{fig:fgsm_margin_eps_20} show that if anything, this approach has worse transferability.
+But figure \ref{fig:fgsm_prob_sum} shows that if this approach is approximately equal in transferability to the margin mapping, and for some unknown reason fails to produce whitebox adversarial images for the EfficientNets.
 
 \begin{figure}[!htb]
 \minipage{0.32\textwidth}
   \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_logits_eps_0.010.png}
-  \caption{FGSM, $\epsilon = 0.01$}\label{fig:fgsm_logits_eps_01}
 \endminipage\hfill
 \minipage{0.32\textwidth}
   \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_logits_eps_0.050.png}
-  \caption{FGSM, $\epsilon = 0.05$}\label{fig:fgsm_logits_eps_05}
 \endminipage\hfill
 \minipage{0.32\textwidth}%
   \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_logits_eps_0.200.png}
-  \caption{FGSM $\epsilon = 0.2$}\label{label:fgsm_logits_eps_20}
 \endminipage
+\caption{FGSM, probability sum mapping}
+\label{fig:fgsm_prob_sum}
 \end{figure}
 
 

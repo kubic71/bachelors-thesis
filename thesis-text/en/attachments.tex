@@ -13,17 +13,34 @@
 \appendix
 \chapter{Attachments}
 
-\section{FGSM margin transfer attacks across different epsilon}
+\section{FGSM margin transfer attacks across different Linf pertubation sizes $\epsilon$}
 
 \begin{figure}[h]
-    \includegraphics[width=0.3\textwidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.010.png}
-    \caption{FGSM, $\epsilon = 0.01$}
-
-    \includegraphics[width=0.3\textwidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.100.png}
-    \caption{FGSM, $\epsilon = 0.1$}
-
-    \includegraphics[width=0.3\textwidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.200.png}
-    \caption{FGSM, $\epsilon = 0.2$}
+\minipage{0.48\textwidth}
+  \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.010.png}
+  \caption{FGSM, $\epsilon = 0.01$}
+\endminipage\hfill
+\minipage{0.48\textwidth}
+  \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.025.png}
+  \caption{FGSM, $\epsilon = 0.025$}
+\endminipage\hfill
 \end{figure}
 
 
+\begin{figure}[h]
+\minipage{0.48\textwidth}
+  \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.050.png}
+  \caption{FGSM, $\epsilon = 0.05$}
+\endminipage\hfill
+\minipage{0.48\textwidth}
+  \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.100.png}
+  \caption{FGSM, $\epsilon = 0.1$}
+\endminipage\hfill
+\end{figure}
+
+\begin{figure}[h]
+\minipage{0.48\textwidth}
+  \includegraphics[width=\linewidth]{transfer_attacks/transfer_heatmap/fgsm_margin_eps_0.200.png}
+  \caption{FGSM, $\epsilon = 0.2$}
+\endminipage\hfill
+\end{figure}
