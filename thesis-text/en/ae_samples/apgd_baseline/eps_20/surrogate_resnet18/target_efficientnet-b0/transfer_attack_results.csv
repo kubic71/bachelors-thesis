@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	1.74086	water_snake	jigsaw_puzzle	19.92270	resnet18	efficientnet-b0
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	3.33298	wire-haired_fox_terrier	jigsaw_puzzle	19.91910	resnet18	efficientnet-b0
+ILSVRC2012_val_00000006.png	garter_snake	0.37652	night_snake	pillow	19.97591	resnet18	efficientnet-b0
+ILSVRC2012_val_00000007.png	porcupine	-2.59243	cock	barrel	19.89361	resnet18	efficientnet-b0
+ILSVRC2012_val_00000010.png	Angora	-1.75024	starfish	sombrero	19.98504	resnet18	efficientnet-b0
+ILSVRC2012_val_00000011.png	brain_coral	4.64563	brain_coral	coral_reef	19.97789	resnet18	efficientnet-b0
+ILSVRC2012_val_00000012.png	cougar	-0.69658	cougar	jigsaw_puzzle	19.96651	resnet18	efficientnet-b0
+ILSVRC2012_val_00000013.png	guenon	-4.55920	guenon	jigsaw_puzzle	19.98594	resnet18	efficientnet-b0
+ILSVRC2012_val_00000016.png	grey_whale	-5.69232	loggerhead	quilt	19.97517	resnet18	efficientnet-b0
+ILSVRC2012_val_00000017.png	sea_anemone	-2.47526	starfish	altar	19.87946	resnet18	efficientnet-b0
+ILSVRC2012_val_00000018.png	vulture	-5.20165	hammerhead	jigsaw_puzzle	19.96987	resnet18	efficientnet-b0
+ILSVRC2012_val_00000021.png	porcupine	-1.47222	ruffed_grouse	spider_web	19.99214	resnet18	efficientnet-b0
+ILSVRC2012_val_00000022.png	Ibizan_hound	-4.90581	bloodhound	jigsaw_puzzle	19.96710	resnet18	efficientnet-b0
+ILSVRC2012_val_00000025.png	vulture	4.72355	vulture	stretcher	19.94748	resnet18	efficientnet-b0
+ILSVRC2012_val_00000027.png	white_wolf	3.62172	white_wolf	jigsaw_puzzle	19.98922	resnet18	efficientnet-b0
+ILSVRC2012_val_00000028.png	English_foxhound	2.89080	beagle	jigsaw_puzzle	19.97755	resnet18	efficientnet-b0

@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-5.34804	water_snake	safety_pin	9.96068	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	8.81482	Shetland_sheepdog	flute	9.96199	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000006.png	garter_snake	0.83077	eel	manhole_cover	9.98050	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000007.png	porcupine	1.76079	triceratops	barrel	9.95474	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000010.png	Angora	-6.97553	anemone_fish	teddy	9.97539	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000011.png	brain_coral	6.55463	brain_coral	coral_reef	9.95575	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000012.png	cougar	6.28464	cougar	jigsaw_puzzle	9.98888	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000013.png	guenon	10.54346	guenon	jigsaw_puzzle	9.98935	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000016.png	grey_whale	0.50667	grey_whale	quilt	9.95629	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000017.png	sea_anemone	-2.29051	starfish	torch	9.95683	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000018.png	vulture	0.23054	centipede	ski	9.95692	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000021.png	porcupine	2.97760	quail	bow	9.99107	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000022.png	Ibizan_hound	-0.00619	coho	military_uniform	9.94914	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000025.png	vulture	-6.33409	vulture	plow	9.96144	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000027.png	white_wolf	-1.91899	kuvasz	carousel	9.96664	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000028.png	English_foxhound	3.42833	beagle	tennis_ball	9.87335	wide_resnet50_2	resnet18

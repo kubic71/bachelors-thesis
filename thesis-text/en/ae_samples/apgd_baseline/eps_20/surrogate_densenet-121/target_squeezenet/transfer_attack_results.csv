@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-1.92818	American_alligator	jigsaw_puzzle	19.99210	densenet-121	squeezenet
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-1.75891	peacock	jigsaw_puzzle	19.99456	densenet-121	squeezenet
+ILSVRC2012_val_00000006.png	garter_snake	-4.01289	American_alligator	jigsaw_puzzle	19.99566	densenet-121	squeezenet
+ILSVRC2012_val_00000007.png	porcupine	-0.37358	peacock	jigsaw_puzzle	19.98005	densenet-121	squeezenet
+ILSVRC2012_val_00000010.png	Angora	-3.15241	sea_anemone	envelope	19.98285	densenet-121	squeezenet
+ILSVRC2012_val_00000011.png	brain_coral	-2.31586	brain_coral	jackfruit	19.99101	densenet-121	squeezenet
+ILSVRC2012_val_00000012.png	cougar	-7.28577	common_iguana	jigsaw_puzzle	19.93488	densenet-121	squeezenet
+ILSVRC2012_val_00000013.png	guenon	0.19452	sea_anemone	stole	19.98076	densenet-121	squeezenet
+ILSVRC2012_val_00000016.png	grey_whale	-3.75984	chiton	jigsaw_puzzle	19.96928	densenet-121	squeezenet
+ILSVRC2012_val_00000017.png	sea_anemone	-0.95979	American_alligator	worm_fence	19.99568	densenet-121	squeezenet
+ILSVRC2012_val_00000018.png	vulture	-4.08493	centipede	spider_web	19.96091	densenet-121	squeezenet
+ILSVRC2012_val_00000021.png	porcupine	-3.32838	dragonfly	spider_web	19.98433	densenet-121	squeezenet
+ILSVRC2012_val_00000022.png	Ibizan_hound	-5.82819	West_Highland_white_terrier	jigsaw_puzzle	19.96793	densenet-121	squeezenet
+ILSVRC2012_val_00000025.png	vulture	0.47264	ruffed_grouse	pot	19.93044	densenet-121	squeezenet
+ILSVRC2012_val_00000027.png	white_wolf	-5.10947	clumber	pillow	19.94975	densenet-121	squeezenet
+ILSVRC2012_val_00000028.png	English_foxhound	-4.81331	leaf_beetle	jigsaw_puzzle	19.98879	densenet-121	squeezenet

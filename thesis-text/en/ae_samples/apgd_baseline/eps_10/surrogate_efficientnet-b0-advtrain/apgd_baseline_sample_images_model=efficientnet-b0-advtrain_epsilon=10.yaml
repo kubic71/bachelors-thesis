@@ -1,0 +1,42 @@
+attack_algorithm:
+  epsilon: 10
+  n_iters: 25
+  name: apgd
+  norm: l2
+batch_size: 4
+config_filename: /home/kubik/school/thesis/bachelors-thesis/src/advpipe/.exported_configs/apgd_baseline_sample_images_model=efficientnet-b0-advtrain_epsilon=10.yaml
+dataset_config:
+  data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped_first_2000
+  dataset_type: imagenet-validation
+  load_only_organisms: true
+  size_limit: 16
+dont_save_images: false
+epsilon: 10
+multiple_target_configs:
+  loss:
+    margin: 0.0
+    name: margin_loss
+  model_type: local
+  name: squeezenet
+  names:
+  - wide_resnet50_2
+  - resnet18
+  - resnet50
+  - resnext50_32x4d
+  - efficientnet-b0
+  - efficientnet-b0-advtrain
+  - densenet-121
+  - squeezenet
+  output_mapping: organism_margin
+name: transfer-regime-multiple-targets
+norm: l2
+results_dir: results/apgd_sample_images/eps_10/surrogate_efficientnet-b0-advtrain
+show_images: false
+skip_already_adversarial: false
+surrogate:
+  loss:
+    margin: 0.0
+    name: margin_loss
+  model_type: local
+  name: efficientnet-b0-advtrain
+  output_mapping: organism_margin

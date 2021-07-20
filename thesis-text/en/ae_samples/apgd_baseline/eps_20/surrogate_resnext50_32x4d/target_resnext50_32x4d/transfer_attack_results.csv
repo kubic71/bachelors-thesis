@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-70.81436	Tibetan_terrier	necklace	19.94305	resnext50_32x4d	resnext50_32x4d
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-227.97803	Persian_cat	jigsaw_puzzle	19.97890	resnext50_32x4d	resnext50_32x4d
+ILSVRC2012_val_00000006.png	garter_snake	-208.30472	Persian_cat	jigsaw_puzzle	19.98501	resnext50_32x4d	resnext50_32x4d
+ILSVRC2012_val_00000007.png	porcupine	-116.37719	green_lizard	sock	19.97645	resnext50_32x4d	resnext50_32x4d
+ILSVRC2012_val_00000010.png	Angora	-105.16957	hog	piggy_bank	19.98218	resnext50_32x4d	resnext50_32x4d
+ILSVRC2012_val_00000011.png	brain_coral	-188.00340	Persian_cat	jigsaw_puzzle	19.97594	resnext50_32x4d	resnext50_32x4d
+ILSVRC2012_val_00000012.png	cougar	-92.86617	Yorkshire_terrier	pillow	19.87397	resnext50_32x4d	resnext50_32x4d
+ILSVRC2012_val_00000013.png	guenon	-74.31759	Leonberg	jean	19.99429	resnext50_32x4d	resnext50_32x4d
+ILSVRC2012_val_00000016.png	grey_whale	-96.43570	goldfish	volcano	19.93289	resnext50_32x4d	resnext50_32x4d
+ILSVRC2012_val_00000017.png	sea_anemone	-90.99819	groom	altar	19.92913	resnext50_32x4d	resnext50_32x4d
+ILSVRC2012_val_00000018.png	vulture	-63.17905	tick	necklace	19.88488	resnext50_32x4d	resnext50_32x4d
+ILSVRC2012_val_00000021.png	porcupine	-157.03458	terrapin	greenhouse	19.94639	resnext50_32x4d	resnext50_32x4d
+ILSVRC2012_val_00000022.png	Ibizan_hound	-235.16431	Persian_cat	jigsaw_puzzle	19.97543	resnext50_32x4d	resnext50_32x4d
+ILSVRC2012_val_00000025.png	vulture	-98.04732	starfish	stole	19.97813	resnext50_32x4d	resnext50_32x4d
+ILSVRC2012_val_00000027.png	white_wolf	-113.13644	American_chameleon	chainlink_fence	19.92329	resnext50_32x4d	resnext50_32x4d
+ILSVRC2012_val_00000028.png	English_foxhound	-113.96085	macaw	bath_towel	19.91568	resnext50_32x4d	resnext50_32x4d

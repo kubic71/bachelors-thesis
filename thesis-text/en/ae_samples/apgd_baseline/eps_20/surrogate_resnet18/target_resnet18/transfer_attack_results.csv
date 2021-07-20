@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-87.18184	ringneck_snake	safety_pin	19.92270	resnet18	resnet18
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-101.09578	papillon	soccer_ball	19.91910	resnet18	resnet18
+ILSVRC2012_val_00000006.png	garter_snake	-69.61401	Yorkshire_terrier	pillow	19.97591	resnet18	resnet18
+ILSVRC2012_val_00000007.png	porcupine	-93.46923	armadillo	barrel	19.89361	resnet18	resnet18
+ILSVRC2012_val_00000010.png	Angora	-60.82871	lacewing	spider_web	19.98504	resnet18	resnet18
+ILSVRC2012_val_00000011.png	brain_coral	-67.84106	puffer	buckeye	19.97789	resnet18	resnet18
+ILSVRC2012_val_00000012.png	cougar	-68.86142	tarantula	shower_curtain	19.96651	resnet18	resnet18
+ILSVRC2012_val_00000013.png	guenon	-74.63900	African_grey	shower_curtain	19.98594	resnet18	resnet18
+ILSVRC2012_val_00000016.png	grey_whale	-65.31400	miniature_pinscher	quilt	19.97517	resnet18	resnet18
+ILSVRC2012_val_00000017.png	sea_anemone	-93.85001	coral_fungus	candle	19.87946	resnet18	resnet18
+ILSVRC2012_val_00000018.png	vulture	-33.50727	American_chameleon	window_screen	19.96987	resnet18	resnet18
+ILSVRC2012_val_00000021.png	porcupine	-67.75000	garden_spider	spider_web	19.99214	resnet18	resnet18
+ILSVRC2012_val_00000022.png	Ibizan_hound	-106.33118	puffer	chain_mail	19.96710	resnet18	resnet18
+ILSVRC2012_val_00000025.png	vulture	-136.55020	spiny_lobster	shopping_cart	19.94748	resnet18	resnet18
+ILSVRC2012_val_00000027.png	white_wolf	-117.57027	armadillo	chain_mail	19.98922	resnet18	resnet18
+ILSVRC2012_val_00000028.png	English_foxhound	-96.03119	chambered_nautilus	baseball	19.97755	resnet18	resnet18

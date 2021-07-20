@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	3.35572	rock_python	handkerchief	9.97078	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	4.32704	Shetland_sheepdog	jigsaw_puzzle	9.99553	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000006.png	garter_snake	7.37360	water_snake	safety_pin	9.96441	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000007.png	porcupine	-0.73816	porcupine	hay	9.97537	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000010.png	Angora	-13.42141	hog	mask	9.99820	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000011.png	brain_coral	4.63112	brain_coral	coral_reef	9.99983	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000012.png	cougar	10.07463	cougar	window_screen	9.98654	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000013.png	guenon	9.05216	guenon	frying_pan	9.96474	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000016.png	grey_whale	-2.04831	grey_whale	vault	9.98779	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000017.png	sea_anemone	0.32058	starfish	church	9.99378	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000018.png	vulture	-0.71827	vulture	handkerchief	9.98759	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000021.png	porcupine	3.57997	peacock	broom	9.99267	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000022.png	Ibizan_hound	2.84879	Italian_greyhound	reel	9.95693	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000025.png	vulture	5.64522	vulture	wreck	9.96023	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000027.png	white_wolf	6.81095	timber_wolf	tennis_ball	9.95971	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000028.png	English_foxhound	4.03715	beagle	soccer_ball	9.96176	resnet18	wide_resnet50_2

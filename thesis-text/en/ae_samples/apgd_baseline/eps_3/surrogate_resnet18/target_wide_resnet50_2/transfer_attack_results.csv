@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	3.64922	water_snake	chain	2.99778	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	11.49392	Shetland_sheepdog	crutch	2.99218	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000006.png	garter_snake	8.48159	sea_snake	worm_fence	2.97265	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000007.png	porcupine	9.14398	porcupine	quill	2.99852	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000010.png	Angora	-8.44648	toy_poodle	wig	2.99592	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000011.png	brain_coral	4.29323	brain_coral	coral_reef	2.99973	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000012.png	cougar	11.48206	cougar	solar_dish	2.99721	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000013.png	guenon	9.95943	guenon	eggnog	2.99922	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000016.png	grey_whale	22.99443	grey_whale	promontory	2.99719	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000017.png	sea_anemone	2.45250	starfish	greenhouse	2.99904	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000018.png	vulture	8.97295	vulture	pole	2.98925	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000021.png	porcupine	10.98578	porcupine	thatch	2.99232	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000022.png	Ibizan_hound	5.30614	Saluki	muzzle	2.99818	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000025.png	vulture	15.04754	vulture	amphibian	2.99847	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000027.png	white_wolf	15.03654	white_wolf	dogsled	2.99993	resnet18	wide_resnet50_2
+ILSVRC2012_val_00000028.png	English_foxhound	4.93256	Walker_hound	tennis_ball	2.99787	resnet18	wide_resnet50_2

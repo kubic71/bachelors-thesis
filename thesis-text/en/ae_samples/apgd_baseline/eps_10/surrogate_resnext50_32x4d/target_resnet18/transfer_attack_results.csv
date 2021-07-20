@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-4.35511	water_snake	maze	9.98849	resnext50_32x4d	resnet18
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	3.20913	Shetland_sheepdog	teddy	9.97490	resnext50_32x4d	resnet18
+ILSVRC2012_val_00000006.png	garter_snake	-0.72899	walking_stick	shopping_cart	9.98863	resnext50_32x4d	resnet18
+ILSVRC2012_val_00000007.png	porcupine	-3.18975	tabby	sock	9.97855	resnext50_32x4d	resnet18
+ILSVRC2012_val_00000010.png	Angora	-6.17894	tick	piggy_bank	9.98772	resnext50_32x4d	resnet18
+ILSVRC2012_val_00000011.png	brain_coral	5.07258	brain_coral	coral_reef	9.99228	resnext50_32x4d	resnet18
+ILSVRC2012_val_00000012.png	cougar	10.88296	cougar	corn	9.95179	resnext50_32x4d	resnet18
+ILSVRC2012_val_00000013.png	guenon	10.23665	guenon	wig	9.99781	resnext50_32x4d	resnet18
+ILSVRC2012_val_00000016.png	grey_whale	1.94781	grey_whale	megalith	9.96514	resnext50_32x4d	resnet18
+ILSVRC2012_val_00000017.png	sea_anemone	-3.60401	sea_anemone	altar	9.98399	resnext50_32x4d	resnet18
+ILSVRC2012_val_00000018.png	vulture	4.41771	kite	window_screen	9.98677	resnext50_32x4d	resnet18
+ILSVRC2012_val_00000021.png	porcupine	4.50249	porcupine	chainlink_fence	9.94995	resnext50_32x4d	resnet18
+ILSVRC2012_val_00000022.png	Ibizan_hound	-0.32724	wire-haired_fox_terrier	jigsaw_puzzle	9.98677	resnext50_32x4d	resnet18
+ILSVRC2012_val_00000025.png	vulture	-1.36959	vulture	worm_fence	9.99303	resnext50_32x4d	resnet18
+ILSVRC2012_val_00000027.png	white_wolf	1.79347	Arctic_fox	chainlink_fence	9.96466	resnext50_32x4d	resnet18
+ILSVRC2012_val_00000028.png	English_foxhound	1.91139	beagle	bath_towel	9.95663	resnext50_32x4d	resnet18

@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-3.22766	brain_coral	knot	19.99210	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-2.25433	Shetland_sheepdog	jigsaw_puzzle	19.99456	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000006.png	garter_snake	6.08266	water_snake	safety_pin	19.99566	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000007.png	porcupine	-14.79809	peacock	sock	19.98005	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000010.png	Angora	-16.04326	guinea_pig	pillow	19.98285	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000011.png	brain_coral	-10.23219	brain_coral	jackfruit	19.99101	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000012.png	cougar	-25.45947	Persian_cat	jigsaw_puzzle	19.93488	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000013.png	guenon	1.40759	langur	shower_cap	19.98076	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000016.png	grey_whale	-9.41251	peacock	maze	19.96928	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000017.png	sea_anemone	-2.24971	groom	church	19.99568	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000018.png	vulture	-2.09257	kite	screw	19.96091	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000021.png	porcupine	-6.49589	peacock	racket	19.98433	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000022.png	Ibizan_hound	-8.79656	llama	stupa	19.96793	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000025.png	vulture	-3.62481	vulture	bubble	19.93044	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000027.png	white_wolf	-11.57646	Komodo_dragon	sock	19.94975	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000028.png	English_foxhound	2.28424	Labrador_retriever	jigsaw_puzzle	19.98879	densenet-121	wide_resnet50_2

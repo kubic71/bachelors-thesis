@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-5.55871	centipede	jigsaw_puzzle	19.99821	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-6.46471	Shetland_sheepdog	jigsaw_puzzle	19.97428	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000006.png	garter_snake	-3.92597	water_snake	maze	19.92737	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000007.png	porcupine	1.47947	porcupine	hay	19.96481	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000010.png	Angora	-8.47335	triceratops	jigsaw_puzzle	19.98131	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000011.png	brain_coral	2.91151	brain_coral	jigsaw_puzzle	19.89613	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000012.png	cougar	6.64157	cougar	jigsaw_puzzle	19.96355	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000013.png	guenon	-8.57853	langur	jigsaw_puzzle	19.92380	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000016.png	grey_whale	-7.03872	grey_whale	jigsaw_puzzle	19.92384	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000017.png	sea_anemone	-6.73803	proboscis_monkey	jigsaw_puzzle	19.99230	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000018.png	vulture	-0.84854	kite	jigsaw_puzzle	19.91203	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000021.png	porcupine	0.95137	porcupine	spider_web	19.99461	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000022.png	Ibizan_hound	-1.45474	ram	toyshop	19.89149	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000025.png	vulture	3.15487	vulture	barrow	19.91656	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000027.png	white_wolf	-3.06216	Arctic_fox	jigsaw_puzzle	19.93600	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000028.png	English_foxhound	-6.95735	clumber	jigsaw_puzzle	19.95363	squeezenet	efficientnet-b0-advtrain

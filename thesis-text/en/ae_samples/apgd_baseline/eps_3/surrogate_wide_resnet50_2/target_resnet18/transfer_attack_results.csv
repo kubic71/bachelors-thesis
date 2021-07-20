@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	5.89167	water_snake	sandbar	2.98755	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	9.52314	Shetland_sheepdog	barrow	2.99047	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000006.png	garter_snake	3.87137	water_snake	maze	2.99780	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000007.png	porcupine	6.07842	porcupine	wool	2.98646	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000010.png	Angora	-5.98536	toy_poodle	wig	2.99210	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000011.png	brain_coral	7.41842	brain_coral	coral_reef	2.98733	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000012.png	cougar	16.21674	cougar	window_screen	2.99652	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000013.png	guenon	18.44296	guenon	book_jacket	2.99798	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000016.png	grey_whale	12.85983	grey_whale	promontory	2.99493	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000017.png	sea_anemone	1.02351	goldfish	torch	2.98619	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000018.png	vulture	4.83821	kite	parachute	2.99265	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000021.png	porcupine	11.92132	porcupine	spider_web	2.99594	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000022.png	Ibizan_hound	3.14266	American_Staffordshire_terrier	muzzle	2.99594	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000025.png	vulture	9.01128	vulture	plow	2.99750	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000027.png	white_wolf	8.95034	white_wolf	dogsled	2.98359	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000028.png	English_foxhound	4.27632	beagle	soccer_ball	2.99877	wide_resnet50_2	resnet18

@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-1.66046	American_alligator	maze	9.96800	resnet50	squeezenet
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	7.41356	Shetland_sheepdog	feather_boa	9.97299	resnet50	squeezenet
+ILSVRC2012_val_00000006.png	garter_snake	0.22819	American_alligator	jigsaw_puzzle	9.99118	resnet50	squeezenet
+ILSVRC2012_val_00000007.png	porcupine	3.48770	porcupine	barrow	9.99418	resnet50	squeezenet
+ILSVRC2012_val_00000010.png	Angora	0.40549	sea_anemone	toilet_tissue	9.99782	resnet50	squeezenet
+ILSVRC2012_val_00000011.png	brain_coral	2.96818	brain_coral	coral_reef	9.99996	resnet50	squeezenet
+ILSVRC2012_val_00000012.png	cougar	6.03738	cougar	jigsaw_puzzle	9.93108	resnet50	squeezenet
+ILSVRC2012_val_00000013.png	guenon	6.72306	guenon	jigsaw_puzzle	9.98965	resnet50	squeezenet
+ILSVRC2012_val_00000016.png	grey_whale	4.27183	grey_whale	fountain	9.99197	resnet50	squeezenet
+ILSVRC2012_val_00000017.png	sea_anemone	-0.33226	tarantula	feather_boa	9.94757	resnet50	squeezenet
+ILSVRC2012_val_00000018.png	vulture	-0.98377	chickadee	jigsaw_puzzle	9.99181	resnet50	squeezenet
+ILSVRC2012_val_00000021.png	porcupine	1.21453	walking_stick	spider_web	9.96484	resnet50	squeezenet
+ILSVRC2012_val_00000022.png	Ibizan_hound	0.10245	Arabian_camel	plow	9.95305	resnet50	squeezenet
+ILSVRC2012_val_00000025.png	vulture	3.76203	vulture	barrow	9.87976	resnet50	squeezenet
+ILSVRC2012_val_00000027.png	white_wolf	3.43242	white_wolf	oxcart	9.99644	resnet50	squeezenet
+ILSVRC2012_val_00000028.png	English_foxhound	6.91496	beagle	tennis_ball	9.98532	resnet50	squeezenet

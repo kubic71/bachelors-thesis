@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-57.22326	nematode	maze	2.99819	squeezenet	squeezenet
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-61.60869	Brittany_spaniel	tennis_ball	2.99877	squeezenet	squeezenet
+ILSVRC2012_val_00000006.png	garter_snake	-38.27247	eft	safety_pin	2.99983	squeezenet	squeezenet
+ILSVRC2012_val_00000007.png	porcupine	-48.03676	snail	hay	2.99479	squeezenet	squeezenet
+ILSVRC2012_val_00000010.png	Angora	-41.05432	groom	wig	2.99926	squeezenet	squeezenet
+ILSVRC2012_val_00000011.png	brain_coral	-16.43801	anemone_fish	coral_reef	2.99940	squeezenet	squeezenet
+ILSVRC2012_val_00000012.png	cougar	-62.87758	dragonfly	tennis_ball	2.99769	squeezenet	squeezenet
+ILSVRC2012_val_00000013.png	guenon	-29.33357	toy_terrier	window_screen	2.99983	squeezenet	squeezenet
+ILSVRC2012_val_00000016.png	grey_whale	-40.32572	tabby	fountain	2.99834	squeezenet	squeezenet
+ILSVRC2012_val_00000017.png	sea_anemone	-47.56897	West_Highland_white_terrier	feather_boa	2.99587	squeezenet	squeezenet
+ILSVRC2012_val_00000018.png	vulture	-48.55519	cockroach	parachute	2.98904	squeezenet	squeezenet
+ILSVRC2012_val_00000021.png	porcupine	-27.96224	gar	worm_fence	2.99950	squeezenet	squeezenet
+ILSVRC2012_val_00000022.png	Ibizan_hound	-43.01707	ox	horse_cart	2.99815	squeezenet	squeezenet
+ILSVRC2012_val_00000025.png	vulture	-31.75611	triceratops	worm_fence	2.99931	squeezenet	squeezenet
+ILSVRC2012_val_00000027.png	white_wolf	-41.01681	ox	park_bench	2.99756	squeezenet	squeezenet
+ILSVRC2012_val_00000028.png	English_foxhound	-67.49612	toy_terrier	tennis_ball	2.99963	squeezenet	squeezenet

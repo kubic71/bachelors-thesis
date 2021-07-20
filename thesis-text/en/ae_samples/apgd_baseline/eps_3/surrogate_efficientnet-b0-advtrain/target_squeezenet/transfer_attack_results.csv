@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	1.51482	American_alligator	sandbar	2.99931	efficientnet-b0-advtrain	squeezenet
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	7.89932	collie	tennis_ball	2.99677	efficientnet-b0-advtrain	squeezenet
+ILSVRC2012_val_00000006.png	garter_snake	-0.38364	alligator_lizard	sundial	2.99329	efficientnet-b0-advtrain	squeezenet
+ILSVRC2012_val_00000007.png	porcupine	4.65576	porcupine	park_bench	2.99918	efficientnet-b0-advtrain	squeezenet
+ILSVRC2012_val_00000010.png	Angora	1.99031	Pomeranian	teddy	2.98489	efficientnet-b0-advtrain	squeezenet
+ILSVRC2012_val_00000011.png	brain_coral	3.57898	brain_coral	coral_reef	2.99973	efficientnet-b0-advtrain	squeezenet
+ILSVRC2012_val_00000012.png	cougar	14.82665	cougar	tennis_ball	2.99987	efficientnet-b0-advtrain	squeezenet
+ILSVRC2012_val_00000013.png	guenon	17.49780	guenon	window_screen	3.00000	efficientnet-b0-advtrain	squeezenet
+ILSVRC2012_val_00000016.png	grey_whale	9.59354	grey_whale	fountain	2.99995	efficientnet-b0-advtrain	squeezenet
+ILSVRC2012_val_00000017.png	sea_anemone	-3.23353	tarantula	feather_boa	2.99059	efficientnet-b0-advtrain	squeezenet
+ILSVRC2012_val_00000018.png	vulture	0.27809	ruffed_grouse	parachute	2.99994	efficientnet-b0-advtrain	squeezenet
+ILSVRC2012_val_00000021.png	porcupine	4.07157	Madagascar_cat	worm_fence	2.99958	efficientnet-b0-advtrain	squeezenet
+ILSVRC2012_val_00000022.png	Ibizan_hound	-0.00725	llama	plow	2.99695	efficientnet-b0-advtrain	squeezenet
+ILSVRC2012_val_00000025.png	vulture	6.18993	vulture	assault_rifle	2.99769	efficientnet-b0-advtrain	squeezenet
+ILSVRC2012_val_00000027.png	white_wolf	11.77872	white_wolf	oxcart	2.99971	efficientnet-b0-advtrain	squeezenet
+ILSVRC2012_val_00000028.png	English_foxhound	8.17810	beagle	tennis_ball	2.99976	efficientnet-b0-advtrain	squeezenet

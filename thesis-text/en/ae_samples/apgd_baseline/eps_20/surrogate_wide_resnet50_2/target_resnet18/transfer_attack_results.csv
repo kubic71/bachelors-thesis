@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-6.70868	loggerhead	quilt	19.95313	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-12.75201	triceratops	jigsaw_puzzle	19.92205	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000006.png	garter_snake	-7.53531	dragonfly	safety_pin	19.97545	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000007.png	porcupine	-7.22094	American_alligator	sock	19.90645	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000010.png	Angora	-8.83472	sea_urchin	dome	19.94444	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000011.png	brain_coral	-4.87125	brain_coral	jackfruit	19.98659	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000012.png	cougar	-7.16101	tabby	jigsaw_puzzle	19.87231	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000013.png	guenon	-8.49296	brain_coral	jigsaw_puzzle	19.97862	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000016.png	grey_whale	-3.41191	eel	handkerchief	19.97211	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000017.png	sea_anemone	-8.40893	crayfish	umbrella	19.88659	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000018.png	vulture	-2.46966	Gordon_setter	ski	19.98660	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000021.png	porcupine	-2.26304	cicada	goblet	19.90826	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000022.png	Ibizan_hound	-9.21098	cicada	maze	19.96965	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000025.png	vulture	-7.90931	crayfish	jigsaw_puzzle	19.92937	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000027.png	white_wolf	1.54125	white_wolf	bonnet	19.94714	wide_resnet50_2	resnet18
+ILSVRC2012_val_00000028.png	English_foxhound	-5.90554	brain_coral	mask	19.98327	wide_resnet50_2	resnet18

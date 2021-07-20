@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	7.02124	sea_snake	sandbar	2.98755	wide_resnet50_2	resnet50
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	7.85175	Shetland_sheepdog	fur_coat	2.99047	wide_resnet50_2	resnet50
+ILSVRC2012_val_00000006.png	garter_snake	10.02553	water_snake	worm_fence	2.99780	wide_resnet50_2	resnet50
+ILSVRC2012_val_00000007.png	porcupine	9.41547	porcupine	quill	2.98646	wide_resnet50_2	resnet50
+ILSVRC2012_val_00000010.png	Angora	-13.58910	toy_poodle	wig	2.99210	wide_resnet50_2	resnet50
+ILSVRC2012_val_00000011.png	brain_coral	5.38215	brain_coral	coral_reef	2.98733	wide_resnet50_2	resnet50
+ILSVRC2012_val_00000012.png	cougar	18.12002	cougar	remote_control	2.99652	wide_resnet50_2	resnet50
+ILSVRC2012_val_00000013.png	guenon	13.84432	guenon	caldron	2.99798	wide_resnet50_2	resnet50
+ILSVRC2012_val_00000016.png	grey_whale	16.08778	grey_whale	submarine	2.99493	wide_resnet50_2	resnet50
+ILSVRC2012_val_00000017.png	sea_anemone	-4.08197	starfish	torch	2.98619	wide_resnet50_2	resnet50
+ILSVRC2012_val_00000018.png	vulture	-2.43154	kite	parachute	2.99265	wide_resnet50_2	resnet50
+ILSVRC2012_val_00000021.png	porcupine	8.46383	porcupine	binoculars	2.99594	wide_resnet50_2	resnet50
+ILSVRC2012_val_00000022.png	Ibizan_hound	1.93084	Lakeland_terrier	muzzle	2.99594	wide_resnet50_2	resnet50
+ILSVRC2012_val_00000025.png	vulture	12.24537	vulture	plow	2.99750	wide_resnet50_2	resnet50
+ILSVRC2012_val_00000027.png	white_wolf	7.95470	white_wolf	dogsled	2.98359	wide_resnet50_2	resnet50
+ILSVRC2012_val_00000028.png	English_foxhound	-1.93879	Walker_hound	soccer_ball	2.99877	wide_resnet50_2	resnet50

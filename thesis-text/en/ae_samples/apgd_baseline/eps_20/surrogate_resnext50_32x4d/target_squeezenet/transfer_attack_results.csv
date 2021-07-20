@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-0.00429	American_alligator	jigsaw_puzzle	19.94305	resnext50_32x4d	squeezenet
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-2.05626	starfish	jigsaw_puzzle	19.97890	resnext50_32x4d	squeezenet
+ILSVRC2012_val_00000006.png	garter_snake	-1.96085	American_alligator	jigsaw_puzzle	19.98501	resnext50_32x4d	squeezenet
+ILSVRC2012_val_00000007.png	porcupine	-1.67209	peacock	jigsaw_puzzle	19.97645	resnext50_32x4d	squeezenet
+ILSVRC2012_val_00000010.png	Angora	-1.20081	sea_anemone	spider_web	19.98218	resnext50_32x4d	squeezenet
+ILSVRC2012_val_00000011.png	brain_coral	-0.00135	brain_coral	brass	19.97594	resnext50_32x4d	squeezenet
+ILSVRC2012_val_00000012.png	cougar	-1.72691	hummingbird	jigsaw_puzzle	19.87397	resnext50_32x4d	squeezenet
+ILSVRC2012_val_00000013.png	guenon	0.42656	guenon	jigsaw_puzzle	19.99429	resnext50_32x4d	squeezenet
+ILSVRC2012_val_00000016.png	grey_whale	-0.34891	loggerhead	valley	19.93289	resnext50_32x4d	squeezenet
+ILSVRC2012_val_00000017.png	sea_anemone	0.27472	tarantula	lakeside	19.92913	resnext50_32x4d	squeezenet
+ILSVRC2012_val_00000018.png	vulture	1.52063	bee	spider_web	19.88488	resnext50_32x4d	squeezenet
+ILSVRC2012_val_00000021.png	porcupine	-0.19792	American_black_bear	spider_web	19.94639	resnext50_32x4d	squeezenet
+ILSVRC2012_val_00000022.png	Ibizan_hound	-4.76576	West_Highland_white_terrier	jigsaw_puzzle	19.97543	resnext50_32x4d	squeezenet
+ILSVRC2012_val_00000025.png	vulture	0.26034	wallaby	rifle	19.97813	resnext50_32x4d	squeezenet
+ILSVRC2012_val_00000027.png	white_wolf	-3.16155	hen-of-the-woods	stone_wall	19.92329	resnext50_32x4d	squeezenet
+ILSVRC2012_val_00000028.png	English_foxhound	0.62327	redbone	jigsaw_puzzle	19.91568	resnext50_32x4d	squeezenet

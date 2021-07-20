@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-7.11546	fiddler_crab	safety_pin	19.92270	resnet18	densenet-121
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-8.46162	Shetland_sheepdog	soccer_ball	19.91910	resnet18	densenet-121
+ILSVRC2012_val_00000006.png	garter_snake	-9.50305	West_Highland_white_terrier	pillow	19.97591	resnet18	densenet-121
+ILSVRC2012_val_00000007.png	porcupine	-6.87649	Rottweiler	barrel	19.89361	resnet18	densenet-121
+ILSVRC2012_val_00000010.png	Angora	-3.83881	sea_urchin	spider_web	19.98504	resnet18	densenet-121
+ILSVRC2012_val_00000011.png	brain_coral	1.69494	brain_coral	jackfruit	19.97789	resnet18	densenet-121
+ILSVRC2012_val_00000012.png	cougar	-2.13023	cougar	jigsaw_puzzle	19.96651	resnet18	densenet-121
+ILSVRC2012_val_00000013.png	guenon	1.16204	guenon	mask	19.98594	resnet18	densenet-121
+ILSVRC2012_val_00000016.png	grey_whale	-8.52713	cairn	quilt	19.97517	resnet18	densenet-121
+ILSVRC2012_val_00000017.png	sea_anemone	-3.43378	sea_anemone	candle	19.87946	resnet18	densenet-121
+ILSVRC2012_val_00000018.png	vulture	0.59181	vulture	shower_curtain	19.96987	resnet18	densenet-121
+ILSVRC2012_val_00000021.png	porcupine	-7.74193	great_grey_owl	spider_web	19.99214	resnet18	densenet-121
+ILSVRC2012_val_00000022.png	Ibizan_hound	-1.23692	ox	chain_mail	19.96710	resnet18	densenet-121
+ILSVRC2012_val_00000025.png	vulture	-1.37007	ruffed_grouse	shopping_cart	19.94748	resnet18	densenet-121
+ILSVRC2012_val_00000027.png	white_wolf	1.30538	grey_fox	chain_mail	19.98922	resnet18	densenet-121
+ILSVRC2012_val_00000028.png	English_foxhound	-0.98720	American_Staffordshire_terrier	baseball	19.97755	resnet18	densenet-121

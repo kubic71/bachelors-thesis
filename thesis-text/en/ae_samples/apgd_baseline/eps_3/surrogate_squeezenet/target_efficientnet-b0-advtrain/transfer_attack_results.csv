@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	5.13819	sea_snake	sandbar	2.99819	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	6.80972	Shetland_sheepdog	tennis_ball	2.99877	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000006.png	garter_snake	5.27949	garter_snake	worm_fence	2.99983	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000007.png	porcupine	7.99703	porcupine	projector	2.99479	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000010.png	Angora	3.46646	Maltese_dog	wig	2.99926	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000011.png	brain_coral	5.39960	brain_coral	coral_reef	2.99940	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000012.png	cougar	8.54370	cougar	cucumber	2.99769	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000013.png	guenon	7.57947	guenon	bottlecap	2.99983	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000016.png	grey_whale	8.33596	grey_whale	volcano	2.99834	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000017.png	sea_anemone	2.88705	goldfish	candle	2.99587	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000018.png	vulture	4.20392	vulture	parachute	2.98904	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000021.png	porcupine	10.18685	porcupine	cardoon	2.99950	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000022.png	Ibizan_hound	2.33410	whippet	dogsled	2.99815	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000025.png	vulture	7.28988	vulture	rubber_eraser	2.99931	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000027.png	white_wolf	8.99662	white_wolf	racer	2.99756	squeezenet	efficientnet-b0-advtrain
+ILSVRC2012_val_00000028.png	English_foxhound	5.80299	Walker_hound	matchstick	2.99963	squeezenet	efficientnet-b0-advtrain

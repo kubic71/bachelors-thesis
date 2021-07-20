@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-85.33692	cairn	quilt	19.95313	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-168.88379	Persian_cat	jigsaw_puzzle	19.92205	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000006.png	garter_snake	-187.85208	spiny_lobster	safety_pin	19.97545	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000007.png	porcupine	-129.45248	Komodo_dragon	sock	19.90645	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000010.png	Angora	-60.94095	silky_terrier	dome	19.94444	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000011.png	brain_coral	-108.91252	brain_coral	jackfruit	19.98659	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000012.png	cougar	-172.61662	Persian_cat	jigsaw_puzzle	19.87231	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000013.png	guenon	-177.85866	Persian_cat	jigsaw_puzzle	19.97862	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000016.png	grey_whale	-126.40462	conch	handkerchief	19.97211	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000017.png	sea_anemone	-182.18826	sea_urchin	umbrella	19.88659	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000018.png	vulture	-66.60880	Eskimo_dog	ski	19.98660	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000021.png	porcupine	-121.96046	hummingbird	goblet	19.90826	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000022.png	Ibizan_hound	-176.71014	brain_coral	maze	19.96965	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000025.png	vulture	-157.66838	Persian_cat	jigsaw_puzzle	19.92937	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000027.png	white_wolf	-66.25866	Eskimo_dog	dogsled	19.94714	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000028.png	English_foxhound	-128.67221	chambered_nautilus	mask	19.98327	wide_resnet50_2	wide_resnet50_2

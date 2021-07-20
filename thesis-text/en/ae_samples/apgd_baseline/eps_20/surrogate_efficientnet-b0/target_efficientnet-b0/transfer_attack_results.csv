@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-73.93952	Shetland_sheepdog	shopping_cart	19.95913	efficientnet-b0	efficientnet-b0
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-29.67663	water_snake	shower_curtain	19.97399	efficientnet-b0	efficientnet-b0
+ILSVRC2012_val_00000006.png	garter_snake	-36.44018	African_grey	swab	19.94392	efficientnet-b0	efficientnet-b0
+ILSVRC2012_val_00000007.png	porcupine	-45.90375	spoonbill	sock	19.91938	efficientnet-b0	efficientnet-b0
+ILSVRC2012_val_00000010.png	Angora	-26.01450	ballplayer	teddy	19.99190	efficientnet-b0	efficientnet-b0
+ILSVRC2012_val_00000011.png	brain_coral	-13.82556	scuba_diver	coral_reef	19.99354	efficientnet-b0	efficientnet-b0
+ILSVRC2012_val_00000012.png	cougar	-34.45948	pug	pillow	19.98704	efficientnet-b0	efficientnet-b0
+ILSVRC2012_val_00000013.png	guenon	-30.90597	water_ouzel	handkerchief	19.96908	efficientnet-b0	efficientnet-b0
+ILSVRC2012_val_00000016.png	grey_whale	-32.84985	red-breasted_merganser	volcano	19.99186	efficientnet-b0	efficientnet-b0
+ILSVRC2012_val_00000017.png	sea_anemone	-30.43857	robin	torch	19.95318	efficientnet-b0	efficientnet-b0
+ILSVRC2012_val_00000018.png	vulture	-24.56950	green_snake	cardigan	19.97611	efficientnet-b0	efficientnet-b0
+ILSVRC2012_val_00000021.png	porcupine	-35.21677	papillon	mitten	19.99298	efficientnet-b0	efficientnet-b0
+ILSVRC2012_val_00000022.png	Ibizan_hound	-38.91662	redshank	cowboy_hat	19.96462	efficientnet-b0	efficientnet-b0
+ILSVRC2012_val_00000025.png	vulture	-27.54132	loggerhead	thresher	19.24095	efficientnet-b0	efficientnet-b0
+ILSVRC2012_val_00000027.png	white_wolf	-51.30654	guinea_pig	buckle	19.97339	efficientnet-b0	efficientnet-b0
+ILSVRC2012_val_00000028.png	English_foxhound	-25.13707	Arabian_camel	tennis_ball	19.21568	efficientnet-b0	efficientnet-b0

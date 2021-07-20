@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-34.42758	kuvasz	sandbar	2.99958	densenet-121	densenet-121
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-70.01209	Norfolk_terrier	soccer_ball	2.99729	densenet-121	densenet-121
+ILSVRC2012_val_00000006.png	garter_snake	-50.45080	sorrel	worm_fence	2.99994	densenet-121	densenet-121
+ILSVRC2012_val_00000007.png	porcupine	-50.65607	three-toed_sloth	spindle	2.99893	densenet-121	densenet-121
+ILSVRC2012_val_00000010.png	Angora	-72.42766	triceratops	mask	2.99687	densenet-121	densenet-121
+ILSVRC2012_val_00000011.png	brain_coral	-38.86789	indigo_bunting	maze	2.99883	densenet-121	densenet-121
+ILSVRC2012_val_00000012.png	cougar	-44.44691	leatherback_turtle	bow_tie	2.99892	densenet-121	densenet-121
+ILSVRC2012_val_00000013.png	guenon	-37.35921	terrapin	jean	2.99787	densenet-121	densenet-121
+ILSVRC2012_val_00000016.png	grey_whale	-58.10829	admiral	wreck	2.99853	densenet-121	densenet-121
+ILSVRC2012_val_00000017.png	sea_anemone	-11.80735	goldfish	coral_reef	2.99993	densenet-121	densenet-121
+ILSVRC2012_val_00000018.png	vulture	-52.05964	great_white_shark	wing	2.99922	densenet-121	densenet-121
+ILSVRC2012_val_00000021.png	porcupine	-40.28640	beaver	mousetrap	2.99984	densenet-121	densenet-121
+ILSVRC2012_val_00000022.png	Ibizan_hound	-40.96311	spiny_lobster	dogsled	2.99677	densenet-121	densenet-121
+ILSVRC2012_val_00000025.png	vulture	-44.64914	sorrel	worm_fence	2.99294	densenet-121	densenet-121
+ILSVRC2012_val_00000027.png	white_wolf	-27.26188	Eskimo_dog	dogsled	2.99909	densenet-121	densenet-121
+ILSVRC2012_val_00000028.png	English_foxhound	-49.41665	Labrador_retriever	bath_towel	2.99780	densenet-121	densenet-121

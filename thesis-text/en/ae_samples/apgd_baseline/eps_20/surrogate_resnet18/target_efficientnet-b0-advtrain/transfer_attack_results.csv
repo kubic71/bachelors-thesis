@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	1.57927	king_snake	safety_pin	19.92270	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-0.48657	collie	jigsaw_puzzle	19.91910	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000006.png	garter_snake	4.84904	night_snake	jigsaw_puzzle	19.97591	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000007.png	porcupine	-0.68223	porcupine	barrel	19.89361	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000010.png	Angora	-3.26204	triceratops	jigsaw_puzzle	19.98504	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000011.png	brain_coral	4.94635	brain_coral	coral_reef	19.97789	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000012.png	cougar	7.66104	cougar	jigsaw_puzzle	19.96651	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000013.png	guenon	1.28782	guenon	jigsaw_puzzle	19.98594	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000016.png	grey_whale	-2.85762	grey_whale	quilt	19.97517	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000017.png	sea_anemone	-3.13049	starfish	candle	19.87946	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000018.png	vulture	3.95701	kite	tray	19.96987	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000021.png	porcupine	-0.49895	porcupine	spider_web	19.99214	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000022.png	Ibizan_hound	-3.64039	Afghan_hound	jigsaw_puzzle	19.96710	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000025.png	vulture	5.36819	vulture	stretcher	19.94748	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000027.png	white_wolf	5.39036	white_wolf	jigsaw_puzzle	19.98922	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000028.png	English_foxhound	1.25649	beagle	jigsaw_puzzle	19.97755	resnet18	efficientnet-b0-advtrain

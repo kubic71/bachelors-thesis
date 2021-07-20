@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	4.02487	boa_constrictor	quilt	19.95313	wide_resnet50_2	efficientnet-b0
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-5.18581	Arctic_fox	jigsaw_puzzle	19.92205	wide_resnet50_2	efficientnet-b0
+ILSVRC2012_val_00000006.png	garter_snake	-0.18922	dragonfly	safety_pin	19.97545	wide_resnet50_2	efficientnet-b0
+ILSVRC2012_val_00000007.png	porcupine	0.66160	porcupine	sock	19.90645	wide_resnet50_2	efficientnet-b0
+ILSVRC2012_val_00000010.png	Angora	-2.26971	triceratops	dome	19.94444	wide_resnet50_2	efficientnet-b0
+ILSVRC2012_val_00000011.png	brain_coral	3.18059	brain_coral	jackfruit	19.98659	wide_resnet50_2	efficientnet-b0
+ILSVRC2012_val_00000012.png	cougar	-2.87196	cougar	jigsaw_puzzle	19.87231	wide_resnet50_2	efficientnet-b0
+ILSVRC2012_val_00000013.png	guenon	-2.05056	guenon	jigsaw_puzzle	19.97862	wide_resnet50_2	efficientnet-b0
+ILSVRC2012_val_00000016.png	grey_whale	-3.45138	leatherback_turtle	quilt	19.97211	wide_resnet50_2	efficientnet-b0
+ILSVRC2012_val_00000017.png	sea_anemone	-8.14983	groom	umbrella	19.88659	wide_resnet50_2	efficientnet-b0
+ILSVRC2012_val_00000018.png	vulture	-0.75987	kite	ski	19.98660	wide_resnet50_2	efficientnet-b0
+ILSVRC2012_val_00000021.png	porcupine	-0.93962	terrapin	spider_web	19.90826	wide_resnet50_2	efficientnet-b0
+ILSVRC2012_val_00000022.png	Ibizan_hound	-5.75349	water_buffalo	maze	19.96965	wide_resnet50_2	efficientnet-b0
+ILSVRC2012_val_00000025.png	vulture	4.20484	vulture	jigsaw_puzzle	19.92937	wide_resnet50_2	efficientnet-b0
+ILSVRC2012_val_00000027.png	white_wolf	3.06189	white_wolf	jigsaw_puzzle	19.94714	wide_resnet50_2	efficientnet-b0
+ILSVRC2012_val_00000028.png	English_foxhound	1.64299	Welsh_springer_spaniel	jigsaw_puzzle	19.98327	wide_resnet50_2	efficientnet-b0

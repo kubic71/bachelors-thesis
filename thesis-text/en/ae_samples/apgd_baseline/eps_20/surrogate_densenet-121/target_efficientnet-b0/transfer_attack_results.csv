@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-0.92769	centipede	knot	19.99210	densenet-121	efficientnet-b0
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-3.41694	collie	jigsaw_puzzle	19.99456	densenet-121	efficientnet-b0
+ILSVRC2012_val_00000006.png	garter_snake	4.67747	alligator_lizard	sleeping_bag	19.99566	densenet-121	efficientnet-b0
+ILSVRC2012_val_00000007.png	porcupine	1.33203	porcupine	sock	19.98005	densenet-121	efficientnet-b0
+ILSVRC2012_val_00000010.png	Angora	-5.56370	tick	jigsaw_puzzle	19.98285	densenet-121	efficientnet-b0
+ILSVRC2012_val_00000011.png	brain_coral	3.61137	brain_coral	jackfruit	19.99101	densenet-121	efficientnet-b0
+ILSVRC2012_val_00000012.png	cougar	-5.73247	chow	jigsaw_puzzle	19.93488	densenet-121	efficientnet-b0
+ILSVRC2012_val_00000013.png	guenon	0.52431	guenon	jigsaw_puzzle	19.98076	densenet-121	efficientnet-b0
+ILSVRC2012_val_00000016.png	grey_whale	-4.52023	leatherback_turtle	jigsaw_puzzle	19.96928	densenet-121	efficientnet-b0
+ILSVRC2012_val_00000017.png	sea_anemone	-2.64970	sea_anemone	torch	19.99568	densenet-121	efficientnet-b0
+ILSVRC2012_val_00000018.png	vulture	-6.53803	hammerhead	jigsaw_puzzle	19.96091	densenet-121	efficientnet-b0
+ILSVRC2012_val_00000021.png	porcupine	-1.27633	porcupine	spider_web	19.98433	densenet-121	efficientnet-b0
+ILSVRC2012_val_00000022.png	Ibizan_hound	-6.26455	water_buffalo	jigsaw_puzzle	19.96793	densenet-121	efficientnet-b0
+ILSVRC2012_val_00000025.png	vulture	6.92498	vulture	amphibian	19.93044	densenet-121	efficientnet-b0
+ILSVRC2012_val_00000027.png	white_wolf	-3.68348	West_Highland_white_terrier	sock	19.94975	densenet-121	efficientnet-b0
+ILSVRC2012_val_00000028.png	English_foxhound	3.34509	beagle	bath_towel	19.98879	densenet-121	efficientnet-b0

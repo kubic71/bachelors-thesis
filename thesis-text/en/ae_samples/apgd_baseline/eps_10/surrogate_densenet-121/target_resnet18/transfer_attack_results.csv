@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-0.61864	leatherback_turtle	sandbar	9.99322	densenet-121	resnet18
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	0.68788	Shetland_sheepdog	soccer_ball	9.99392	densenet-121	resnet18
+ILSVRC2012_val_00000006.png	garter_snake	-4.26236	alligator_lizard	plow	9.98991	densenet-121	resnet18
+ILSVRC2012_val_00000007.png	porcupine	-4.01573	porcupine	mitten	9.99505	densenet-121	resnet18
+ILSVRC2012_val_00000010.png	Angora	-4.09838	hog	mask	9.99751	densenet-121	resnet18
+ILSVRC2012_val_00000011.png	brain_coral	7.22951	brain_coral	jackfruit	9.99792	densenet-121	resnet18
+ILSVRC2012_val_00000012.png	cougar	13.22199	cougar	bonnet	9.99567	densenet-121	resnet18
+ILSVRC2012_val_00000013.png	guenon	10.94080	guenon	wig	9.99120	densenet-121	resnet18
+ILSVRC2012_val_00000016.png	grey_whale	-2.63736	eel	manhole_cover	9.98797	densenet-121	resnet18
+ILSVRC2012_val_00000017.png	sea_anemone	0.85272	sea_anemone	altar	9.66098	densenet-121	resnet18
+ILSVRC2012_val_00000018.png	vulture	4.42755	kite	feather_boa	9.98889	densenet-121	resnet18
+ILSVRC2012_val_00000021.png	porcupine	8.62662	porcupine	chain_mail	9.99823	densenet-121	resnet18
+ILSVRC2012_val_00000022.png	Ibizan_hound	-3.04764	coho	stretcher	9.99731	densenet-121	resnet18
+ILSVRC2012_val_00000025.png	vulture	-0.87084	vulture	military_uniform	9.97757	densenet-121	resnet18
+ILSVRC2012_val_00000027.png	white_wolf	6.25826	white_wolf	shopping_cart	9.97269	densenet-121	resnet18
+ILSVRC2012_val_00000028.png	English_foxhound	3.14013	beagle	bath_towel	9.97290	densenet-121	resnet18

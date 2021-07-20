@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-3.67524	dragonfly	jigsaw_puzzle	19.95913	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	0.23081	triceratops	jigsaw_puzzle	19.97399	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000006.png	garter_snake	-2.00338	American_alligator	jigsaw_puzzle	19.94392	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000007.png	porcupine	-4.40489	peacock	sock	19.91938	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000010.png	Angora	-2.97814	brain_coral	cardigan	19.99190	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000011.png	brain_coral	0.43122	brain_coral	coral_reef	19.99354	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000012.png	cougar	-1.21999	triceratops	sock	19.98704	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000013.png	guenon	2.13958	Komodo_dragon	sock	19.96908	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000016.png	grey_whale	-0.86451	grey_whale	volcano	19.99186	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000017.png	sea_anemone	-1.44343	cheetah	lampshade	19.95318	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000018.png	vulture	-2.53417	brain_coral	pillow	19.97611	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000021.png	porcupine	-0.38130	water_snake	spider_web	19.99298	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000022.png	Ibizan_hound	-0.13859	llama	jigsaw_puzzle	19.96462	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000025.png	vulture	0.35228	ruffed_grouse	plow	19.24095	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000027.png	white_wolf	-2.50664	triceratops	pillow	19.97339	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000028.png	English_foxhound	0.35876	golden_retriever	jigsaw_puzzle	19.21568	efficientnet-b0	squeezenet

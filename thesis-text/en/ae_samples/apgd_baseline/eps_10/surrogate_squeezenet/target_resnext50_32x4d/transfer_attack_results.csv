@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	1.20214	water_snake	maze	9.96147	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	1.73522	Shetland_sheepdog	paper_towel	9.96820	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000006.png	garter_snake	-2.36282	garter_snake	maze	9.96344	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000007.png	porcupine	7.11428	porcupine	hay	9.98902	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000010.png	Angora	-9.05495	groom	jigsaw_puzzle	9.98260	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000011.png	brain_coral	5.49839	brain_coral	coral_reef	9.99265	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000012.png	cougar	8.58309	cougar	feather_boa	9.96643	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000013.png	guenon	-2.15714	guenon	jigsaw_puzzle	9.99422	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000016.png	grey_whale	1.00198	grey_whale	jigsaw_puzzle	9.99801	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000017.png	sea_anemone	0.06503	sea_anemone	feather_boa	9.99092	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000018.png	vulture	-1.58908	kite	bath_towel	9.96486	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000021.png	porcupine	5.91451	porcupine	paintbrush	9.97603	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000022.png	Ibizan_hound	-0.00250	German_short-haired_pointer	plow	9.98487	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000025.png	vulture	0.70756	coucal	worm_fence	9.97502	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000027.png	white_wolf	-0.18312	coyote	barrow	9.99426	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000028.png	English_foxhound	3.46356	Walker_hound	muzzle	9.97247	squeezenet	resnext50_32x4d

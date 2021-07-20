@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-14.81647	brain_coral	jigsaw_puzzle	19.99821	squeezenet	resnet18
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-4.02790	brain_coral	shower_curtain	19.97428	squeezenet	resnet18
+ILSVRC2012_val_00000006.png	garter_snake	-16.14240	brain_coral	maze	19.92737	squeezenet	resnet18
+ILSVRC2012_val_00000007.png	porcupine	-7.50289	triceratops	barrel	19.96481	squeezenet	resnet18
+ILSVRC2012_val_00000010.png	Angora	-16.53610	groom	jigsaw_puzzle	19.98131	squeezenet	resnet18
+ILSVRC2012_val_00000011.png	brain_coral	0.51223	brain_coral	jigsaw_puzzle	19.89613	squeezenet	resnet18
+ILSVRC2012_val_00000012.png	cougar	-2.45420	brain_coral	mask	19.96355	squeezenet	resnet18
+ILSVRC2012_val_00000013.png	guenon	-10.86263	brain_coral	jigsaw_puzzle	19.92380	squeezenet	resnet18
+ILSVRC2012_val_00000016.png	grey_whale	-10.33408	crayfish	jigsaw_puzzle	19.92384	squeezenet	resnet18
+ILSVRC2012_val_00000017.png	sea_anemone	-12.02843	sea_anemone	jigsaw_puzzle	19.99230	squeezenet	resnet18
+ILSVRC2012_val_00000018.png	vulture	-3.74438	miniature_pinscher	bow_tie	19.91203	squeezenet	resnet18
+ILSVRC2012_val_00000021.png	porcupine	-5.80082	garden_spider	spider_web	19.99461	squeezenet	resnet18
+ILSVRC2012_val_00000022.png	Ibizan_hound	-7.90802	groom	pinwheel	19.89149	squeezenet	resnet18
+ILSVRC2012_val_00000025.png	vulture	-8.87188	grasshopper	barrow	19.91656	squeezenet	resnet18
+ILSVRC2012_val_00000027.png	white_wolf	-5.18393	Arctic_fox	greenhouse	19.93600	squeezenet	resnet18
+ILSVRC2012_val_00000028.png	English_foxhound	-8.76992	triceratops	jigsaw_puzzle	19.95363	squeezenet	resnet18

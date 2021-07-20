@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-72.36540	peacock	maze	9.96147	squeezenet	squeezenet
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-124.47503	snail	tennis_ball	9.96820	squeezenet	squeezenet
+ILSVRC2012_val_00000006.png	garter_snake	-74.50724	peacock	maze	9.96344	squeezenet	squeezenet
+ILSVRC2012_val_00000007.png	porcupine	-79.90417	snail	hay	9.98902	squeezenet	squeezenet
+ILSVRC2012_val_00000010.png	Angora	-54.97451	Chihuahua	shower_curtain	9.98260	squeezenet	squeezenet
+ILSVRC2012_val_00000011.png	brain_coral	-20.23686	eel	coral_reef	9.99265	squeezenet	squeezenet
+ILSVRC2012_val_00000012.png	cougar	-81.63840	lacewing	sock	9.96643	squeezenet	squeezenet
+ILSVRC2012_val_00000013.png	guenon	-66.68163	ox	jigsaw_puzzle	9.99422	squeezenet	squeezenet
+ILSVRC2012_val_00000016.png	grey_whale	-72.19730	Egyptian_cat	jigsaw_puzzle	9.99801	squeezenet	squeezenet
+ILSVRC2012_val_00000017.png	sea_anemone	-69.48702	axolotl	feather_boa	9.99092	squeezenet	squeezenet
+ILSVRC2012_val_00000018.png	vulture	-57.31302	Angora	bath_towel	9.96486	squeezenet	squeezenet
+ILSVRC2012_val_00000021.png	porcupine	-52.52588	zebra	worm_fence	9.97603	squeezenet	squeezenet
+ILSVRC2012_val_00000022.png	Ibizan_hound	-88.51202	ox	plow	9.98487	squeezenet	squeezenet
+ILSVRC2012_val_00000025.png	vulture	-62.95444	barracouta	worm_fence	9.97502	squeezenet	squeezenet
+ILSVRC2012_val_00000027.png	white_wolf	-77.73479	koala	barrow	9.99426	squeezenet	squeezenet
+ILSVRC2012_val_00000028.png	English_foxhound	-102.72315	ox	muzzle	9.97247	squeezenet	squeezenet

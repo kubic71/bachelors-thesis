@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	6.63935	sea_snake	chain	2.99819	squeezenet	densenet-121
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	8.88949	Shetland_sheepdog	tennis_ball	2.99877	squeezenet	densenet-121
+ILSVRC2012_val_00000006.png	garter_snake	3.49502	garter_snake	safety_pin	2.99983	squeezenet	densenet-121
+ILSVRC2012_val_00000007.png	porcupine	10.23538	porcupine	dumbbell	2.99479	squeezenet	densenet-121
+ILSVRC2012_val_00000010.png	Angora	-4.18695	Maltese_dog	mask	2.99926	squeezenet	densenet-121
+ILSVRC2012_val_00000011.png	brain_coral	9.38464	brain_coral	maze	2.99940	squeezenet	densenet-121
+ILSVRC2012_val_00000012.png	cougar	15.59199	cougar	cowboy_hat	2.99769	squeezenet	densenet-121
+ILSVRC2012_val_00000013.png	guenon	10.51179	guenon	loupe	2.99983	squeezenet	densenet-121
+ILSVRC2012_val_00000016.png	grey_whale	15.28253	grey_whale	wreck	2.99834	squeezenet	densenet-121
+ILSVRC2012_val_00000017.png	sea_anemone	3.94762	goldfish	feather_boa	2.99587	squeezenet	densenet-121
+ILSVRC2012_val_00000018.png	vulture	7.09029	kite	parachute	2.98904	squeezenet	densenet-121
+ILSVRC2012_val_00000021.png	porcupine	12.51732	porcupine	microphone	2.99950	squeezenet	densenet-121
+ILSVRC2012_val_00000022.png	Ibizan_hound	3.31323	Saluki	dogsled	2.99815	squeezenet	densenet-121
+ILSVRC2012_val_00000025.png	vulture	16.78305	vulture	assault_rifle	2.99931	squeezenet	densenet-121
+ILSVRC2012_val_00000027.png	white_wolf	12.45982	white_wolf	dogsled	2.99756	squeezenet	densenet-121
+ILSVRC2012_val_00000028.png	English_foxhound	2.02853	Walker_hound	tennis_ball	2.99963	squeezenet	densenet-121

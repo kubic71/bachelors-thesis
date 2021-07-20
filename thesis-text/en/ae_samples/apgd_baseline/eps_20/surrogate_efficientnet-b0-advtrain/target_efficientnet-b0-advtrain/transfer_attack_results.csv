@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-36.50305	dragonfly	magnetic_compass	19.82589	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-59.34084	Lakeland_terrier	tennis_ball	19.99986	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000006.png	garter_snake	-36.72943	miniature_poodle	pillow	19.99201	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000007.png	porcupine	-33.39181	American_alligator	chest	19.78691	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000010.png	Angora	-33.70221	sea_cucumber	purse	19.99785	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000011.png	brain_coral	-20.72459	anemone_fish	coral_reef	19.99394	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000012.png	cougar	-42.37912	Angora	greenhouse	19.95921	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000013.png	guenon	-34.18597	boa_constrictor	window_screen	19.97918	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000016.png	grey_whale	-34.21177	trilobite	cliff	19.99300	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000017.png	sea_anemone	-32.59975	Staffordshire_bullterrier	table_lamp	19.96973	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000018.png	vulture	-21.76312	jellyfish	parachute	19.71037	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000021.png	porcupine	-14.04700	peacock	spider_web	18.42881	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000022.png	Ibizan_hound	-50.91082	Eskimo_dog	dogsled	19.95848	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000025.png	vulture	-34.80661	guenon	pinwheel	19.98048	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000027.png	white_wolf	-56.26031	water_snake	muzzle	19.96392	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000028.png	English_foxhound	-31.24580	standard_poodle	teddy	19.98915	efficientnet-b0-advtrain	efficientnet-b0-advtrain

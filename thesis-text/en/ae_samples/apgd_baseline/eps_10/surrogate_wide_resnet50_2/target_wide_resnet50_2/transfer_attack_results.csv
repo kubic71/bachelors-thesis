@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-151.70062	ant	safety_pin	9.96068	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-160.30627	Shetland_sheepdog	crutch	9.96199	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000006.png	garter_snake	-97.14202	Cardigan	stole	9.98050	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000007.png	porcupine	-82.38920	flatworm	quill	9.95474	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000010.png	Angora	-99.23541	toy_poodle	teddy	9.97539	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000011.png	brain_coral	-164.65765	ant	safety_pin	9.95575	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000012.png	cougar	-178.99315	Persian_cat	jigsaw_puzzle	9.98888	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000013.png	guenon	-68.47601	Dungeness_crab	frying_pan	9.98935	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000016.png	grey_whale	-109.21697	pug	purse	9.95629	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000017.png	sea_anemone	-111.31136	gar	torch	9.95683	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000018.png	vulture	-58.58305	dragonfly	ski	9.95692	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000021.png	porcupine	-113.39117	marmoset	hard_disc	9.99107	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000022.png	Ibizan_hound	-127.03602	bullfrog	military_uniform	9.94914	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000025.png	vulture	-126.87328	meerkat	plow	9.96144	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000027.png	white_wolf	-114.71734	ox	carousel	9.96664	wide_resnet50_2	wide_resnet50_2
+ILSVRC2012_val_00000028.png	English_foxhound	-98.24812	toy_terrier	tennis_ball	9.87335	wide_resnet50_2	wide_resnet50_2

@@ -283,36 +283,104 @@ To establish the baseline performance of APGD and its ability to optimize our cu
 
 \begin{figure}[!htb]
 \centering
- \subfloat[$\epsilon = 10$]{\includegraphics[width=0.38\textwidth]{transfer_attacks/transfer_heatmap/apgd_l2_margin_n_iters_25_eps_10.png}}
-\subfloat[$\epsilon = 10$]{\includegraphics[width=0.38\textwidth]{transfer_attacks/transfer_heatmap/apgd_l2_margin_n_iters_25_eps_10.png}}
- \subfloat[$\epsilon = 10$]{\includegraphics[width=0.38\textwidth]{transfer_attacks/transfer_heatmap/apgd_l2_margin_n_iters_25_eps_10.png}}
-\label{fig:apgd_margin}
+ \subfloat[$\epsilon = 3$]{\includegraphics[width=0.33\textwidth]{transfer_attacks/transfer_heatmap/apgd_l2_margin_n_iters_25_eps_3.png}}
+\subfloat[$\epsilon = 10$]{\includegraphics[width=0.33\textwidth]{transfer_attacks/transfer_heatmap/apgd_l2_margin_n_iters_25_eps_10.png}}
+ \subfloat[$\epsilon = 20$]{\includegraphics[width=0.33\textwidth]{transfer_attacks/transfer_heatmap/apgd_l2_margin_n_iters_25_eps_20.png}}
+\caption{APGD L2 baseline}
+\label{fig:apgd_baseline}
 \end{figure}
+
+
+
+What is obvious is that the 25 iterations did its work and took the training loss to zero. The whitebox foolrate is now 100\% in almost all cases, even when the pertubations are small ($l_2 = 3$). While succeeding on the diagonal, the biggest problem now is the overfitting to one particular surrogate.
+
+
+Figures \ref{fig:apgd_baseline_resnet18}, \ref{fig:apgd_baseline_resnet50} and \ref{fig:apgd_baseline_efficientnet-b0} show some examples of the adversarial images produced:
+
+\begin{figure}[!htb]
+\centering
+ \subfloat[$\epsilon = 3$]{\includegraphics[width=0.3\textwidth]{apgd_baseline/eps_3/surrogate_resnet18/target_densenet-121/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+\subfloat[$\epsilon = 10$]{\includegraphics[width=0.3\textwidth]{apgd_baseline/eps_10/surrogate_resnet18/target_densenet-121/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+ \subfloat[$\epsilon = 20$]{\includegraphics[width=0.3\textwidth]{apgd_baseline/eps_20/surrogate_resnet18/target_densenet-121/adv_examples/ILSVRC2012_val_00000003.png}}
+\caption{APGD L2 baseline ResNet-18}
+\label{fig:apgd_baseline_resnet18}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+ \subfloat[$\epsilon = 3$]{\includegraphics[width=0.3\textwidth]{apgd_baseline/eps_3/surrogate_resnet50/target_densenet-121/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+\subfloat[$\epsilon = 10$]{\includegraphics[width=0.3\textwidth]{apgd_baseline/eps_10/surrogate_resnet50/target_densenet-121/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+ \subfloat[$\epsilon = 20$]{\includegraphics[width=0.3\textwidth]{apgd_baseline/eps_20/surrogate_resnet50/target_densenet-121/adv_examples/ILSVRC2012_val_00000003.png}}
+\caption{APGD L2 baseline ResNet-50}
+\label{fig:apgd_baseline_resnet50}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+ \subfloat[$\epsilon = 3$]{\includegraphics[width=0.32\textwidth]{apgd_baseline/eps_3/surrogate_efficientnet-b0-advtrain/target_densenet-121/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+\subfloat[$\epsilon = 10$]{\includegraphics[width=0.32\textwidth]{apgd_baseline/eps_10/surrogate_efficientnet-b0-advtrain/target_densenet-121/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+ \subfloat[$\epsilon = 20$]{\includegraphics[width=0.32\textwidth]{apgd_baseline/eps_20/surrogate_efficientnet-b0-advtrain/target_densenet-121/adv_examples/ILSVRC2012_val_00000003.png}}
+\caption{APGD L2 baseline EffecientNet-b0-advtrain}
+\label{fig:apgd_baseline_efficientnet-b0}
+\end{figure}
+
+It is interesting to see how the adversarially trained EfficientNet-b0 is more sensitive to the dog's nose and mouth area in the dog's image, while the ResNets produce pertubations that are much more uniform.
 
 
 \subsection{Augmentation is all you need!}
 \subsubsection{Guassian-noise augmentation}
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.75\textwidth]{transfer_attacks/transfer_heatmap/augment_noise_apgd_l2_margin_n_iters_25_eot_iters_10_eps_10.png}
-    \caption{Guassian noise augmentation}
-    \label{fig:noise_augment}
+TODO: cite the paper that explains Guassian noise augmentation in terms of gradinet smoothing.
+\begin{figure}
+\centering
+ \subfloat[25 iterations, 10 gradient estimates per step]{\includegraphics[width=0.48\textwidth]{transfer_attacks/transfer_heatmap/augment_noise_apgd_l2_margin_n_iters_25_eot_iters_10_eps_10.png}}
+
+ \subfloat[250 iterations, 1 gradient estimate per step]{\includegraphics[width=0.48\textwidth]{transfer_attacks/transfer_heatmap/augment_noise_apgd_l2_margin_n_iters_250_eot_iters_1_eps_10.png}}
+\caption{Guassian noise augmentation}
+\label{fig:apgd_noise_augment}
 \end{figure}
 
 
+Figure \ref{fig:apgd_noise_augment} shows that in the low iteration regime the optimal Guassian-noise augmentation std is somewhere near $std=18$. It also shows that given the same whitebox query budget, it pays off to get a quality gradient estimate.
+
+TODO: add the citation of the paper, that shows the Guassian noise with std=16 to be pretty much optimal.
 
 \subsubsection{Box-blur}
-\subsubsection{Semantic-noise}
-\begin{figure}[h]
+In the next experiment (figure \ref{fig:apgd_box_blur}) we test the effect of box-blur on adeversarial-image transferability. Box-blur of size 'x' applies uniform convolution kernel of size 'x with normalized weights over the input image. 
+
+\begin{figure}
     \centering
-    \includegraphics[width=0.75\textwidth]{transfer_attacks/transfer_heatmap/augment_blur_apgd_l2_margin_n_iters_50_eps_10.png}
-    \caption{Guassian noise augmentation}
-    \label{fig:fox_blur}
+    \includegraphics[width=0.80\textwidth]{transfer_attacks/transfer_heatmap/augment_blur_apgd_l2_margin_n_iters_50_eps_10.png}
+    \caption{APGD box-blur augmentation}
+    \label{fig:apgd_box_blur}
+\end{figure}
+
+We can witness that a small amout of blur is beneficial, but larger amounts are too strong regularizers for the whitebox optimization and cause the APGD optimization algorithm to underfit.
+
+\subsubsection{Elastic transformation}
+We have also tried to regularize our optimization with stochastic elastic-transformation (figure \ref{fig:apgd_elastic}). This particular transformation had proved to be a powerful regularization element, which brought the transferability from ResNet-18 to EfficientNet-b0-advtrain to 54.0\%.
+
+
+TODO: describe in more detail what exactly it's the elastic transform...
+\begin{figure}
+    \centering
+    \includegraphics[width=0.80\textwidth]{transfer_attacks/transfer_heatmap/augment_elastic_apgd_l2_margin_n_iters_25_eot_iters_10_eps_10.png}
+    \caption{APGD elastic transformation augmentations}
+    \label{fig:apgd_elastic}
+\end{figure}
+
+\subsubsection{Affine transformation}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.80\textwidth]{transfer_attacks/transfer_heatmap/augment_affine_n_iters_30_eot_iters_10_eps_10.png}
+    \caption{APGD elastic transformation augmentations}
+    \label{fig:apgd_elastic}
 \end{figure}
 
 
-\subsubsection{Elastic transformation}
-\subsubsection{Affine transformation}
+\subsubsection{Ensemble}
+TODO:
+
 
 \section{Transferability evaluation on GVision}
 TODO: just run the images against GVision

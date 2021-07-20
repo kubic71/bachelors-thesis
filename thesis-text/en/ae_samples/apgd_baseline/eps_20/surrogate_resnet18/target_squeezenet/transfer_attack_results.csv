@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-2.91199	bullfrog	jigsaw_puzzle	19.92270	resnet18	squeezenet
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-1.04104	peacock	jigsaw_puzzle	19.91910	resnet18	squeezenet
+ILSVRC2012_val_00000006.png	garter_snake	-3.74300	American_alligator	jigsaw_puzzle	19.97591	resnet18	squeezenet
+ILSVRC2012_val_00000007.png	porcupine	-0.07758	peacock	quilt	19.89361	resnet18	squeezenet
+ILSVRC2012_val_00000010.png	Angora	-2.63986	sea_anemone	spider_web	19.98504	resnet18	squeezenet
+ILSVRC2012_val_00000011.png	brain_coral	-0.63309	brain_coral	buckeye	19.97789	resnet18	squeezenet
+ILSVRC2012_val_00000012.png	cougar	-1.68823	peacock	spider_web	19.96651	resnet18	squeezenet
+ILSVRC2012_val_00000013.png	guenon	-1.33647	peacock	spider_web	19.98594	resnet18	squeezenet
+ILSVRC2012_val_00000016.png	grey_whale	-2.89289	brain_coral	quilt	19.97517	resnet18	squeezenet
+ILSVRC2012_val_00000017.png	sea_anemone	-0.74107	West_Highland_white_terrier	spotlight	19.87946	resnet18	squeezenet
+ILSVRC2012_val_00000018.png	vulture	-2.45092	lionfish	jigsaw_puzzle	19.96987	resnet18	squeezenet
+ILSVRC2012_val_00000021.png	porcupine	-3.53896	water_snake	spider_web	19.99214	resnet18	squeezenet
+ILSVRC2012_val_00000022.png	Ibizan_hound	-1.56912	scuba_diver	jigsaw_puzzle	19.96710	resnet18	squeezenet
+ILSVRC2012_val_00000025.png	vulture	-1.17979	skunk	barrow	19.94748	resnet18	squeezenet
+ILSVRC2012_val_00000027.png	white_wolf	1.38704	armadillo	jackfruit	19.98922	resnet18	squeezenet
+ILSVRC2012_val_00000028.png	English_foxhound	1.14230	leaf_beetle	jigsaw_puzzle	19.97755	resnet18	squeezenet

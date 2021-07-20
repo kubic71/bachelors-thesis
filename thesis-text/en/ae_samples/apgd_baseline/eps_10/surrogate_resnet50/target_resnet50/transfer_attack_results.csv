@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-104.62788	brain_coral	maze	9.96800	resnet50	resnet50
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-72.85791	skunk	feather_boa	9.97299	resnet50	resnet50
+ILSVRC2012_val_00000006.png	garter_snake	-61.91795	robin	worm_fence	9.99118	resnet50	resnet50
+ILSVRC2012_val_00000007.png	porcupine	-96.50275	guinea_pig	spindle	9.99418	resnet50	resnet50
+ILSVRC2012_val_00000010.png	Angora	-87.07984	toy_poodle	wig	9.99782	resnet50	resnet50
+ILSVRC2012_val_00000011.png	brain_coral	-23.68940	coral_fungus	jigsaw_puzzle	9.99996	resnet50	resnet50
+ILSVRC2012_val_00000012.png	cougar	-65.36469	German_shepherd	remote_control	9.93108	resnet50	resnet50
+ILSVRC2012_val_00000013.png	guenon	-97.76347	guenon	breastplate	9.98965	resnet50	resnet50
+ILSVRC2012_val_00000016.png	grey_whale	-129.19145	great_white_shark	submarine	9.99197	resnet50	resnet50
+ILSVRC2012_val_00000017.png	sea_anemone	-103.97763	stinkhorn	torch	9.94757	resnet50	resnet50
+ILSVRC2012_val_00000018.png	vulture	-115.12583	triceratops	jigsaw_puzzle	9.99181	resnet50	resnet50
+ILSVRC2012_val_00000021.png	porcupine	-98.46170	porcupine	thatch	9.96484	resnet50	resnet50
+ILSVRC2012_val_00000022.png	Ibizan_hound	-81.61231	rock_crab	stretcher	9.95305	resnet50	resnet50
+ILSVRC2012_val_00000025.png	vulture	-100.01837	brain_coral	maze	9.87976	resnet50	resnet50
+ILSVRC2012_val_00000027.png	white_wolf	-45.14622	Eskimo_dog	dogsled	9.99644	resnet50	resnet50
+ILSVRC2012_val_00000028.png	English_foxhound	-81.34872	Chesapeake_Bay_retriever	tennis_ball	9.98532	resnet50	resnet50

@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-6.70596	sea_snake	safety_pin	9.96068	wide_resnet50_2	densenet-121
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	8.52943	Shetland_sheepdog	feather_boa	9.96199	wide_resnet50_2	densenet-121
+ILSVRC2012_val_00000006.png	garter_snake	3.73793	sea_snake	stole	9.98050	wide_resnet50_2	densenet-121
+ILSVRC2012_val_00000007.png	porcupine	3.71120	porcupine	quill	9.95474	wide_resnet50_2	densenet-121
+ILSVRC2012_val_00000010.png	Angora	-8.95405	toy_poodle	teddy	9.97539	wide_resnet50_2	densenet-121
+ILSVRC2012_val_00000011.png	brain_coral	5.60767	brain_coral	safety_pin	9.95575	wide_resnet50_2	densenet-121
+ILSVRC2012_val_00000012.png	cougar	-1.60280	cougar	jigsaw_puzzle	9.98888	wide_resnet50_2	densenet-121
+ILSVRC2012_val_00000013.png	guenon	3.41002	guenon	wok	9.98935	wide_resnet50_2	densenet-121
+ILSVRC2012_val_00000016.png	grey_whale	4.01022	grey_whale	jean	9.95629	wide_resnet50_2	densenet-121
+ILSVRC2012_val_00000017.png	sea_anemone	-4.96839	goldfish	torch	9.95683	wide_resnet50_2	densenet-121
+ILSVRC2012_val_00000018.png	vulture	-2.49152	coho	ski	9.95692	wide_resnet50_2	densenet-121
+ILSVRC2012_val_00000021.png	porcupine	-0.67422	armadillo	hard_disc	9.99107	wide_resnet50_2	densenet-121
+ILSVRC2012_val_00000022.png	Ibizan_hound	-11.20803	ballplayer	military_uniform	9.94914	wide_resnet50_2	densenet-121
+ILSVRC2012_val_00000025.png	vulture	-4.45903	European_gallinule	plow	9.96144	wide_resnet50_2	densenet-121
+ILSVRC2012_val_00000027.png	white_wolf	-4.30156	white_wolf	carousel	9.96664	wide_resnet50_2	densenet-121
+ILSVRC2012_val_00000028.png	English_foxhound	-1.11582	Cardigan	tennis_ball	9.87335	wide_resnet50_2	densenet-121

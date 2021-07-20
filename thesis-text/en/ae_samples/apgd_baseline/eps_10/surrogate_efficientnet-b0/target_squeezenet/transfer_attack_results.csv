@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	1.88295	American_alligator	sundial	10.00000	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	6.82826	collie	tennis_ball	9.99939	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000006.png	garter_snake	0.85103	American_alligator	jigsaw_puzzle	9.98662	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000007.png	porcupine	2.46956	porcupine	hay	9.99405	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000010.png	Angora	-3.13492	tick	pillow	9.99898	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000011.png	brain_coral	-0.09963	brain_coral	jackfruit	9.99723	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000012.png	cougar	10.52495	cougar	tennis_ball	9.97454	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000013.png	guenon	15.81140	guenon	jigsaw_puzzle	9.99022	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000016.png	grey_whale	7.95007	grey_whale	fountain	9.99751	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000017.png	sea_anemone	1.31205	tarantula	quill	9.99842	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000018.png	vulture	0.47813	centipede	handkerchief	9.97404	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000021.png	porcupine	0.64201	walking_stick	spider_web	9.81563	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000022.png	Ibizan_hound	2.82065	llama	dogsled	9.99215	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000025.png	vulture	2.12162	vulture	plow	9.99235	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000027.png	white_wolf	0.18482	ram	wool	9.98543	efficientnet-b0	squeezenet
+ILSVRC2012_val_00000028.png	English_foxhound	4.77523	beagle	tennis_ball	9.99031	efficientnet-b0	squeezenet

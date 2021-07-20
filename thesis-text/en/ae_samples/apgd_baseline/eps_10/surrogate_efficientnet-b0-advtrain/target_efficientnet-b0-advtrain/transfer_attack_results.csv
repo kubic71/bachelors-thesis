@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-48.65941	cockroach	safety_pin	9.99420	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-55.67080	Lakeland_terrier	tennis_ball	9.97822	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000006.png	garter_snake	-35.10118	common_iguana	bath_towel	9.97112	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000007.png	porcupine	-23.10048	cock	quilt	9.81345	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000010.png	Angora	-25.22047	Australian_terrier	jigsaw_puzzle	9.99998	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000011.png	brain_coral	-18.03722	conch	coral_reef	9.98801	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000012.png	cougar	-34.16637	cicada	mask	9.97831	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000013.png	guenon	-23.83612	Brabancon_griffon	wool	9.94450	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000016.png	grey_whale	-28.22166	frilled_lizard	volcano	9.99741	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000017.png	sea_anemone	-56.06577	lynx	candle	9.98326	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000018.png	vulture	-25.63982	Chihuahua	parachute	9.98994	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000021.png	porcupine	-35.10666	Irish_water_spaniel	projector	9.93174	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000022.png	Ibizan_hound	-35.21777	Eskimo_dog	dogsled	9.99544	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000025.png	vulture	-33.93726	starfish	pinwheel	9.99688	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000027.png	white_wolf	-42.21529	hog	piggy_bank	9.99132	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000028.png	English_foxhound	-31.56120	cocker_spaniel	matchstick	9.98533	efficientnet-b0-advtrain	efficientnet-b0-advtrain

@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-0.47677	American_alligator	jigsaw_puzzle	19.95313	wide_resnet50_2	squeezenet
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-3.35738	collie	jigsaw_puzzle	19.92205	wide_resnet50_2	squeezenet
+ILSVRC2012_val_00000006.png	garter_snake	-0.57274	American_alligator	safety_pin	19.97545	wide_resnet50_2	squeezenet
+ILSVRC2012_val_00000007.png	porcupine	-0.10668	peacock	sock	19.90645	wide_resnet50_2	squeezenet
+ILSVRC2012_val_00000010.png	Angora	-3.78419	sea_urchin	jigsaw_puzzle	19.94444	wide_resnet50_2	squeezenet
+ILSVRC2012_val_00000011.png	brain_coral	-0.29249	brain_coral	jackfruit	19.98659	wide_resnet50_2	squeezenet
+ILSVRC2012_val_00000012.png	cougar	-3.21999	American_alligator	jigsaw_puzzle	19.87231	wide_resnet50_2	squeezenet
+ILSVRC2012_val_00000013.png	guenon	-3.20746	sea_urchin	jigsaw_puzzle	19.97862	wide_resnet50_2	squeezenet
+ILSVRC2012_val_00000016.png	grey_whale	-1.92679	brain_coral	stone_wall	19.97211	wide_resnet50_2	squeezenet
+ILSVRC2012_val_00000017.png	sea_anemone	-1.24977	centipede	chainlink_fence	19.88659	wide_resnet50_2	squeezenet
+ILSVRC2012_val_00000018.png	vulture	1.24804	dragonfly	spider_web	19.98660	wide_resnet50_2	squeezenet
+ILSVRC2012_val_00000021.png	porcupine	0.59467	spiny_lobster	spider_web	19.90826	wide_resnet50_2	squeezenet
+ILSVRC2012_val_00000022.png	Ibizan_hound	-6.73102	peacock	maze	19.96965	wide_resnet50_2	squeezenet
+ILSVRC2012_val_00000025.png	vulture	-0.50368	skunk	jigsaw_puzzle	19.92937	wide_resnet50_2	squeezenet
+ILSVRC2012_val_00000027.png	white_wolf	-2.38559	coral_fungus	stone_wall	19.94714	wide_resnet50_2	squeezenet
+ILSVRC2012_val_00000028.png	English_foxhound	-2.09406	box_turtle	mask	19.98327	wide_resnet50_2	squeezenet

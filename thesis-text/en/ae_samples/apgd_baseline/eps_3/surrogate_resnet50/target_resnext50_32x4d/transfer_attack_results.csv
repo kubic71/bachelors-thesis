@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	10.24168	sea_snake	sandbar	2.99738	resnet50	resnext50_32x4d
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	11.36170	Shetland_sheepdog	tennis_ball	2.99639	resnet50	resnext50_32x4d
+ILSVRC2012_val_00000006.png	garter_snake	6.43024	garter_snake	maze	2.98588	resnet50	resnext50_32x4d
+ILSVRC2012_val_00000007.png	porcupine	9.20354	porcupine	quill	2.99729	resnet50	resnext50_32x4d
+ILSVRC2012_val_00000010.png	Angora	-9.90446	Maltese_dog	wig	2.99831	resnet50	resnext50_32x4d
+ILSVRC2012_val_00000011.png	brain_coral	6.77404	brain_coral	coral_reef	2.99840	resnet50	resnext50_32x4d
+ILSVRC2012_val_00000012.png	cougar	12.58655	cougar	pomegranate	2.99218	resnet50	resnext50_32x4d
+ILSVRC2012_val_00000013.png	guenon	12.15429	guenon	jean	2.99228	resnet50	resnext50_32x4d
+ILSVRC2012_val_00000016.png	grey_whale	20.34835	grey_whale	aircraft_carrier	2.99814	resnet50	resnext50_32x4d
+ILSVRC2012_val_00000017.png	sea_anemone	4.35500	starfish	vault	2.99703	resnet50	resnext50_32x4d
+ILSVRC2012_val_00000018.png	vulture	10.01279	vulture	wing	2.99471	resnet50	resnext50_32x4d
+ILSVRC2012_val_00000021.png	porcupine	13.20483	porcupine	thatch	2.98585	resnet50	resnext50_32x4d
+ILSVRC2012_val_00000022.png	Ibizan_hound	3.50086	whippet	dogsled	2.98207	resnet50	resnext50_32x4d
+ILSVRC2012_val_00000025.png	vulture	14.46583	vulture	worm_fence	2.99770	resnet50	resnext50_32x4d
+ILSVRC2012_val_00000027.png	white_wolf	14.29263	white_wolf	dogsled	2.99795	resnet50	resnext50_32x4d
+ILSVRC2012_val_00000028.png	English_foxhound	4.04514	beagle	soccer_ball	2.99781	resnet50	resnext50_32x4d

@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	7.70305	water_snake	worm_fence	2.99819	squeezenet	wide_resnet50_2
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	11.38989	Shetland_sheepdog	crutch	2.99877	squeezenet	wide_resnet50_2
+ILSVRC2012_val_00000006.png	garter_snake	7.87934	garter_snake	worm_fence	2.99983	squeezenet	wide_resnet50_2
+ILSVRC2012_val_00000007.png	porcupine	8.30114	porcupine	quill	2.99479	squeezenet	wide_resnet50_2
+ILSVRC2012_val_00000010.png	Angora	-5.93182	toy_poodle	wig	2.99926	squeezenet	wide_resnet50_2
+ILSVRC2012_val_00000011.png	brain_coral	4.83498	brain_coral	coral_reef	2.99940	squeezenet	wide_resnet50_2
+ILSVRC2012_val_00000012.png	cougar	10.75815	cougar	tennis_ball	2.99769	squeezenet	wide_resnet50_2
+ILSVRC2012_val_00000013.png	guenon	11.22664	guenon	frying_pan	2.99983	squeezenet	wide_resnet50_2
+ILSVRC2012_val_00000016.png	grey_whale	20.01413	grey_whale	submarine	2.99834	squeezenet	wide_resnet50_2
+ILSVRC2012_val_00000017.png	sea_anemone	7.30830	starfish	feather_boa	2.99587	squeezenet	wide_resnet50_2
+ILSVRC2012_val_00000018.png	vulture	0.93551	kite	pole	2.98904	squeezenet	wide_resnet50_2
+ILSVRC2012_val_00000021.png	porcupine	12.99627	porcupine	thatch	2.99950	squeezenet	wide_resnet50_2
+ILSVRC2012_val_00000022.png	Ibizan_hound	4.50303	whippet	muzzle	2.99815	squeezenet	wide_resnet50_2
+ILSVRC2012_val_00000025.png	vulture	15.39056	vulture	plow	2.99931	squeezenet	wide_resnet50_2
+ILSVRC2012_val_00000027.png	white_wolf	14.88375	white_wolf	dogsled	2.99756	squeezenet	wide_resnet50_2
+ILSVRC2012_val_00000028.png	English_foxhound	7.27258	Walker_hound	tennis_ball	2.99963	squeezenet	wide_resnet50_2

@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-6.93163	hammerhead	tray	19.95457	resnet50	wide_resnet50_2
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-14.84229	Siamese_cat	clog	19.97947	resnet50	wide_resnet50_2
+ILSVRC2012_val_00000006.png	garter_snake	-14.60738	black_stork	maze	19.93023	resnet50	wide_resnet50_2
+ILSVRC2012_val_00000007.png	porcupine	-14.42699	peacock	spindle	19.97582	resnet50	wide_resnet50_2
+ILSVRC2012_val_00000010.png	Angora	-15.89376	toy_poodle	teddy	19.97785	resnet50	wide_resnet50_2
+ILSVRC2012_val_00000011.png	brain_coral	0.47758	brain_coral	coral_reef	19.99288	resnet50	wide_resnet50_2
+ILSVRC2012_val_00000012.png	cougar	2.07095	cougar	jigsaw_puzzle	19.97197	resnet50	wide_resnet50_2
+ILSVRC2012_val_00000013.png	guenon	-14.08297	langur	breastplate	19.97738	resnet50	wide_resnet50_2
+ILSVRC2012_val_00000016.png	grey_whale	-14.79790	cairn	quilt	19.97221	resnet50	wide_resnet50_2
+ILSVRC2012_val_00000017.png	sea_anemone	-12.63252	groom	umbrella	19.96777	resnet50	wide_resnet50_2
+ILSVRC2012_val_00000018.png	vulture	-24.56389	hammerhead	jigsaw_puzzle	19.95228	resnet50	wide_resnet50_2
+ILSVRC2012_val_00000021.png	porcupine	-13.11336	peacock	greenhouse	19.92546	resnet50	wide_resnet50_2
+ILSVRC2012_val_00000022.png	Ibizan_hound	-6.59634	coho	ski	19.98518	resnet50	wide_resnet50_2
+ILSVRC2012_val_00000025.png	vulture	-3.15107	black_grouse	worm_fence	19.99767	resnet50	wide_resnet50_2
+ILSVRC2012_val_00000027.png	white_wolf	-8.34765	pug	cup	19.97861	resnet50	wide_resnet50_2
+ILSVRC2012_val_00000028.png	English_foxhound	1.93815	beagle	soccer_ball	19.98495	resnet50	wide_resnet50_2

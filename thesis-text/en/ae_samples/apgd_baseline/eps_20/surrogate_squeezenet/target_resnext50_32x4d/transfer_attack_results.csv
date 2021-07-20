@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-21.19281	rock_python	jigsaw_puzzle	19.99821	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-6.86241	Egyptian_cat	jigsaw_puzzle	19.97428	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000006.png	garter_snake	-9.98093	water_snake	maze	19.92737	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000007.png	porcupine	-2.03035	porcupine	barrel	19.96481	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000010.png	Angora	-23.92509	ringneck_snake	jigsaw_puzzle	19.98131	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000011.png	brain_coral	-5.04078	brain_coral	jigsaw_puzzle	19.89613	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000012.png	cougar	1.27810	Indian_elephant	mask	19.96355	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000013.png	guenon	-21.10675	Persian_cat	jigsaw_puzzle	19.92380	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000016.png	grey_whale	-9.49694	nematode	jigsaw_puzzle	19.92384	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000017.png	sea_anemone	-25.93942	Persian_cat	jigsaw_puzzle	19.99230	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000018.png	vulture	1.95410	vulture	shower_cap	19.91203	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000021.png	porcupine	-7.17193	ruffed_grouse	spider_web	19.99461	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000022.png	Ibizan_hound	-12.69164	triceratops	pinwheel	19.89149	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000025.png	vulture	1.99871	peacock	plow	19.91656	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000027.png	white_wolf	-4.87291	peacock	greenhouse	19.93600	squeezenet	resnext50_32x4d
+ILSVRC2012_val_00000028.png	English_foxhound	-26.91274	starfish	jigsaw_puzzle	19.95363	squeezenet	resnext50_32x4d

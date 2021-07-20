@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	1.53074	water_snake	safety_pin	9.99420	efficientnet-b0-advtrain	resnext50_32x4d
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	1.81132	Brittany_spaniel	tennis_ball	9.97822	efficientnet-b0-advtrain	resnext50_32x4d
+ILSVRC2012_val_00000006.png	garter_snake	7.53250	water_snake	worm_fence	9.97112	efficientnet-b0-advtrain	resnext50_32x4d
+ILSVRC2012_val_00000007.png	porcupine	8.34713	porcupine	quill	9.81345	efficientnet-b0-advtrain	resnext50_32x4d
+ILSVRC2012_val_00000010.png	Angora	-2.81747	hippopotamus	jigsaw_puzzle	9.99998	efficientnet-b0-advtrain	resnext50_32x4d
+ILSVRC2012_val_00000011.png	brain_coral	3.46829	brain_coral	coral_reef	9.98801	efficientnet-b0-advtrain	resnext50_32x4d
+ILSVRC2012_val_00000012.png	cougar	6.83122	cougar	fountain	9.97831	efficientnet-b0-advtrain	resnext50_32x4d
+ILSVRC2012_val_00000013.png	guenon	6.37110	guenon	mask	9.94450	efficientnet-b0-advtrain	resnext50_32x4d
+ILSVRC2012_val_00000016.png	grey_whale	3.26814	grey_whale	volcano	9.99741	efficientnet-b0-advtrain	resnext50_32x4d
+ILSVRC2012_val_00000017.png	sea_anemone	-5.77093	sea_urchin	candle	9.98326	efficientnet-b0-advtrain	resnext50_32x4d
+ILSVRC2012_val_00000018.png	vulture	1.06577	kite	paintbrush	9.98994	efficientnet-b0-advtrain	resnext50_32x4d
+ILSVRC2012_val_00000021.png	porcupine	-1.59531	porcupine	shopping_cart	9.93174	efficientnet-b0-advtrain	resnext50_32x4d
+ILSVRC2012_val_00000022.png	Ibizan_hound	1.67055	wire-haired_fox_terrier	dogsled	9.99544	efficientnet-b0-advtrain	resnext50_32x4d
+ILSVRC2012_val_00000025.png	vulture	1.61595	European_gallinule	pinwheel	9.99688	efficientnet-b0-advtrain	resnext50_32x4d
+ILSVRC2012_val_00000027.png	white_wolf	1.82902	triceratops	maze	9.99132	efficientnet-b0-advtrain	resnext50_32x4d
+ILSVRC2012_val_00000028.png	English_foxhound	4.36183	beagle	paper_towel	9.98533	efficientnet-b0-advtrain	resnext50_32x4d

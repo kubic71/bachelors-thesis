@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	2.04997	dragonfly	shopping_cart	19.95913	efficientnet-b0	densenet-121
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	4.09503	Shetland_sheepdog	jigsaw_puzzle	19.97399	efficientnet-b0	densenet-121
+ILSVRC2012_val_00000006.png	garter_snake	-0.32631	eel	nail	19.94392	efficientnet-b0	densenet-121
+ILSVRC2012_val_00000007.png	porcupine	-7.30015	eel	sock	19.91938	efficientnet-b0	densenet-121
+ILSVRC2012_val_00000010.png	Angora	-5.93311	tick	teddy	19.99190	efficientnet-b0	densenet-121
+ILSVRC2012_val_00000011.png	brain_coral	2.29646	brain_coral	coral_reef	19.99354	efficientnet-b0	densenet-121
+ILSVRC2012_val_00000012.png	cougar	9.20272	cougar	pillow	19.98704	efficientnet-b0	densenet-121
+ILSVRC2012_val_00000013.png	guenon	5.23525	guenon	mask	19.96908	efficientnet-b0	densenet-121
+ILSVRC2012_val_00000016.png	grey_whale	0.04292	grey_whale	volcano	19.99186	efficientnet-b0	densenet-121
+ILSVRC2012_val_00000017.png	sea_anemone	-5.73296	jellyfish	torch	19.95318	efficientnet-b0	densenet-121
+ILSVRC2012_val_00000018.png	vulture	3.77263	starfish	paper_towel	19.97611	efficientnet-b0	densenet-121
+ILSVRC2012_val_00000021.png	porcupine	6.74469	porcupine	spider_web	19.99298	efficientnet-b0	densenet-121
+ILSVRC2012_val_00000022.png	Ibizan_hound	2.62417	English_setter	maypole	19.96462	efficientnet-b0	densenet-121
+ILSVRC2012_val_00000025.png	vulture	-3.82855	vulture	half_track	19.24095	efficientnet-b0	densenet-121
+ILSVRC2012_val_00000027.png	white_wolf	4.40435	white_wolf	radiator	19.97339	efficientnet-b0	densenet-121
+ILSVRC2012_val_00000028.png	English_foxhound	2.85283	beagle	tennis_ball	19.21568	efficientnet-b0	densenet-121

@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	3.16040	African_crocodile	sundial	2.99958	densenet-121	squeezenet
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	14.35703	Shetland_sheepdog	tennis_ball	2.99729	densenet-121	squeezenet
+ILSVRC2012_val_00000006.png	garter_snake	2.97646	alligator_lizard	sundial	2.99994	densenet-121	squeezenet
+ILSVRC2012_val_00000007.png	porcupine	6.00221	porcupine	hay	2.99893	densenet-121	squeezenet
+ILSVRC2012_val_00000010.png	Angora	-0.65905	hamster	teddy	2.99687	densenet-121	squeezenet
+ILSVRC2012_val_00000011.png	brain_coral	6.73911	brain_coral	coral_reef	2.99883	densenet-121	squeezenet
+ILSVRC2012_val_00000012.png	cougar	14.29955	cougar	tennis_ball	2.99892	densenet-121	squeezenet
+ILSVRC2012_val_00000013.png	guenon	16.65582	guenon	window_screen	2.99787	densenet-121	squeezenet
+ILSVRC2012_val_00000016.png	grey_whale	11.91402	grey_whale	brass	2.99853	densenet-121	squeezenet
+ILSVRC2012_val_00000017.png	sea_anemone	-2.95420	tarantula	feather_boa	2.99993	densenet-121	squeezenet
+ILSVRC2012_val_00000018.png	vulture	0.44236	black_grouse	parachute	2.99922	densenet-121	squeezenet
+ILSVRC2012_val_00000021.png	porcupine	7.85880	porcupine	worm_fence	2.99984	densenet-121	squeezenet
+ILSVRC2012_val_00000022.png	Ibizan_hound	-1.56921	ox	plow	2.99677	densenet-121	squeezenet
+ILSVRC2012_val_00000025.png	vulture	5.33039	vulture	assault_rifle	2.99294	densenet-121	squeezenet
+ILSVRC2012_val_00000027.png	white_wolf	13.63982	white_wolf	oxcart	2.99909	densenet-121	squeezenet
+ILSVRC2012_val_00000028.png	English_foxhound	9.09338	beagle	muzzle	2.99780	densenet-121	squeezenet

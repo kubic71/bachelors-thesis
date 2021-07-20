@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-60.46801	rock_python	chain	2.99778	resnet18	resnet18
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-55.63865	black_and_gold_garden_spider	tennis_ball	2.99218	resnet18	resnet18
+ILSVRC2012_val_00000006.png	garter_snake	-50.23869	trilobite	manhole_cover	2.97265	resnet18	resnet18
+ILSVRC2012_val_00000007.png	porcupine	-63.89905	starfish	sock	2.99852	resnet18	resnet18
+ILSVRC2012_val_00000010.png	Angora	-61.39091	jellyfish	wig	2.99592	resnet18	resnet18
+ILSVRC2012_val_00000011.png	brain_coral	-13.17914	sea_anemone	coral_reef	2.99973	resnet18	resnet18
+ILSVRC2012_val_00000012.png	cougar	-23.61712	Siamese_cat	window_screen	2.99721	resnet18	resnet18
+ILSVRC2012_val_00000013.png	guenon	-48.87715	toy_poodle	wig	2.99922	resnet18	resnet18
+ILSVRC2012_val_00000016.png	grey_whale	-46.73018	macaque	promontory	2.99719	resnet18	resnet18
+ILSVRC2012_val_00000017.png	sea_anemone	-14.27083	brain_coral	coral_reef	2.99904	resnet18	resnet18
+ILSVRC2012_val_00000018.png	vulture	-27.48009	tabby	window_screen	2.98925	resnet18	resnet18
+ILSVRC2012_val_00000021.png	porcupine	-48.71700	ox	thatch	2.99232	resnet18	resnet18
+ILSVRC2012_val_00000022.png	Ibizan_hound	-62.95209	lorikeet	barrow	2.99818	resnet18	resnet18
+ILSVRC2012_val_00000025.png	vulture	-42.16279	goose	worm_fence	2.99847	resnet18	resnet18
+ILSVRC2012_val_00000027.png	white_wolf	-24.96930	Eskimo_dog	dogsled	2.99993	resnet18	resnet18
+ILSVRC2012_val_00000028.png	English_foxhound	-51.01398	toy_terrier	tennis_ball	2.99787	resnet18	resnet18

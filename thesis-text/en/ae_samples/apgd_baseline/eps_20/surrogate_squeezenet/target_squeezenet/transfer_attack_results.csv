@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-103.44808	water_snake	jigsaw_puzzle	19.99821	squeezenet	squeezenet
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-95.51765	Gordon_setter	apron	19.97428	squeezenet	squeezenet
+ILSVRC2012_val_00000006.png	garter_snake	-85.32972	guinea_pig	maze	19.92737	squeezenet	squeezenet
+ILSVRC2012_val_00000007.png	porcupine	-85.75064	snail	hay	19.96481	squeezenet	squeezenet
+ILSVRC2012_val_00000010.png	Angora	-91.65958	Persian_cat	jigsaw_puzzle	19.98131	squeezenet	squeezenet
+ILSVRC2012_val_00000011.png	brain_coral	-90.67001	ox	jigsaw_puzzle	19.89613	squeezenet	squeezenet
+ILSVRC2012_val_00000012.png	cougar	-92.15649	eel	sock	19.96355	squeezenet	squeezenet
+ILSVRC2012_val_00000013.png	guenon	-100.04868	ram	jigsaw_puzzle	19.92380	squeezenet	squeezenet
+ILSVRC2012_val_00000016.png	grey_whale	-87.47679	alligator_lizard	jigsaw_puzzle	19.92384	squeezenet	squeezenet
+ILSVRC2012_val_00000017.png	sea_anemone	-100.57475	night_snake	jigsaw_puzzle	19.99230	squeezenet	squeezenet
+ILSVRC2012_val_00000018.png	vulture	-88.74724	redshank	apron	19.91203	squeezenet	squeezenet
+ILSVRC2012_val_00000021.png	porcupine	-68.49371	garden_spider	spider_web	19.99461	squeezenet	squeezenet
+ILSVRC2012_val_00000022.png	Ibizan_hound	-93.88680	hummingbird	pinwheel	19.89149	squeezenet	squeezenet
+ILSVRC2012_val_00000025.png	vulture	-70.96149	mantis	barrow	19.91656	squeezenet	squeezenet
+ILSVRC2012_val_00000027.png	white_wolf	-82.88383	peacock	greenhouse	19.93600	squeezenet	squeezenet
+ILSVRC2012_val_00000028.png	English_foxhound	-98.41730	banded_gecko	jigsaw_puzzle	19.95363	squeezenet	squeezenet

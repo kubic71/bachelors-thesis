@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	5.40107	water_snake	jigsaw_puzzle	9.99322	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	0.56010	Shetland_sheepdog	tennis_ball	9.99392	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000006.png	garter_snake	4.97664	water_snake	harvester	9.98991	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000007.png	porcupine	-1.09457	porcupine	wool	9.99505	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000010.png	Angora	-13.56754	American_Staffordshire_terrier	mask	9.99751	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000011.png	brain_coral	5.21324	brain_coral	jackfruit	9.99792	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000012.png	cougar	10.03909	cougar	ear	9.99567	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000013.png	guenon	13.90688	guenon	joystick	9.99120	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000016.png	grey_whale	-9.81474	nematode	jigsaw_puzzle	9.98797	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000017.png	sea_anemone	0.35256	starfish	oboe	9.66098	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000018.png	vulture	2.34969	bald_eagle	feather_boa	9.98889	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000021.png	porcupine	0.54406	marmoset	greenhouse	9.99823	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000022.png	Ibizan_hound	-0.89124	whippet	dogsled	9.99731	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000025.png	vulture	0.37841	vulture	half_track	9.97757	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000027.png	white_wolf	9.80166	white_wolf	dogsled	9.97269	densenet-121	wide_resnet50_2
+ILSVRC2012_val_00000028.png	English_foxhound	-1.90034	beagle	bath_towel	9.97290	densenet-121	wide_resnet50_2

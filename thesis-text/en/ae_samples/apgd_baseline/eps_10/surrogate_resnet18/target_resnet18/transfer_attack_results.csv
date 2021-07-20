@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-93.49652	triceratops	running_shoe	9.97078	resnet18	resnet18
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-58.58265	crane	chainlink_fence	9.99553	resnet18	resnet18
+ILSVRC2012_val_00000006.png	garter_snake	-66.76224	trilobite	manhole_cover	9.96441	resnet18	resnet18
+ILSVRC2012_val_00000007.png	porcupine	-73.17029	komondor	hay	9.97537	resnet18	resnet18
+ILSVRC2012_val_00000010.png	Angora	-86.75319	puffer	mask	9.99820	resnet18	resnet18
+ILSVRC2012_val_00000011.png	brain_coral	-14.45564	scuba_diver	coral_reef	9.99983	resnet18	resnet18
+ILSVRC2012_val_00000012.png	cougar	-39.13019	squirrel_monkey	window_screen	9.98654	resnet18	resnet18
+ILSVRC2012_val_00000013.png	guenon	-78.06300	chambered_nautilus	mask	9.96474	resnet18	resnet18
+ILSVRC2012_val_00000016.png	grey_whale	-58.46640	harvestman	vault	9.98779	resnet18	resnet18
+ILSVRC2012_val_00000017.png	sea_anemone	-67.18523	spiny_lobster	dining_table	9.99378	resnet18	resnet18
+ILSVRC2012_val_00000018.png	vulture	-72.72634	Chihuahua	handkerchief	9.98759	resnet18	resnet18
+ILSVRC2012_val_00000021.png	porcupine	-111.16367	komondor	broom	9.99267	resnet18	resnet18
+ILSVRC2012_val_00000022.png	Ibizan_hound	-82.04790	Rottweiler	shovel	9.95693	resnet18	resnet18
+ILSVRC2012_val_00000025.png	vulture	-60.42754	coral_fungus	worm_fence	9.96023	resnet18	resnet18
+ILSVRC2012_val_00000027.png	white_wolf	-99.70142	African_grey	chain_mail	9.95971	resnet18	resnet18
+ILSVRC2012_val_00000028.png	English_foxhound	-99.62769	mud_turtle	soccer_ball	9.96176	resnet18	resnet18

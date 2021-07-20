@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	1.85532	rock_python	maze	9.97078	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	6.29775	collie	spindle	9.99553	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000006.png	garter_snake	4.93269	garter_snake	maze	9.96441	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000007.png	porcupine	7.77481	porcupine	hay	9.97537	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000010.png	Angora	-2.77413	toy_poodle	mask	9.99820	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000011.png	brain_coral	5.44496	brain_coral	coral_reef	9.99983	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000012.png	cougar	9.00858	cougar	maillot	9.98654	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000013.png	guenon	8.00901	guenon	Polaroid_camera	9.96474	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000016.png	grey_whale	8.56522	grey_whale	volcano	9.98779	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000017.png	sea_anemone	1.35138	starfish	candle	9.99378	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000018.png	vulture	0.94280	bald_eagle	handkerchief	9.98759	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000021.png	porcupine	7.71196	porcupine	cardoon	9.99267	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000022.png	Ibizan_hound	1.15000	malinois	bow	9.95693	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000025.png	vulture	5.26625	vulture	bow	9.96023	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000027.png	white_wolf	7.49743	white_wolf	crane	9.95971	resnet18	efficientnet-b0-advtrain
+ILSVRC2012_val_00000028.png	English_foxhound	6.40662	beagle	soccer_ball	9.96176	resnet18	efficientnet-b0-advtrain

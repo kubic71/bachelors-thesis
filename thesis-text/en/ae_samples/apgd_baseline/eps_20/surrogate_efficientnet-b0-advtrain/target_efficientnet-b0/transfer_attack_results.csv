@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-5.64850	terrapin	magnetic_compass	19.82589	efficientnet-b0-advtrain	efficientnet-b0
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	1.09039	wire-haired_fox_terrier	tennis_ball	19.99986	efficientnet-b0-advtrain	efficientnet-b0
+ILSVRC2012_val_00000006.png	garter_snake	-5.64361	centipede	pillow	19.99201	efficientnet-b0-advtrain	efficientnet-b0
+ILSVRC2012_val_00000007.png	porcupine	-6.03395	silky_terrier	chest	19.78691	efficientnet-b0-advtrain	efficientnet-b0
+ILSVRC2012_val_00000010.png	Angora	-5.82929	starfish	purse	19.99785	efficientnet-b0-advtrain	efficientnet-b0
+ILSVRC2012_val_00000011.png	brain_coral	0.29274	brain_coral	coral_reef	19.99394	efficientnet-b0-advtrain	efficientnet-b0
+ILSVRC2012_val_00000012.png	cougar	-5.17611	tiger_cat	greenhouse	19.95921	efficientnet-b0-advtrain	efficientnet-b0
+ILSVRC2012_val_00000013.png	guenon	-1.25138	guenon	window_screen	19.97918	efficientnet-b0-advtrain	efficientnet-b0
+ILSVRC2012_val_00000016.png	grey_whale	-10.30914	Chesapeake_Bay_retriever	cliff	19.99300	efficientnet-b0-advtrain	efficientnet-b0
+ILSVRC2012_val_00000017.png	sea_anemone	-4.04503	nematode	table_lamp	19.96973	efficientnet-b0-advtrain	efficientnet-b0
+ILSVRC2012_val_00000018.png	vulture	-3.03857	loggerhead	parachute	19.71037	efficientnet-b0-advtrain	efficientnet-b0
+ILSVRC2012_val_00000021.png	porcupine	-4.93214	water_snake	spider_web	18.42881	efficientnet-b0-advtrain	efficientnet-b0
+ILSVRC2012_val_00000022.png	Ibizan_hound	-8.20777	Arabian_camel	dogsled	19.95848	efficientnet-b0-advtrain	efficientnet-b0
+ILSVRC2012_val_00000025.png	vulture	-9.41899	flamingo	pinwheel	19.98048	efficientnet-b0-advtrain	efficientnet-b0
+ILSVRC2012_val_00000027.png	white_wolf	-4.46273	miniature_schnauzer	muzzle	19.96392	efficientnet-b0-advtrain	efficientnet-b0
+ILSVRC2012_val_00000028.png	English_foxhound	-7.38717	tabby	teddy	19.98915	efficientnet-b0-advtrain	efficientnet-b0

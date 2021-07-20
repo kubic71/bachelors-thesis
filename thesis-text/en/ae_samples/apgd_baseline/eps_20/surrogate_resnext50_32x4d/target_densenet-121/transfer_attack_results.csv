@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-2.24311	centipede	necklace	19.94305	resnext50_32x4d	densenet-121
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-16.76479	Arctic_fox	jigsaw_puzzle	19.97890	resnext50_32x4d	densenet-121
+ILSVRC2012_val_00000006.png	garter_snake	-8.60380	ant	jigsaw_puzzle	19.98501	resnext50_32x4d	densenet-121
+ILSVRC2012_val_00000007.png	porcupine	-10.07521	tabby	sock	19.97645	resnext50_32x4d	densenet-121
+ILSVRC2012_val_00000010.png	Angora	-6.31726	triceratops	mask	19.98218	resnext50_32x4d	densenet-121
+ILSVRC2012_val_00000011.png	brain_coral	1.36499	brain_coral	jigsaw_puzzle	19.97594	resnext50_32x4d	densenet-121
+ILSVRC2012_val_00000012.png	cougar	3.73037	cougar	pillow	19.87397	resnext50_32x4d	densenet-121
+ILSVRC2012_val_00000013.png	guenon	4.53291	langur	jean	19.99429	resnext50_32x4d	densenet-121
+ILSVRC2012_val_00000016.png	grey_whale	-5.11195	grey_whale	volcano	19.93289	resnext50_32x4d	densenet-121
+ILSVRC2012_val_00000017.png	sea_anemone	-5.13841	sea_anemone	altar	19.92913	resnext50_32x4d	densenet-121
+ILSVRC2012_val_00000018.png	vulture	3.36413	tarantula	necklace	19.88488	resnext50_32x4d	densenet-121
+ILSVRC2012_val_00000021.png	porcupine	-3.64534	ruffed_grouse	spider_web	19.94639	resnext50_32x4d	densenet-121
+ILSVRC2012_val_00000022.png	Ibizan_hound	-10.70652	wire-haired_fox_terrier	jigsaw_puzzle	19.97543	resnext50_32x4d	densenet-121
+ILSVRC2012_val_00000025.png	vulture	1.39016	ruffed_grouse	stole	19.97813	resnext50_32x4d	densenet-121
+ILSVRC2012_val_00000027.png	white_wolf	6.07013	white_wolf	chainlink_fence	19.92329	resnext50_32x4d	densenet-121
+ILSVRC2012_val_00000028.png	English_foxhound	-5.41822	Labrador_retriever	bath_towel	19.91568	resnext50_32x4d	densenet-121

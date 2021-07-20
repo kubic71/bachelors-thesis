@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-46.30238	Cardigan	knot	19.99210	densenet-121	densenet-121
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-69.07554	golden_retriever	tennis_ball	19.99456	densenet-121	densenet-121
+ILSVRC2012_val_00000006.png	garter_snake	-72.68400	trilobite	sleeping_bag	19.99566	densenet-121	densenet-121
+ILSVRC2012_val_00000007.png	porcupine	-70.55502	starfish	sock	19.98005	densenet-121	densenet-121
+ILSVRC2012_val_00000010.png	Angora	-64.71600	Yorkshire_terrier	pillow	19.98285	densenet-121	densenet-121
+ILSVRC2012_val_00000011.png	brain_coral	-76.91505	brain_coral	jackfruit	19.99101	densenet-121	densenet-121
+ILSVRC2012_val_00000012.png	cougar	-126.68159	Persian_cat	jigsaw_puzzle	19.93488	densenet-121	densenet-121
+ILSVRC2012_val_00000013.png	guenon	-103.41034	centipede	shower_cap	19.98076	densenet-121	densenet-121
+ILSVRC2012_val_00000016.png	grey_whale	-127.46449	brain_coral	maze	19.96928	densenet-121	densenet-121
+ILSVRC2012_val_00000017.png	sea_anemone	-16.68192	coral_fungus	coral_reef	19.99568	densenet-121	densenet-121
+ILSVRC2012_val_00000018.png	vulture	-62.62966	mongoose	screw	19.96091	densenet-121	densenet-121
+ILSVRC2012_val_00000021.png	porcupine	-120.82944	Rottweiler	racket	19.98433	densenet-121	densenet-121
+ILSVRC2012_val_00000022.png	Ibizan_hound	-91.84208	hummingbird	stupa	19.96793	densenet-121	densenet-121
+ILSVRC2012_val_00000025.png	vulture	-154.67914	jellyfish	bubble	19.93044	densenet-121	densenet-121
+ILSVRC2012_val_00000027.png	white_wolf	-61.02214	Arabian_camel	sock	19.94975	densenet-121	densenet-121
+ILSVRC2012_val_00000028.png	English_foxhound	-70.86642	ant	tennis_ball	19.98879	densenet-121	densenet-121

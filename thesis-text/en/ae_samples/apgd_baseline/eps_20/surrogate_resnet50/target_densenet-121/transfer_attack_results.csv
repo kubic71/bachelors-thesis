@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-5.59291	nematode	tray	19.95457	resnet50	densenet-121
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-3.99343	Shetland_sheepdog	shoe_shop	19.97947	resnet50	densenet-121
+ILSVRC2012_val_00000006.png	garter_snake	-13.14437	ringneck_snake	maze	19.93023	resnet50	densenet-121
+ILSVRC2012_val_00000007.png	porcupine	-8.17300	porcupine	spindle	19.97582	resnet50	densenet-121
+ILSVRC2012_val_00000010.png	Angora	-7.79044	toy_poodle	teddy	19.97785	resnet50	densenet-121
+ILSVRC2012_val_00000011.png	brain_coral	3.26732	brain_coral	coral_reef	19.99288	resnet50	densenet-121
+ILSVRC2012_val_00000012.png	cougar	7.54847	cougar	jigsaw_puzzle	19.97197	resnet50	densenet-121
+ILSVRC2012_val_00000013.png	guenon	-9.92239	gorilla	breastplate	19.97738	resnet50	densenet-121
+ILSVRC2012_val_00000016.png	grey_whale	-13.08806	cairn	quilt	19.97221	resnet50	densenet-121
+ILSVRC2012_val_00000017.png	sea_anemone	-7.38963	triceratops	umbrella	19.96777	resnet50	densenet-121
+ILSVRC2012_val_00000018.png	vulture	-12.82578	Siamese_cat	jigsaw_puzzle	19.95228	resnet50	densenet-121
+ILSVRC2012_val_00000021.png	porcupine	-0.56714	porcupine	greenhouse	19.92546	resnet50	densenet-121
+ILSVRC2012_val_00000022.png	Ibizan_hound	-4.94878	malamute	dogsled	19.98518	resnet50	densenet-121
+ILSVRC2012_val_00000025.png	vulture	0.65395	ruffed_grouse	worm_fence	19.99767	resnet50	densenet-121
+ILSVRC2012_val_00000027.png	white_wolf	-1.86012	Siberian_husky	cup	19.97861	resnet50	densenet-121
+ILSVRC2012_val_00000028.png	English_foxhound	1.46152	American_Staffordshire_terrier	soccer_ball	19.98495	resnet50	densenet-121

@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	1.59804	rock_python	maze	9.96147	squeezenet	efficientnet-b0
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	7.68937	Shetland_sheepdog	bath_towel	9.96820	squeezenet	efficientnet-b0
+ILSVRC2012_val_00000006.png	garter_snake	1.79074	night_snake	maze	9.96344	squeezenet	efficientnet-b0
+ILSVRC2012_val_00000007.png	porcupine	5.11134	porcupine	hay	9.98902	squeezenet	efficientnet-b0
+ILSVRC2012_val_00000010.png	Angora	-5.85302	triceratops	jigsaw_puzzle	9.98260	squeezenet	efficientnet-b0
+ILSVRC2012_val_00000011.png	brain_coral	4.94402	brain_coral	coral_reef	9.99265	squeezenet	efficientnet-b0
+ILSVRC2012_val_00000012.png	cougar	8.76536	cougar	bib	9.96643	squeezenet	efficientnet-b0
+ILSVRC2012_val_00000013.png	guenon	6.84439	guenon	jigsaw_puzzle	9.99422	squeezenet	efficientnet-b0
+ILSVRC2012_val_00000016.png	grey_whale	5.61113	grey_whale	submarine	9.99801	squeezenet	efficientnet-b0
+ILSVRC2012_val_00000017.png	sea_anemone	-3.59795	sea_anemone	feather_boa	9.99092	squeezenet	efficientnet-b0
+ILSVRC2012_val_00000018.png	vulture	-0.39374	skunk	jigsaw_puzzle	9.96486	squeezenet	efficientnet-b0
+ILSVRC2012_val_00000021.png	porcupine	5.36518	porcupine	cardoon	9.97603	squeezenet	efficientnet-b0
+ILSVRC2012_val_00000022.png	Ibizan_hound	-1.55850	Ibizan_hound	oxcart	9.98487	squeezenet	efficientnet-b0
+ILSVRC2012_val_00000025.png	vulture	5.67457	vulture	tank	9.97502	squeezenet	efficientnet-b0
+ILSVRC2012_val_00000027.png	white_wolf	8.61412	white_wolf	cup	9.99426	squeezenet	efficientnet-b0
+ILSVRC2012_val_00000028.png	English_foxhound	6.11632	Walker_hound	gas_pump	9.97247	squeezenet	efficientnet-b0

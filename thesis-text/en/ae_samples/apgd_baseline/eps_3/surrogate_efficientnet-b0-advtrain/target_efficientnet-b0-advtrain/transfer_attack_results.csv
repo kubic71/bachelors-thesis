@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-25.53281	leatherback_turtle	sandbar	2.99931	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-5.39011	Pembroke	tennis_ball	2.99677	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000006.png	garter_snake	-19.54441	baboon	go-kart	2.99329	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000007.png	porcupine	-21.03759	porcupine	quill	2.99918	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000010.png	Angora	-25.61942	giant_panda	teddy	2.98489	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000011.png	brain_coral	-6.11039	brain_coral	coral_reef	2.99973	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000012.png	cougar	-1.02417	cougar	maillot	2.99987	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000013.png	guenon	-4.02377	baboon	bottlecap	3.00000	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000016.png	grey_whale	-19.78196	Afghan_hound	aircraft_carrier	2.99995	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000017.png	sea_anemone	-36.61180	goldfish	candle	2.99059	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000018.png	vulture	-21.39878	jellyfish	parachute	2.99994	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000021.png	porcupine	-9.34620	fox_squirrel	projector	2.99958	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000022.png	Ibizan_hound	-21.10753	ant	dogsled	2.99695	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000025.png	vulture	-17.05013	leatherback_turtle	rubber_eraser	2.99769	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000027.png	white_wolf	-4.54430	ram	alp	2.99971	efficientnet-b0-advtrain	efficientnet-b0-advtrain
+ILSVRC2012_val_00000028.png	English_foxhound	-3.59403	Pembroke	matchstick	2.99976	efficientnet-b0-advtrain	efficientnet-b0-advtrain

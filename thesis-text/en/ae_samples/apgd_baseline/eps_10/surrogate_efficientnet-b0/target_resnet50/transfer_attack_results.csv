@@ -1,0 +1,17 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	3.41518	water_snake	running_shoe	10.00000	efficientnet-b0	resnet50
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	7.75398	Shetland_sheepdog	bath_towel	9.99939	efficientnet-b0	resnet50
+ILSVRC2012_val_00000006.png	garter_snake	9.42603	water_snake	worm_fence	9.98662	efficientnet-b0	resnet50
+ILSVRC2012_val_00000007.png	porcupine	6.49830	porcupine	wool	9.99405	efficientnet-b0	resnet50
+ILSVRC2012_val_00000010.png	Angora	-2.26194	triceratops	piggy_bank	9.99898	efficientnet-b0	resnet50
+ILSVRC2012_val_00000011.png	brain_coral	2.70976	brain_coral	jackfruit	9.99723	efficientnet-b0	resnet50
+ILSVRC2012_val_00000012.png	cougar	15.15293	cougar	window_screen	9.97454	efficientnet-b0	resnet50
+ILSVRC2012_val_00000013.png	guenon	12.08505	guenon	breastplate	9.99022	efficientnet-b0	resnet50
+ILSVRC2012_val_00000016.png	grey_whale	10.49641	grey_whale	submarine	9.99751	efficientnet-b0	resnet50
+ILSVRC2012_val_00000017.png	sea_anemone	-2.53196	starfish	torch	9.99842	efficientnet-b0	resnet50
+ILSVRC2012_val_00000018.png	vulture	0.44630	starfish	sock	9.97404	efficientnet-b0	resnet50
+ILSVRC2012_val_00000021.png	porcupine	6.57826	porcupine	broom	9.81563	efficientnet-b0	resnet50
+ILSVRC2012_val_00000022.png	Ibizan_hound	4.69530	llama	stretcher	9.99215	efficientnet-b0	resnet50
+ILSVRC2012_val_00000025.png	vulture	9.29120	vulture	amphibian	9.99235	efficientnet-b0	resnet50
+ILSVRC2012_val_00000027.png	white_wolf	5.22070	white_wolf	cardigan	9.98543	efficientnet-b0	resnet50
+ILSVRC2012_val_00000028.png	English_foxhound	3.65413	Walker_hound	tennis_ball	9.99031	efficientnet-b0	resnet50
