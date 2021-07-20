@@ -350,7 +350,7 @@ $$\nabla J_{\sigma}(x) = \mathbb{E}_{\xi \sim \mathcal{N}(0, I)}[\nabla J(x + \s
 In their experiments they visualize the saliency map of the gradient $\nabla J_{\sigma}(x)$ with increasing values of $\sigma$.
 They go on to show how increasing the values of $\sigma$ filters out the noise in the gradient significantly while still capturing the most significant semantic information. 
 
-We confirm this observation in our experiments. In figure (\ref{fig:apgd_noise_smooth_gradient}) we demonstrate how inceasing the $\sigma$ compels the algorithm to focus only on a smaller part of the image. It cannot afford to spread the pertubation around the image uniformly, because low-intensity signal is destroyed by the Guassian noise. It must produce a pertubation in a smaller area but with higher intensity, to keep the pertubation's signal-to-noise ratio high.
+We confirm this observation in our experiments. In figure (\ref{fig:apgd_noise_smooth_gradient}) we demonstrate how increasing the $\sigma$ compels the algorithm to focus only on a smaller part of the image. It cannot afford to spread the pertubation around the image uniformly, because low-intensity signal is destroyed by the Guassian noise. It must produce a pertubation in a smaller area but with higher intensity, to keep the pertubation's signal-to-noise ratio high.
 
 
 \begin{figure}
@@ -372,7 +372,13 @@ We confirm this observation in our experiments. In figure (\ref{fig:apgd_noise_s
 \end{figure}
 
 
-Figure \ref{fig:apgd_noise_augment} shows that in the low iteration APGD regime the optimal Guassian-noise augmentation std is somewhere near $\sigma=18$. It also shows that given the same whitebox query budget, it pays off to get a better quality gradient estimate.
+Figure \ref{fig:apgd_noise_augment} shows that in the low iteration APGD regime the optimal Guassian-noise augmentation std is somewhere near $\sigma=18$. 
+
+
+Because the surrogate is stochastic and during each forward pass applies a different transformation $t \sim T$, we estimate estimate the true gradient in a Expectation over Transformation (EoT - \cite{athalye2018synthesizing}) style:
+
+
+It also shows that given the same whitebox query budget, it pays off to get a better quality gradient estimate.
 
 This is in agreement with \cite{Wu2020TowardsUA}, who find the distortion level $\sigma = 15$ to be performing the best.
 
