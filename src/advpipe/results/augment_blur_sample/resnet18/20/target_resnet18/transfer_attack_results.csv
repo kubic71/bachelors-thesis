@@ -1,0 +1,4 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	6.74670	water_snake	padlock	9.93400	resnet18.blur-020.00	resnet18
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	10.08244	Shetland_sheepdog	feather_boa	9.99881	resnet18.blur-020.00	resnet18
+ILSVRC2012_val_00000006.png	garter_snake	0.32028	rock_python	safety_pin	9.99540	resnet18.blur-020.00	resnet18

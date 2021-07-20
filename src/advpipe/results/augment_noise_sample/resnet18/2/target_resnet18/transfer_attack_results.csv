@@ -1,0 +1,4 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-157.16208	ringneck_snake	safety_pin	9.98102	resnet18.noise-002.00	resnet18
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-128.07658	black_and_gold_garden_spider	tennis_ball	9.94372	resnet18.noise-002.00	resnet18
+ILSVRC2012_val_00000006.png	garter_snake	-75.72813	Yorkshire_terrier	pillow	9.94367	resnet18.noise-002.00	resnet18

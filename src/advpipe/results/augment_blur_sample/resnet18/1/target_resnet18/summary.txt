@@ -1,0 +1,2 @@
+trasfer attack from resnet18.blur-001.00 to resnet18
+successfully transferred / total = 3/3 = 100.00%

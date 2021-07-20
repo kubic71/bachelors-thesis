@@ -1,0 +1,2 @@
+trasfer attack from resnet18.noise-020.00 to resnet18
+successfully transferred / total = 3/3 = 100.00%

@@ -1,0 +1,54 @@
+#@  def get_config_parameters():
+#@      for surrogate in ["resnet18"]:
+#@          for size in [1, 2, 3, 4, 5, 7, 10, 15, 20]:
+#@                          yield {"surrogate": surrogate, "size":size}
+
+---
+
+attack_regime:
+  name : transfer-regime-multiple-targets
+  show_images : False
+  skip_already_adversarial: False
+  dont_save_images: False
+  results_dir: results/augment_blur_sample/{surrogate}/{size}
+
+  attack_algorithm: 
+    name: apgd
+    n_iters: 60
+    eot_iter: 1
+
+  epsilon: 10
+  norm: l2
+  # batch_size: 256
+  batch_size: 3
+
+  surrogate:
+    model_type: local
+    name: {surrogate}
+    output_mapping: organism_margin
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+    
+    augmentations:
+      - name: box-blur
+        kernel_size: {size}
+
+  dataset_config:
+    data_dir: datasets/imagenet_val_256_rescaled_224_center_cropped_first_2000
+    dataset_type: imagenet-validation
+    load_only_organisms: True
+    size_limit: 3
+
+  multiple_target_configs:
+    model_type: local
+    names:
+      - resnet18
+
+    output_mapping: organism_margin
+
+    loss:
+      name: margin_loss
+      margin: 0.0
+

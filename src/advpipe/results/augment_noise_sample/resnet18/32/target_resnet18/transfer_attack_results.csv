@@ -1,0 +1,4 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-34.74239	brain_coral	manhole_cover	9.92116	resnet18.noise-032.00	resnet18
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-23.69073	house_finch	manhole_cover	9.99994	resnet18.noise-032.00	resnet18
+ILSVRC2012_val_00000006.png	garter_snake	-40.58334	chiton	manhole_cover	9.98205	resnet18.noise-032.00	resnet18

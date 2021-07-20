@@ -1,0 +1,4 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-112.19341	guinea_pig	safety_pin	10.00000	resnet18.noise-012.00	resnet18
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-82.68504	sea_urchin	tennis_ball	9.99423	resnet18.noise-012.00	resnet18
+ILSVRC2012_val_00000006.png	garter_snake	-86.01405	coho	manhole_cover	9.99236	resnet18.noise-012.00	resnet18

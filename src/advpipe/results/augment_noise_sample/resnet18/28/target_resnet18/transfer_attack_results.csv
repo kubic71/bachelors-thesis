@@ -1,0 +1,4 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-41.74927	alligator_lizard	manhole_cover	9.99179	resnet18.noise-028.00	resnet18
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-48.48714	Angora	fountain	9.98792	resnet18.noise-028.00	resnet18
+ILSVRC2012_val_00000006.png	garter_snake	-45.72518	chiton	manhole_cover	9.97764	resnet18.noise-028.00	resnet18

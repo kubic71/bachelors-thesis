@@ -1,0 +1,4 @@
+img_fn	human_readable_label	target_loss	top_organism_label	top_object_label	dist	surrogate	target
+ILSVRC2012_val_00000001.png	sea_snake	-69.84084	rock_python	chain	9.98663	resnet18.blur-002.00	resnet18
+ILSVRC2012_val_00000003.png	Shetland_sheepdog	-106.57462	black_and_gold_garden_spider	tennis_ball	9.98245	resnet18.blur-002.00	resnet18
+ILSVRC2012_val_00000006.png	garter_snake	-76.40462	cicada	sundial	9.98808	resnet18.blur-002.00	resnet18
