@@ -69,7 +69,7 @@ Just to name a few choices for $o(x)$ that could intuitively work:
     \item ...
 \end{enumerate}
 
-But in the end we want to achive a misclasification of the original organism image $x_{org}$. \\ If we go with 1) and produce output vector $o(x) = (\max S_{object}, \max S_{organism})$, misclasification is achived when $o(x)_0 > o(x)_1$. We can define a margin loss objective $\mathcal{L}_{margin}(x, \kappa) = \max S_{organism}(x) - \max S_{object}(x) + \kappa$ with additional parameter $\kappa$, by which we adjust our requirement for the degree of misclasification.
+But in the end we want to achive a misclasification of the original organism image $x_{org}$. \\ If we go with 1) and produce output vector $o(x) = (\max S_{object}, \max S_{organism})$, misclasification is achived when $o(x)_0 > o(x)_1$. We can define a margin loss objective $\mathcal{L}_{margin}(x, \kappa) = \max S_{organism}(x) - \max S_{object}(x) + \kappa$ with additional parameter $\kappa$, by which we can adjust our requirement for the degree of misclasification.
 
 Another hint that this might be a solid choice comes from the \cite{carlini2017evaluating}, where they discuss the choice of optimization objective. They try a number of different alternatives, but in the end they conclude that optimizing the margin loss works the best, so we stick with it.
 

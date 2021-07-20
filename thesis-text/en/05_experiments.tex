@@ -1,7 +1,7 @@
 \chapter{Experiments}
 \label{experiments_chap}
 
-\section{Blackbox PoC on GVision}
+\section{Blackbox PoC on Google Cloud Vision API}
 Here we go into more technical details about previously mentioned blackbox attacks we initially tried.
 
 \begin{itemize}
@@ -48,7 +48,7 @@ Here's how \href{https://cloud.google.com/vision}{Google Cloud Vision API} class
 This one is hard label attack and doesn't use the continuos loss from GVision.
 
 \subsection{SquareAttack}
-Because of high query intensity, we have only tested the sample cat image.
+Because of high query intensity, we have only tested the "cat" sample image.
 
 
 \subsubsection{SquareAttack L2}
@@ -80,7 +80,7 @@ Because of high query intensity, we have only tested the sample cat image.
 \label{fig:square_cat_linf}
 \end{figure}
 
-\subsubsection{Evaluation of the attack results}
+\subsubsection{Evaluation of the GVision SquareAttack results}
 
 In both L2 and Linf modes we have achived out top-1 misclassification objective and the cat label was taken in both cases to the top-3 place.
 
@@ -89,15 +89,23 @@ In this experiment of sample size = 1 the L2 version of SquareAttack seems to pr
 The Linf version on the other hand had to be given two times larger query budget, but we still had to turn up the $l_{inf}$ pertubation norm to 0.047 to achieve our misclassification objective.
 
 
-This observation made us focus more on the $l_2$ bounded attacks in later local experiments.
+This observation made us focus more on the $l_2$ bounded attacks in later local experiments (\ref{local_transfer}).
 
 \subsubsection{Local query distribution}
+To get an idea how SquareAttack would fare against some of our local models, we ran it in low query mode with 200 queries against ResNet-18 and ResNet-50, and with 300 queries against EfficientNet-b0 and it's adversarially trained counterpart. To make the job a bit easier for the SquareAttack, we relaxed the $l_2$ pertubation to 20.
 
+\begin{figure}[!htb]
+\centering
+ \subfloat[SquareAttack L2 on ResNets]{\includegraphics[width=\linewidth]{n_queries_needed/square_attack_l2_eps_20.png}}\hfill
+ \subfloat[SquareAttack L2 on EfficientNets]{\includegraphics[width=\linewidth]{n_queries_needed/square_attack_efficientnet_vs_efficientnet_advtrain.png}}\hfill
+\caption{SquareAttack L2 on local models}
+\end{figure}
 
-
+What is maybe a little bit surprising is that the adversarial training of EfficientNet-b0 makes no difference when attacked by blackbox SquareAttack. This may be in part attributed to the fact, that the adversarial training defence primarily flattens out the gradients around training input data (\cite{Yu2018TowardsRT}), but doesn't provide any robustness guarantees (\cite{Kolter2018ProvableDA}). As the blackbox SquareAttack doesn't use the gradient information explicitly, it may not be as affected by the adversarial training defense as the whitebox graidient attacks.
 
 
 \section{Local transferability experiments}
+\label{local_transfer}
 Motivated by the not-ideal query-efficiency of pure-blackbox attacks (\ref{need_for_query_efficiency}), we moved to transfer attacks to see how far we can push the pure transfer threat model.
 
 
@@ -118,6 +126,15 @@ Apart from EfficientNets, all models were taken from the \href{https://pytorch.o
 
 To address the particular choice of our model set, we aimed at low model size, such that forward and backward pass fits comfortably in the 2GB of our MX-150 NVIDIA laptop GPU. This requirement for instance ruled out the VGG-style networks (\cite{simonyan2015deep}), the pre-ResNet 2nd-best submission to the ILSVRC 2014 (\cite{russakovsky2015imagenet}). The Wide-ResNet-50-2 (WRN-50-2) is already at the limit with its 68,951,464 trainable parameters. In a standard FP-32 mode the model parameters, forward pass activations and backward pass partial derivatives take up almost 1GB of GPU memory. Adding to this the 620MB of GPU memory consumed by PyTorch at idle meant we could use only batch size of one for this particular Wide ResNet. But looking at the \href{https://robustbench.github.io/}{RobustBench leaderboard} (\cite{croce2021robustbench}), which uses AutoAttack (\cite{croce2020reliable}) suite of parameter-free attacks to benchmark the robustness of various adversarially robust models, one can see the top positions are dominated by WideResNets, so we kept it in our model set despite its large size.
 We also chose models with the same input size, such that the same dataset preprocessing (\ref{dataset_preprocessing}) could be used for all of them and wouldn't complicate things any further. This decision meant we didn't use the popular Inception-v3 (\cite{szegedy2015rethinking}), which takes inputs of size 299x299 instead of 224x224 of all the other models.
+
+\subsubsection{Inference time}
+In the early days of AdvPipe we supported only batch sizes of one. We wondered what kind of difference does batch size make in such a memory-limited hardware setting. As we can see in the following figure, having batches much larger than you hardware can handle (ResNet-101, ResNet-152), it can result in a sub-par performance when compared to $bs=1$. We think that this slow-down is caused by the frequent re-allocations the Cuda-backend has to make during the forward pass (and also during the backward pass).
+
+\begin{figure}[!htb]
+  \includegraphics[width=\linewidth]{inference_time/inference_resnet_and_efficient_net.png}
+\caption{ResNet vs EfficientNet inference}
+\label{fig:fgsm_margin}
+\end{figure}
 
 
 
@@ -182,7 +199,7 @@ In the whitebox setting we tried the following whitebox optimization algorithms:
 
 \begin{itemize}
     \item FGSM (\cite{goodfellow2015explaining})
-    \item Adaptive PGD (APGD) L2 (\cite{croce2020reliable})
+    \item Auto-PGD (APGD) L2 (\cite{croce2020reliable})
     \item AdamPDG L2
 \end{itemize}
 
@@ -233,32 +250,45 @@ But the figure \ref{fig:fgsm_prob_sum} shows that this approach is approximately
 
 \subsubsection{Underfitting vs. overfitting}
 \label{fgsm_underfits}
-FGSM experiment showed that one gradient optimization step isn't quite enough, because ideally we would like to see the whitebox foolrate (the diagonal in the heatmaps) being close to 100\%. If we were to use the analogy from \ref{ml_analogy}, the diagonal would correspond to the training performance. Anything off the diagonal can be though of as validation performance. The training accuracy of FGSM is already quite low, so we cannot expect the validation accuracy to be much higher. In other words, FGSM massively underfits. It is the extreme case of early-stopping, which in classical machine learning is sometimes used to prevent overfitting (\cite{Caruana2000OverfittingIN})
+FGSM experiment showed that one gradient optimization step isn't quite enough, because ideally we would like to see the whitebox foolrate (the diagonal in the heatmaps) being close to 100\%. If we were to use the analogy from \ref{ml_analogy}, the diagonal would correspond to the training performance. Anything off the diagonal can be though of as validation performance. The training accuracy of FGSM is already quite low, so we cannot expect the validation accuracy to be much higher. In other words, FGSM massively underfits. It is the extreme case of early-stopping, which in the classical machine learning is sometimes used to prevent overfitting (\cite{Caruana2000OverfittingIN}).
 
-\subsubsection{Adaptive PGD (APGD)}
-We argued in \ref{fgsm_underfits} that FGSM underfits badly even on adversarially undefended whitebox networks. Therefore we probably need a stronger optimization algorithm.
+\subsubsection{The need for a better optimizer}
+We argued in \ref{fgsm_underfits} that FGSM underfits badly even on adversarially undefended whitebox networks with large pertubation budget. What we need here is a stronger optimizer.
 
-There had been proposed numerous iterative whitebox attack algorithms that are doing in one form or another a gradient descent (or ascent) on the adversarial loss. Just to name a few:
+There have been proposed numerous iterative whitebox attack algorithms that are doing in one form or another a gradient descent (or ascent) on the adversarial loss. Just to name a few:
 
 \begin{itemize}
     \item Basic iterative method - BIM (\cite{Kurakin2017AdversarialEI})
     \item Projected gradient descent - PGD (\cite{madry2019deep})
     \item Momentum iterative fast gradient sign method - MI-FGSM (\cite{Dong2018BoostingAA})
     \item Nesterov Iterative Fast Gradient Sign Method - NI-FGSM (\cite{lin2020nesterov})
-    \item Adaptive PGD - APGD (\cite{croce2020reliable})
+    \item Auto-PGD - APGD (\cite{croce2020reliable})
     \item Adam Iterative Fast Gradient Method - AI-FGM (\cite{Yin2021BoostingAA})
 \end{itemize}
 
+Out of those optimization methods we really liked the APGD, because unlike the others, it is hyperparmeter free.
 
+The only knobs to we can tweak are:
 
+\begin{itemize}
+    \item pertubation size
+    \item number of gradient step iterations
+    \item number of gradient samples (when dealing with non-deterministic models)
+\end{itemize}
 
+Actually it is so good at optimizing the adversarial loss, that in our experiments the output probability of the organism class would often go exactly to zero. After computing the cross-entropy loss, which involves taking the logarithm of this probability, we would be getting infinities in the objective and the subsequent gradients would become $NaN$.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.75\textwidth]{transfer_attacks/transfer_heatmap/apgd_l2_margin_n_iters_25_eps_10.png}
-    \caption{blash bhal hlabh}
-    \label{fig:apgd_margin}
+\subsubsection{APGD baseline}
+To establish the baseline performance of APGD and its ability to optimize our custom binary classification loss, we tried a number of different $l_2$ norm budgets and executed it with 25 iterations, which is the lowest number of gradient steps the authors use in their comparisions APGD to classical PGD (\cite{croce2020reliable}). We used this low-end of the $N_{iters}$ APGD boundary to keep the experiment running times under control.
+
+\begin{figure}[!htb]
+\centering
+ \subfloat[$\epsilon = 10$]{\includegraphics[width=0.38\textwidth]{transfer_attacks/transfer_heatmap/apgd_l2_margin_n_iters_25_eps_10.png}}
+\subfloat[$\epsilon = 10$]{\includegraphics[width=0.38\textwidth]{transfer_attacks/transfer_heatmap/apgd_l2_margin_n_iters_25_eps_10.png}}
+ \subfloat[$\epsilon = 10$]{\includegraphics[width=0.38\textwidth]{transfer_attacks/transfer_heatmap/apgd_l2_margin_n_iters_25_eps_10.png}}
+\label{fig:apgd_margin}
 \end{figure}
+
 
 \subsection{Augmentation is all you need!}
 \subsubsection{Guassian-noise augmentation}
