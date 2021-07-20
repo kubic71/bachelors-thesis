@@ -128,7 +128,7 @@ To address the particular choice of our model set, we aimed at low model size, s
 We also chose models with the same input size, such that the same dataset preprocessing (\ref{dataset_preprocessing}) could be used for all of them and wouldn't complicate things any further. This decision meant we didn't use the popular Inception-v3 (\cite{szegedy2015rethinking}), which takes inputs of size 299x299 instead of 224x224 of all the other models.
 
 \subsubsection{Inference time}
-In the early days of AdvPipe we supported only batch sizes of one. We wondered what kind of difference does batch size make in such a memory-limited hardware setting. As we can see in the following figure, having batches much larger than you hardware can handle (ResNet-101, ResNet-152), it can result in a sub-par performance when compared to $bs=1$. We think that this slow-down is caused by the frequent re-allocations the Cuda-backend has to make during the forward pass (and also during the backward pass).
+In the early days of AdvPipe we had supported only batch sizes of one. We wondered what kind of difference does batch size make in such a memory-limited hardware setting. As we can see in the following figure, having batches much larger than you hardware can handle (ResNet-101, ResNet-152) can result in a sub-par performance when compared to $bs=1$. We think that this slow-down is caused by the frequent re-allocations the Cuda-backend has to make during the forward pass (and also during the backward pass).
 
 \begin{figure}[!htb]
   \includegraphics[width=\linewidth]{inference_time/inference_resnet_and_efficient_net.png}
@@ -328,21 +328,62 @@ It is interesting to see how the adversarially trained EfficientNet-b0 is more s
 
 
 \subsection{Augmentation is all you need!}
+Seeing how little transferability there is between the models from the ResNet family and the EfficientNets, we have started experimenting with some image augmentations techniques, which are commonly used to to prevent overfitting and enhance generalization when training normal CNN classifiers. 
+ We have tried augmenting images with:
+
+
+\begin{itemize}
+    \item Guassian-noise
+    \item Blur
+    \item Elastic transformation
+    \item Affine transformation
+\end{itemize}
+
+
 \subsubsection{Guassian-noise augmentation}
-TODO: cite the paper that explains Guassian noise augmentation in terms of gradinet smoothing.
+
+\cite{Wu2020TowardsUA} show how convolving the loss surface with a Gaussian filter has a smoothing effect on the gradient.
+
+$$J_{\sigma}(x) = \mathbb{E}_{\xi \sim \mathcal{N}(0, I)}[J(x + \sigma \xi)]$$
+$$\nabla J_{\sigma}(x) = \mathbb{E}_{\xi \sim \mathcal{N}(0, I)}[\nabla J(x + \sigma \xi)]$$
+
+In their experiments they visualize the saliency map of the gradient $\nabla J_{\sigma}(x)$ with increasing values of $\sigma$.
+They go on to show how increasing the values of $\sigma$ filters out the noise in the gradient significantly while still capturing the most significant semantic information. 
+
+We confirm this observation in our experiments. In figure (\ref{fig:apgd_noise_smooth_gradient}) we demonstrate how inceasing the $\sigma$ compels the algorithm to focus only on a smaller part of the image. It cannot afford to spread the pertubation around the image uniformly, because low-intensity signal is destroyed by the Guassian noise. It must produce a pertubation in a smaller area but with higher intensity, to keep the pertubation's signal-to-noise ratio high.
+
+
 \begin{figure}
 \centering
- \subfloat[25 iterations, 10 gradient estimates per step]{\includegraphics[width=0.48\textwidth]{transfer_attacks/transfer_heatmap/augment_noise_apgd_l2_margin_n_iters_25_eot_iters_10_eps_10.png}}
+ \subfloat[$\sigma = 2$]{\includegraphics[width=0.32\textwidth]{results/augment_noise_sample/resnet18/2/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+ \subfloat[$\sigma = 4$]{\includegraphics[width=0.32\textwidth]{results/augment_noise_sample/resnet18/4/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+ \subfloat[$\sigma = 8$]{\includegraphics[width=0.32\textwidth]{results/augment_noise_sample/resnet18/8/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}
 
- \subfloat[250 iterations, 1 gradient estimate per step]{\includegraphics[width=0.48\textwidth]{transfer_attacks/transfer_heatmap/augment_noise_apgd_l2_margin_n_iters_250_eot_iters_1_eps_10.png}}
-\caption{Guassian noise augmentation}
-\label{fig:apgd_noise_augment}
+ \subfloat[$\sigma = 12$]{\includegraphics[width=0.32\textwidth]{results/augment_noise_sample/resnet18/12/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+ \subfloat[$\sigma = 16$]{\includegraphics[width=0.32\textwidth]{results/augment_noise_sample/resnet18/16/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+ \subfloat[$\sigma = 20$]{\includegraphics[width=0.32\textwidth]{results/augment_noise_sample/resnet18/20/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}
+
+ \subfloat[$\sigma = 24$]{\includegraphics[width=0.32\textwidth]{results/augment_noise_sample/resnet18/24/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+ \subfloat[$\sigma = 28$]{\includegraphics[width=0.32\textwidth]{results/augment_noise_sample/resnet18/28/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+ \subfloat[$\sigma = 32$]{\includegraphics[width=0.32\textwidth]{results/augment_noise_sample/resnet18/32/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}
+
+\caption{Guassian noise dog augmentation sample}
+\label{fig:apgd_noise_smooth_gradient}
 \end{figure}
 
 
-Figure \ref{fig:apgd_noise_augment} shows that in the low iteration regime the optimal Guassian-noise augmentation std is somewhere near $std=18$. It also shows that given the same whitebox query budget, it pays off to get a quality gradient estimate.
+Figure \ref{fig:apgd_noise_augment} shows that in the low iteration APGD regime the optimal Guassian-noise augmentation std is somewhere near $\sigma=18$. It also shows that given the same whitebox query budget, it pays off to get a better quality gradient estimate.
 
 TODO: add the citation of the paper, that shows the Guassian noise with std=16 to be pretty much optimal.
+
+\begin{figure}
+\centering
+ \subfloat[25 iterations, 10 gradient estimates per step]{\includegraphics[width=0.7\textwidth]{transfer_attacks/transfer_heatmap/augment_noise_apgd_l2_margin_n_iters_25_eot_iters_10_eps_10.png}}
+
+ \subfloat[250 iterations, 1 gradient estimate per step]{\includegraphics[width=0.7\textwidth]{transfer_attacks/transfer_heatmap/augment_noise_apgd_l2_margin_n_iters_250_eot_iters_1_eps_10.png}}
+\caption{Guassian noise augmentation}
+\label{fig:apgd_noise_augment}
+\end{figure}
 
 \subsubsection{Box-blur}
 In the next experiment (figure \ref{fig:apgd_box_blur}) we test the effect of box-blur on adeversarial-image transferability. Box-blur of size 'x' applies uniform convolution kernel of size 'x with normalized weights over the input image. 
