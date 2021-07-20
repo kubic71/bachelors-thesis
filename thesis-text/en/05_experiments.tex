@@ -374,7 +374,7 @@ We confirm this observation in our experiments. In figure (\ref{fig:apgd_noise_s
 
 Figure \ref{fig:apgd_noise_augment} shows that in the low iteration APGD regime the optimal Guassian-noise augmentation std is somewhere near $\sigma=18$. It also shows that given the same whitebox query budget, it pays off to get a better quality gradient estimate.
 
-TODO: add the citation of the paper, that shows the Guassian noise with std=16 to be pretty much optimal.
+This is in agreement with \cite{Wu2020TowardsUA}, who find the distortion level $\sigma = 15$ to be performing the best.
 
 \begin{figure}
 \centering
@@ -386,7 +386,7 @@ TODO: add the citation of the paper, that shows the Guassian noise with std=16 t
 \end{figure}
 
 \subsubsection{Box-blur}
-In the next experiment (figure \ref{fig:apgd_box_blur}) we test the effect of box-blur on adeversarial-image transferability. Box-blur of size 'x' applies uniform convolution kernel of size 'x with normalized weights over the input image. 
+In this experiment we have tested the effect of box-blur on adeversarial-image transferability. Box-blur augmentation applies uniform normalized convolution kernel of size $x$ over the input image. 
 
 \begin{figure}
     \centering
@@ -395,7 +395,30 @@ In the next experiment (figure \ref{fig:apgd_box_blur}) we test the effect of bo
     \label{fig:apgd_box_blur}
 \end{figure}
 
-We can witness that a small amout of blur is beneficial, but larger amounts are too strong regularizers for the whitebox optimization and cause the APGD optimization algorithm to underfit.
+We can see in figure \ref{fig:apgd_box_blur} that a small amout of blur is beneficial, but larger amounts are essentially strong low-pass filters that introduce large surrogate bias. The large blur makes the surrogate a much weaker classifier, which is quite easy to fool at train-time, but when the blurring is removed from the preprocessing pipeline at test-time, the model becomes stronger again and isn't fooled by the adversarial image produced on the weak surrogate.
+
+Figure \ref{fig:apgd_box_blur_sample} shows the effect of increasing the kernel size of the box-blur on the frequency of the adversarial pertubation.
+
+
+\begin{figure}
+\centering
+ \subfloat[kernel size = 1]{\includegraphics[width=0.32\textwidth]{results/augment_blur_sample/resnet18/1/target_resnet18/adv_examples/ILSVRC2012_val_00000001.png}}\hfill
+ \subfloat[kernel size = 2]{\includegraphics[width=0.32\textwidth]{results/augment_blur_sample/resnet18/2/target_resnet18/adv_examples/ILSVRC2012_val_00000001.png}}\hfill
+ \subfloat[kernel size = 3]{\includegraphics[width=0.32\textwidth]{results/augment_blur_sample/resnet18/3/target_resnet18/adv_examples/ILSVRC2012_val_00000001.png}}
+
+ \subfloat[kernel size = 4]{\includegraphics[width=0.32\textwidth]{results/augment_blur_sample/resnet18/4/target_resnet18/adv_examples/ILSVRC2012_val_00000001.png}}\hfill
+ \subfloat[kernel size = 5]{\includegraphics[width=0.32\textwidth]{results/augment_blur_sample/resnet18/5/target_resnet18/adv_examples/ILSVRC2012_val_00000001.png}}\hfill
+ \subfloat[kernel size = 7]{\includegraphics[width=0.32\textwidth]{results/augment_blur_sample/resnet18/7/target_resnet18/adv_examples/ILSVRC2012_val_00000001.png}}
+
+ \subfloat[kernel size = 10]{\includegraphics[width=0.32\textwidth]{results/augment_blur_sample/resnet18/10/target_resnet18/adv_examples/ILSVRC2012_val_00000001.png}}\hfill
+ \subfloat[kernel size = 15]{\includegraphics[width=0.32\textwidth]{results/augment_blur_sample/resnet18/15/target_resnet18/adv_examples/ILSVRC2012_val_00000001.png}}\hfill
+ \subfloat[kernel size = 20]{\includegraphics[width=0.32\textwidth]{results/augment_blur_sample/resnet18/20/target_resnet18/adv_examples/ILSVRC2012_val_00000001.png}}
+
+
+\caption{Effect of box-blur kernel size on the frequency of adversarial pertubation}
+\label{fig:apgd_box_blur_sample}
+\end{figure}
+
 
 \subsubsection{Elastic transformation}
 We have also tried to regularize our optimization with stochastic elastic-transformation (figure \ref{fig:apgd_elastic}). This particular transformation had proved to be a powerful regularization element, which brought the transferability from ResNet-18 to EfficientNet-b0-advtrain to 54.0\%.
