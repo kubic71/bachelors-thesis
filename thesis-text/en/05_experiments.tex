@@ -458,6 +458,7 @@ Figure \ref{fig:apgd_box_blur_sample} shows the effect of increasing the kernel 
 
 
 \subsubsection{Elastic transformation}
+\label{elastic_transform}
 \cite{qiu2020fencebox} compare various stochastic image augmentations as an adversarial attack defense. If we turn this around, by making the crafted adversarial images robust to those defensive augmentations, we might achive better transferability to models with such stochastic defenses. On top of that, our adversarial images will be robust to common image manipulations, which might easily happen if the preprocessing of the target model differs from the surrogate.
 
 This robustness might be quite important, as we have no information about the image preprocessing that happens in cloud target.
@@ -525,19 +526,58 @@ Out of curiosity we also ran these sample images against Google Vision (figure \
 
 
 \subsubsection{Affine transformation}
+Another augmentation defense coming on top in \cite{qiu2020fencebox} was random affine transformation. Kornia library offers this type of augmentation as well so we ran a few experiments to compare it to the elastic augmentation in \ref{elastic_transform}. 
+
+Unfortunately, the Kornia's affine augmentation has many tunable parameters, all of which are given as ranges, that are uniformly sampled from.
+\begin{itemize}
+    \item scale - the amount of isotropic scaling
+    \item rotation - the range of degrees of rotation
+    \item shift - how much to translate the image 
+    \item shear - the amount of shear in x and y direction
+\end{itemize}
+
 
 \begin{figure}
     \centering
     \includegraphics[width=0.80\textwidth]{transfer_attacks/transfer_heatmap/augment_affine_n_iters_30_eot_iters_10_eps_10.png}
-    \caption{APGD elastic transformation augmentations}
+    \caption{APGD elastic transformation augmentations (TODO - remove the 'deg' param and format the captions better)}
     \label{fig:apgd_affine}
 \end{figure}
 
 
+Figure \ref{fig:apgd_affine} shows an incomplete grid-search over those 4 hyperparameters.
+
+The best configuration turned out to be 30 degree shear and small random shift of 0.2. It even beat the elastic augmentation in its transferability to EfficientNets-b0-advtrain with foolrate of 56.2\%.
+
+This crude experiment shows there is difinitely a large room for improvement. The shear probably substitutes the elastic deformation and shift makes sure, that only the important parts of the image are modified, because only a portion of the image is visible after each random translation.
+
+The unreasonable effectiveness of the random shift suggests that Random Sized Padding Affine (RSPA) augmentation (\cite{qiu2020fencebox}) might be worth trying in the future.
+
 \subsubsection{Ensemble}
-TODO:
+To put it all together, we created an ensemble of Wide-ResNet-50-2, EfficientNet-b0 and Squeezenet with equal voting weights as our surrogate. Their scores were combined by summing their output logits. We chose these 3 models because they appear to be complemenary in their transfer performance. We've added the Guassian noise augmentation with $\sigma = 32$, box-blur with kernel size = 2, and the elastic augmentation with $\alpha = 3.2$ to the mix.
+
+The 2 random augmentations in the pipeline meant higher noise in the gradient, so we've also increased the $N_{EoT}$ to 20 and 100 respectively.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.80\textwidth]{transfer_attacks/transfer_heatmap/ensemble_elastic_3.2_noise_32_blur_2.png}
+    \caption{Ensemble with augmentations}
+    \label{fig:ensemble_augment}
+\end{figure}
+
+Figure \ref{fig:ensemble_augment} shows the results, which are all above 90\% the $N_{EoT}=20$ version that compansates for the lower number of $N_{EoT}$ by more APGD iterations. The version with extensive gradient sampling was run only for 16 iterations, which still adds up to more total ensemble queries. The performance difference shouldn't be compared too much, because we were forced to stop the 16-iteration experiment only after 192 validation images.
+
+The attachment \ref{ensemble_sample_images} contains a couple of randomly chosen example adversarial images. Some of them are really creepy (\ref{fig:bane_dog})
 
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.60\textwidth]{ae_samples/bane.png}
+    \caption{Creepy dog with mask looking like Bane from The Dark Knight Rises}
+    \label{fig:bane_dog}
+\end{figure}
+
+\pagebreak
 \section{Transferability evaluation on GVision}
 TODO: just run the images against GVision
 
