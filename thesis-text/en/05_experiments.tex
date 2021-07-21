@@ -127,12 +127,12 @@ To address the particular choice of our model set, we aimed at low model size, s
 We also chose models with the same input size, such that the same dataset preprocessing (\ref{dataset_preprocessing}) could be used for all of them and wouldn't complicate things any further. This decision meant we didn't use the popular Inception-v3 (\cite{szegedy2015rethinking}), which takes inputs of size 299x299 instead of 224x224 of all the other models.
 
 \subsubsection{Inference time}
-In the early days of AdvPipe we had supported only batch sizes of one. We wondered what kind of difference does batch size make in such a memory-limited hardware setting. As we can see in the following figure, having batches much larger than you hardware can handle (ResNet-101, ResNet-152) can result in a sub-par performance when compared to $bs=1$. We think that this slow-down is caused by the frequent re-allocations the Cuda-backend has to make during the forward pass (and also during the backward pass).
+In the beginning, AdvPipe had supported only batch sizes of one. In \ref{fig:inference_time} it can be seen what kind of difference does batch size make on the inference time in such a memory-limited hardware setting. The small batch sizes didn't slow down the running times more than twice. We can also see in the figure that having batches much larger than you hardware can handle (ResNet-101, ResNet-152) can result in a sub-par performance when compared to $bs=1$. We think that this slow-down is caused by the frequent re-allocations the Cuda-backend has to make during the forward pass (and also during the backward pass).
 
 \begin{figure}[!htb]
   \includegraphics[width=\linewidth]{inference_time/inference_resnet_and_efficient_net.png}
 \caption{ResNet vs EfficientNet inference}
-\label{fig:fgsm_margin}
+\label{fig:inference_time}
 \end{figure}
 
 
@@ -432,7 +432,7 @@ In this experiment we have tested the effect of box-blur on adeversarial-image t
     \label{fig:apgd_box_blur}
 \end{figure}
 
-We can see in figure \ref{fig:apgd_box_blur} that a small amout of blur is beneficial, but larger amounts are essentially strong low-pass filters that introduce large surrogate bias. The large blur makes the surrogate a much weaker classifier, which is quite easy to fool at train-time, but when the blurring is removed from the preprocessing pipeline at test-time, the model becomes stronger again and isn't fooled by the adversarial image produced on the weak surrogate.
+We can see in figure \ref{fig:apgd_box_blur} that a small amout of blur is beneficial, but larger amounts are essentially strong low-pass filters that introduce large surrogate bias. Large blur makes the surrogate a much weaker classifier, which is quite easy to fool at train-time, but when the blurring is removed from the preprocessing pipeline at test-time, the model becomes stronger again and isn't fooled by the adversarial image produced on the weak surrogate.
 
 Figure \ref{fig:apgd_box_blur_sample} shows the effect of increasing the kernel size of the box-blur on the frequency of the adversarial pertubation. Bigger blurring kernels lower the pertubation frequency, because the high-freqency information cannot pass through the blur averaging effectively.
 
@@ -463,7 +463,7 @@ Figure \ref{fig:apgd_box_blur_sample} shows the effect of increasing the kernel 
 
 This robustness might be quite important, as we have no information about the image preprocessing that happens in cloud target.
 
-Inspired by the defensive augmentations suggested by this the paper, we've added stochastic elastic transformarmation to our augmentation toolbox, because it was one of the best defensive augmentations when attacked by iterative FGSM. Fortunately, the combination of APGD together with gradient averaging was enough to break this surrogate defense and in turn produce robust adversarial images that really transfer.
+Inspired by the defensive augmentations suggested by this the paper, we've added stochastic elastic transformarmation to our augmentation toolbox, because it was one of the best defensive augmentations when attacked by iterative FGSM. But the combination of APGD together with gradient averaging was enough to break this surrogate defense and in turn produce robust adversarial images that really transfer.
 
 Figure \ref{fig:apgd_elastic} proves the potential of this augmentation, as it brought the transferability from ResNet-18 to EfficientNet-b0-advtrain to 54.0\%, which is a significant improvement over the baseline 8\%. It also outperformed by a significantly margin the 22\% achieved by gaussian noise and the 16\% achieved by box-blur.
 
@@ -526,9 +526,10 @@ Out of curiosity we also ran these sample images against Google Vision (figure \
 
 
 \subsubsection{Affine transformation}
-Another augmentation defense coming on top in \cite{qiu2020fencebox} was random affine transformation. Kornia library offers this type of augmentation as well so we ran a few experiments to compare it to the elastic augmentation in \ref{elastic_transform}. 
+\label{affine_transform}
+Another augmentation defense coming on top in \cite{qiu2020fencebox} was a random affine transformation. Kornia library offers this type of augmentation as well so we ran a few experiments to compare it to the elastic augmentation in \ref{elastic_transform}. 
 
-Unfortunately, the Kornia's affine augmentation has many tunable parameters, all of which are given as ranges, that are uniformly sampled from.
+The Kornia's affine augmentation has many tunable parameters, all of which are given as ranges, that are uniformly sampled from.
 \begin{itemize}
     \item scale - the amount of isotropic scaling
     \item rotation - the range of degrees of rotation
@@ -545,15 +546,16 @@ Unfortunately, the Kornia's affine augmentation has many tunable parameters, all
 \end{figure}
 
 
-Figure \ref{fig:apgd_affine} shows an incomplete grid-search over those 4 hyperparameters.
+These 4 parameters make the hyperparameter search space larger than what was the case for previous augmentation. Figure \ref{fig:apgd_affine} shows an incomplete grid-search over those 4 hyperparameters.
 
 The best configuration turned out to be 30 degree shear and small random shift of 0.2. It even beat the elastic augmentation in its transferability to EfficientNets-b0-advtrain with foolrate of 56.2\%.
 
-This crude experiment shows there is difinitely a large room for improvement. The shear probably substitutes the elastic deformation and shift makes sure, that only the important parts of the image are modified, because only a portion of the image is visible after each random translation.
+This crude experiment shows there is difinitely a large room for improvement. The shear probably substitutes the elastic deformation and shift makes sure that only the important parts of the image are modified, because only a portion of the image is visible after each random translation.
 
 The unreasonable effectiveness of the random shift suggests that Random Sized Padding Affine (RSPA) augmentation (\cite{qiu2020fencebox}) might be worth trying in the future.
 
 \subsubsection{Ensemble}
+\label{ensemble}
 To put it all together, we created an ensemble of Wide-ResNet-50-2, EfficientNet-b0 and Squeezenet with equal voting weights as our surrogate. Their scores were combined by summing their output logits. We chose these 3 models because they appear to be complemenary in their transfer performance. We've added the Guassian noise augmentation with $\sigma = 32$, box-blur with kernel size = 2, and the elastic augmentation with $\alpha = 3.2$ to the mix.
 
 The 2 random augmentations in the pipeline meant higher noise in the gradient, so we've also increased the $N_{EoT}$ to 20 and 100 respectively.
@@ -569,15 +571,15 @@ Figure \ref{fig:ensemble_augment} shows the results, which are all above 90\% th
 
 The attachment \ref{ensemble_sample_images} contains a couple of randomly chosen example adversarial images. Some of them are really creepy (\ref{fig:bane_dog})
 
-
 \begin{figure}
     \centering
     \includegraphics[width=0.60\textwidth]{ae_samples/bane.png}
-    \caption{Creepy dog with mask looking like Bane from The Dark Knight Rises}
+    \caption{"Oh, you think darkness is your ally. But you merely adopted the dark; I was born in it, molded by it." - The Dark Knight Rises}
     \label{fig:bane_dog}
 \end{figure}
-
 \pagebreak
+
+
 \section{Transferability evaluation on GVision}
 TODO: just run the images against GVision
 
