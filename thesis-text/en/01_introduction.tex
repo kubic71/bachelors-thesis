@@ -1,4 +1,5 @@
 \chapter{Introduction}
+\label{introduction}
 \addcontentsline{toc}{chapter}{Introduction}
 
 \section{The rise of artificial neural networks}
@@ -6,7 +7,7 @@ In recent years there has been an enormous surge in applications of artificial i
 
 Artificial neural networks inspired by their biological analog had been known and researched for a long time. Even though they enjoyed much enthusiasm initially, there has been a time period (called an "AI winter" by some) when they had been neglected as an unpromising direction towards general intelligence. More classical approaches like SVM and rule-based AI systems showed better performance and computational efficiency on AI benchmarks of the time. 
 
-What changed the game has been the available computational power that came with Moore's law and the usage of GPUs, mainly their parallel nature in accelerating matrix multiplication operations that neural networks use heavily.
+What changed the game has been the available computational power that came with Moore's law and the usage of GPUs, mainly their parallel nature in accelerating matrix multiplication operations, that neural networks use heavily.
 
 Another factor that helped the rise of neural networks has been the availability of large datasets like ImageNet, which contains 1,281,167 images for training and 50,000 images for validation organized in 1,000 categories. 
 
@@ -26,9 +27,9 @@ This vulnerability of neural networks has led to a cat-and-mouse game of various
 
 Neural networks can be attacked at different stages:
 \begin{itemize}
-    \item training
-    \item testing
-    \item deployment
+    \item training,
+    \item testing,
+    \item deployment.
 \end{itemize}
 
 Training attacks exploit training dataset manipulation, sometimes called dataset poisoning, to change the behavior of the resulting trained network.
@@ -37,11 +38,35 @@ Testing attacks do not modify trained neural network, but often use the knowledg
 
 Deployment attacks deal with real black-box AI systems, where the exact details of the system are usually hidden from the attacker. Nevertheless, partly because similar neural network architectures are used in the same classes of problems, some vulnerabilities in testing scenarios can still be exploited in deployment, even though the exact network parameters, architecture, and output are unknown to the attacker.
 
-The purpose of this thesis is to explore the applicability of certain classes of testing attacks on real-world deployed AI systems. For simplicity, many kinds of SOTA adversarial attacks have only been explored in the testing regime but have not been applied to truly black-box systems. 
+The purpose of this thesis is to explore the applicability of certain classes of testing attacks on real-world deployed AI systems. For simplicity, many kinds of State-of-the-art (SoTA) adversarial attacks have only been explored in the testing regime but have not been applied to truly black-box systems. 
 
-The main aim of the thesis will be to test different types of testing attacks on AI SaaS providers like Google Vision API, Amazon recognition, or Clarify. Understandably, attacking an unknown system will be more challenging than attacking a known neural network in the testing stage. We will try to measure this attack difficulty increase. This information could prove helpful in selecting the most promising attack to a specific situation. 
+The main aim of the thesis will be to test different types of testing attacks against Google Cloud Vision API, which provides its image labeling capabilities as Software-as-a-service (SaaS). Understandably, attacking an unknown system will be more challenging than attacking a known neural network in the testing stage. We will try to measure this attack difficulty increase. This information could prove helpful in selecting the most promising attack to a specific situation. 
 
-Many SOTA testing attacks were not designed to attack specific deployed systems, so some attacks will need to be slightly changed to be used. We will explore different ways to modify existing attacks and evaluate them.
+Many SoTA testing attacks were not designed to attack specific deployed systems, so some attacks will need to be slightly changed to be used. We will explore different ways to modify existing attacks and evaluate them.
 
-If some of those services are proven to be vulnerable, this would have a massive impact on all downstream applications using those SaaS APIs. For instance, content moderation mechanisms, which rely mainly on automatic detection, could be circumvented.
+If service like Google Cloud Vision is found to be vulnerable, it's very likely that other SaaS providers like Amazon Rekognition or Clarifai would be as well. This fact could have a massive impact on all downstream applications using those SaaS APIs. For instance, content moderation mechanisms, which rely mainly on automatic detection, could be circumvented. \\
 
+
+The structure of this work is as follows:
+
+\begin{itemize}
+    \item \ref{preliminaries} Preliminaries
+    \item \ref{related_work} Related Work
+    \item \ref{our_approach} Our approach
+    \item \ref{experiments_chap} Experiments
+    \item \ref{future_work} Future Work
+    \item \ref{conclusion} Conclusion
+
+\end{itemize}
+
+Preliminaries \ref{preliminaries} explain the most important concepts of machine learning, deep learning and introduce the phenomenon of adversarial attacks.
+
+Related work section \ref{related_work} aims to briefly review the current progress made in the whitebox and blackbox adversarial attacks that is relevant to our goal.
+
+In Our approach \ref{our_approach} we put forward the motivations behind our solution and experiments. We suggest possible ways of combining current whitebox and blackbox attack methods with a goal of ultimately targeting the cloud blackbox classifier.
+
+In \ref{experiments_chap} we present the detailed results of the conducted experiments, which are motivated in \ref{our_approach}. We focus mostly on transferability of adversarial images, which will be explained in \ref{related_work}, as it is one of the best ways to significantly reduce queries to the attacked target and increas the chances of staying undetected in a real-world scenario.
+
+In Future work \ref{future_work} we propose a handful of potentially promising directions to explore in the future based on our results from \ref{experiments_chap}.
+
+Finally, in Conclusion \ref{conclusion} we sum up our contributions and evaluate the degree to which we have been able to fulfill our goals stated in this chapter \ref{introduction}
