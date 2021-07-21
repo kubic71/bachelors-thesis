@@ -95,9 +95,8 @@ This observation made us focus more on the $l_2$ bounded attacks in later local 
 To get an idea how SquareAttack would fare against some of our local models, we ran it in low query mode with 200 queries against ResNet-18 and ResNet-50, and with 300 queries against EfficientNet-b0 and it's adversarially trained counterpart. To make the job a bit easier for the SquareAttack, we relaxed the $l_2$ pertubation to 20.
 
 \begin{figure}[!htb]
-\centering
  \subfloat[SquareAttack L2 on ResNets]{\includegraphics[width=\linewidth]{n_queries_needed/square_attack_l2_eps_20.png}}\hfill
- \subfloat[SquareAttack L2 on EfficientNets]{\includegraphics[width=\linewidth]{n_queries_needed/square_attack_efficientnet_vs_efficientnet_advtrain.png}}\hfill
+ \subfloat[SquareAttack L2 on EfficientNets]{\includegraphics[width=1.12\linewidth]{n_queries_needed/square_attack_efficientnet_vs_efficientnet_advtrain.png}}\hfill
 \caption{SquareAttack L2 on local models}
 \end{figure}
 
@@ -189,9 +188,8 @@ However to speed up the experiments a bit we manually resized and center croped 
  \hline
  Wide-ResNet-50-2 & 1.6\% \\
  \hline
-\end{tabular}
+\end{tabular} \\ \\
 
-\paragraph{}
 We can see that the models used are pretty good at distinguishing between animate and inanimate things. Any differances in the accuracy (maybe with the exception of Squeezenet) are probably due to the small test set size. When we evaluate 500 test images and get 1\% foolrate the 99\% binomial confidence interval is (0.216\%, 2.804\%)
 
 \subsection{Whitebox attack algorithms}
@@ -366,7 +364,7 @@ We confirm this observation in our experiments. In figure (\ref{fig:apgd_noise_s
  \subfloat[$\sigma = 28$]{\includegraphics[width=0.32\textwidth]{results/augment_noise_sample/resnet18/28/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
  \subfloat[$\sigma = 32$]{\includegraphics[width=0.32\textwidth]{results/augment_noise_sample/resnet18/32/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}
 
-\caption{Guassian noise dog augmentation sample}
+\caption{Guassian noise augmentation ResNet-18}
 \label{fig:apgd_noise_smooth_gradient}
 \end{figure}
 
@@ -460,10 +458,17 @@ Figure \ref{fig:apgd_box_blur_sample} shows the effect of increasing the kernel 
 
 
 \subsubsection{Elastic transformation}
-We have also tried to regularize our optimization with stochastic elastic-transformation (figure \ref{fig:apgd_elastic}). This particular transformation had proved to be a powerful regularization element, which brought the transferability from ResNet-18 to EfficientNet-b0-advtrain to 54.0\%.
+\cite{qiu2020fencebox} compare various stochastic image augmentations as an adversarial attack defense. If we turn this around, by making the crafted adversarial images robust to those defensive augmentations, we might achive better transferability to models with such stochastic defenses. On top of that, our adversarial images will be robust to common image manipulations, which might easily happen if the preprocessing of the target model differs from the surrogate.
+
+This robustness might be quite important, as we have no information about the image preprocessing that happens in cloud target.
+
+Inspired by the defensive augmentations suggested by this the paper, we've added stochastic elastic transformarmation to our augmentation toolbox, because it was one of the best defensive augmentations when attacked by iterative FGSM. Fortunately, the combination of APGD together with gradient averaging was enough to break this surrogate defense and in turn produce robust adversarial images that really transfer.
+
+Figure \ref{fig:apgd_elastic} proves the potential of this augmentation, as it brought the transferability from ResNet-18 to EfficientNet-b0-advtrain to 54.0\%, which is a significant improvement over the baseline 8\%. It also outperformed by a significantly margin the 22\% achieved by gaussian noise and the 16\% achieved by box-blur.
+
+One disadvantage of it is that due to its non-linearity, the forward and backward pass is really expensive.
 
 
-TODO: describe in more detail what exactly it's the elastic transform...
 \begin{figure}
     \centering
     \includegraphics[width=0.80\textwidth]{transfer_attacks/transfer_heatmap/augment_elastic_apgd_l2_margin_n_iters_25_eot_iters_10_eps_10.png}
@@ -471,13 +476,61 @@ TODO: describe in more detail what exactly it's the elastic transform...
     \label{fig:apgd_elastic}
 \end{figure}
 
+
+On figure \ref{fig:apgd_elastic_sample} we can see similar things happening as in \ref{fig:apgd_noise_smooth_gradient}. With stronger elastic deformations the optimization cannot just put its decieving pertubations anywhere. Noise-like pertubations produced by the baseline on ResNet-18 are no longer an option. Their highly-tuned overfit nature makes them fragile to small image manipulations. The strong elastic regularization forces the APGD to change or somehow cover the semantic information in the image instead. In this case this means focusing on the dog instead of the wall and grass behing. The pertubations also seem to be more spatially consistent. Another thing to point out is how diverse are the types of patterns created at different levels of distortion.
+
+\begin{figure}
+\centering
+ \subfloat[$\alpha = 0$]{\includegraphics[width=0.32\textwidth]{results/apgd_augment_elastic_sample/surrogate_resnet18/0/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+ \subfloat[$\alpha = 0.2$]{\includegraphics[width=0.32\textwidth]{results/apgd_augment_elastic_sample/surrogate_resnet18/0.2/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+ \subfloat[$\alpha = 0.4$]{\includegraphics[width=0.32\textwidth]{results/apgd_augment_elastic_sample/surrogate_resnet18/0.4/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}
+
+ \subfloat[$\alpha = 0.8$]{\includegraphics[width=0.32\textwidth]{results/apgd_augment_elastic_sample/surrogate_resnet18/0.8/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+ \subfloat[$\alpha = 1.6$]{\includegraphics[width=0.32\textwidth]{results/apgd_augment_elastic_sample/surrogate_resnet18/1.6/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+ \subfloat[$\alpha = 2.4$]{\includegraphics[width=0.32\textwidth]{results/apgd_augment_elastic_sample/surrogate_resnet18/2.4/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}
+
+ \subfloat[$\alpha = 3.2$]{\includegraphics[width=0.32\textwidth]{results/apgd_augment_elastic_sample/surrogate_resnet18/3.2/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+ \subfloat[$\alpha = 4.0$]{\includegraphics[width=0.32\textwidth]{results/apgd_augment_elastic_sample/surrogate_resnet18/4.0/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+ \subfloat[$\alpha = 6.4$]{\includegraphics[width=0.32\textwidth]{results/apgd_augment_elastic_sample/surrogate_resnet18/6.4/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}
+
+ \subfloat[$\alpha = 9$]{\includegraphics[width=0.32\textwidth]{results/apgd_augment_elastic_sample/surrogate_resnet18/9/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+ \subfloat[$\alpha = 12.8$]{\includegraphics[width=0.32\textwidth]{results/apgd_augment_elastic_sample/surrogate_resnet18/12.8/target_resnet18/adv_examples/ILSVRC2012_val_00000003.png}}\hfill
+\caption{Elastic augmentation ResNet-18}
+\label{fig:apgd_elastic_sample}
+\end{figure}
+
+\begin{figure}
+\centering
+ \subfloat[$\alpha = 0$]{\includegraphics[width=0.32\textwidth]{ae_samples/elastic_dog_gvision/0.0.png}}\hfill
+ \subfloat[$\alpha = 0.2$]{\includegraphics[width=0.32\textwidth]{ae_samples/elastic_dog_gvision/0.2.png}}\hfill
+ \subfloat[$\alpha = 0.4$]{\includegraphics[width=0.32\textwidth]{ae_samples/elastic_dog_gvision/0.4.png}}
+
+ \subfloat[$\alpha = 0.8$]{\includegraphics[width=0.32\textwidth]{ae_samples/elastic_dog_gvision/0.8.png}}\hfill
+ \subfloat[$\alpha = 1.6$]{\includegraphics[width=0.32\textwidth]{ae_samples/elastic_dog_gvision/1.6.png}}\hfill
+ \subfloat[$\alpha = 2.4$]{\includegraphics[width=0.32\textwidth]{ae_samples/elastic_dog_gvision/2.4.png}}
+
+ \subfloat[$\alpha = 3.2$]{\includegraphics[width=0.32\textwidth]{ae_samples/elastic_dog_gvision/3.2.png}}\hfill
+ \subfloat[$\alpha = 4.0$]{\includegraphics[width=0.32\textwidth]{ae_samples/elastic_dog_gvision/4.0.png}}\hfill
+ \subfloat[$\alpha = 6.4$]{\includegraphics[width=0.32\textwidth]{ae_samples/elastic_dog_gvision/6.4.png}}
+
+ \subfloat[$\alpha = 9$]{\includegraphics[width=0.32\textwidth]{ae_samples/elastic_dog_gvision/9.0.png}}\hfill
+ \subfloat[$\alpha = 12.8$]{\includegraphics[width=0.32\textwidth]{ae_samples/elastic_dog_gvision/12.8.png}}
+
+\caption{Elastic dog from ResNet-18 to GVision}
+\label{fig:elastic_dog_gvision}
+\end{figure}
+
+
+Out of curiosity we also ran these sample images against Google Vision (figure \ref{fig:elastic_dog_gvision}). To our surprise Google Vision already makes some mistakes, even when using such a weak ResNet-18 surrogate. All successfully misclasified examples had their pertubations focused on the head of the dog, which highlights the importance of focusing on the important semantic features in the image.
+
+
 \subsubsection{Affine transformation}
 
 \begin{figure}
     \centering
     \includegraphics[width=0.80\textwidth]{transfer_attacks/transfer_heatmap/augment_affine_n_iters_30_eot_iters_10_eps_10.png}
     \caption{APGD elastic transformation augmentations}
-    \label{fig:apgd_elastic}
+    \label{fig:apgd_affine}
 \end{figure}
 
 
