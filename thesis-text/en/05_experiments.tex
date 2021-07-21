@@ -101,7 +101,7 @@ To get an idea how SquareAttack would fare against some of our local models, we 
 \caption{SquareAttack L2 on local models}
 \end{figure}
 
-What is maybe a little bit surprising is that the adversarial training of EfficientNet-b0 makes no difference when attacked by blackbox SquareAttack. This may be in part attributed to the fact, that the adversarial training defence primarily flattens out the gradients around training input data (\cite{Yu2018TowardsRT}), but doesn't provide any robustness guarantees (\cite{Kolter2018ProvableDA}). As the blackbox SquareAttack doesn't use the gradient information explicitly, it may not be as affected by the adversarial training defense as the whitebox graidient attacks.
+What is maybe a little bit surprising is that the adversarial training of EfficientNet-b0 makes no difference when attacked by blackbox SquareAttack. This may be in part attributed to the fact, that the adversarial training defence primarily flattens out the gradients around training input data (\cite{Yu2018TowardsRT}), but doesn't provide any robustness guarantees (\cite{Kolter2018ProvableDA}). As the blackbox SquareAttack doesn't use the gradient information explicitly, it may not be as affected by the adversarial training defense as the whitebox gradient attacks.
 
 
 \section{Local transferability experiments}
@@ -205,8 +205,7 @@ In the whitebox setting we tried the following whitebox optimization algorithms:
 
 
 \subsubsection{Fast gradient sign method (FGSM)}
-This algorithm needs no introduction.
-It is basically one-step gradient ascent on the sign of the cross-entropy loss $J(x)$, which would be normally used to train the classifier.
+Fast gradient sign method is basically one-step gradient ascent on the sign of the cross-entropy loss $J(x)$, which would be normally used to train the classifier.
 
 $$x_{adv} = clip(x + \epsilon \cdot sign(\nabla J(x)))$$
 
@@ -350,7 +349,7 @@ $$\nabla J_{\sigma}(x) = \mathbb{E}_{\xi \sim \mathcal{N}(0, I)}[\nabla J(x + \s
 In their experiments they visualize the saliency map of the gradient $\nabla J_{\sigma}(x)$ with increasing values of $\sigma$.
 They go on to show how increasing the values of $\sigma$ filters out the noise in the gradient significantly while still capturing the most significant semantic information. 
 
-We confirm this observation in our experiments. In figure (\ref{fig:apgd_noise_smooth_gradient}) we demonstrate how increasing the $\sigma$ compels the algorithm to focus only on a smaller part of the image. It cannot afford to spread the pertubation around the image uniformly, because low-intensity signal is destroyed by the Guassian noise. It must produce a pertubation in a smaller area but with higher intensity, to keep the pertubation's signal-to-noise ratio high.
+We confirm this observation in our experiments. In figure (\ref{fig:apgd_noise_smooth_gradient}) we demonstrate how increasing the $\sigma$ compels the optimization to focus only on a smaller part of the image. It cannot afford to spread the pertubation around the image uniformly, because low-intensity signal is destroyed by the Guassian noise. It must produce a pertubation in a smaller area but with higher intensity, to keep the pertubation's signal-to-noise ratio high.
 
 
 \begin{figure}
@@ -372,15 +371,27 @@ We confirm this observation in our experiments. In figure (\ref{fig:apgd_noise_s
 \end{figure}
 
 
-Figure \ref{fig:apgd_noise_augment} shows that in the low iteration APGD regime the optimal Guassian-noise augmentation std is somewhere near $\sigma=18$. 
+Because the surrogate is stochastic and during each forward pass applies a random transformation $t \sim T$, we actually optimize the expected surrogate loss in a Expectation over Transformation (EoT - \cite{athalye2018synthesizing}) style:
 
+$$J_{T}(x) = \mathbb{E}_{t \sim T}[J(t(x))]$$
+$$\nabla J_{T}(x) = \mathbb{E}_{t \sim T}[\nabla J(t(x))]$$
 
-Because the surrogate is stochastic and during each forward pass applies a different transformation $t \sim T$, we estimate estimate the true gradient in a Expectation over Transformation (EoT - \cite{athalye2018synthesizing}) style:
+We estimate the true $\nabla J_T(x)$ using the sample mean estimator.
 
+$$\widehat{\nabla} J_{T}(x) = \frac{1}{N_{EoT}} \sum_{i=1}^{N_{EoT}} \nabla J(t(x))$$
 
-It also shows that given the same whitebox query budget, it pays off to get a better quality gradient estimate.
+The $N_{EoT}$ is somewhat analogous to a batch size in SGD neural net training.
 
-This is in agreement with \cite{Wu2020TowardsUA}, who find the distortion level $\sigma = 15$ to be performing the best.
+In figure \ref{fig:apgd_noise_augment} explore, whether this iterated sampling is even necessary, or whether the noise in the gradient could be handled by the APGD. We set a constant query bugdet of 250 and run the APGD in two configurations: $N_{EoT} = 1$ and $N_{EoT} = 10$. The results suggest that sampling the gradient only once is not enough, but it's hard to say what's the optimal $N_{EoT}$ given a constant total query budget. 
+
+Intuitively, noisier gradients need more $N_{EoT}$ samples. If we take first order Taylor approximation of the loss - $J(x + \epsilon) \approx J(x) + \epsilon \nabla J(x)$, then:
+$$std(\nabla J(x + \sigma \mathcal{N}(0, I))) = std(\nabla J(x) + \sigma  \mathcal{N}(0, I) \nabla^2 J(x)) = \sigma \nabla^2 J(x) = \sigma c$$
+
+The standard deviation of the sample mean of the gradient would be:
+$$std(\widehat{\nabla} J_{T}(x)) = std(\frac{1}{N_{EoT}} \sum_{i=1}^{N_{EoT}} \nabla J(x + \sigma \mathcal{N}(0, I)))=$$
+$$ = \frac{1}{N_{EoT}} \sqrt{N_{EoT}} std(\nabla J(x + \sigma \mathcal{N}(0, I))) = \frac{1}{\sqrt{N_{EoT}}} \sigma c $$
+
+So to keep the gradient estimate noisiness constant, we would need to scale $N_{EoT}$ quadratically with the gaussian noise's $\sigma$.
 
 \begin{figure}
 \centering
@@ -390,6 +401,28 @@ This is in agreement with \cite{Wu2020TowardsUA}, who find the distortion level 
 \caption{Guassian noise augmentation}
 \label{fig:apgd_noise_augment}
 \end{figure}
+
+
+Figure \ref{fig:apgd_noise_augment} also shows that when the total query budget is set at 250, the optimal Guassian-noise augmentation $\sigma$ is somewhere near $\sigma=18$. 
+
+
+
+This is in agreement with \cite{Wu2020TowardsUA}, where they find the distortion level $\sigma = 15$ to be performing the best.
+
+
+To explore how much the additional gradient sampling helps, we have set $\sigma$ to an excessive $\sigma=35$ and ran experiments with $N_{EoT} \in \{1, 3, 10, 30, 100\}$.
+
+Figure \ref{fig:noise_eot_iter} shows the foolrate steadily increasing up to $N_{EoT} = 100$. It is a reminder that we shouldn't underestimate the EoT gradient sampling when using very noisy stochastic augmentations, or when stacking severeal stochastic augmentations in the preprocessing pipeline of our surrogates, in which case the gradient noise is multiplied at each stage.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.80\textwidth]{transfer_attacks/transfer_heatmap/noise_eot_iter_exp_resnet18.png}
+    \caption{The effect of $N_{EoT}$ in noisy gradient situation}
+    \label{fig:noise_eot_iter}
+\end{figure}
+
+
 
 \subsubsection{Box-blur}
 In this experiment we have tested the effect of box-blur on adeversarial-image transferability. Box-blur augmentation applies uniform normalized convolution kernel of size $x$ over the input image. 
@@ -403,7 +436,7 @@ In this experiment we have tested the effect of box-blur on adeversarial-image t
 
 We can see in figure \ref{fig:apgd_box_blur} that a small amout of blur is beneficial, but larger amounts are essentially strong low-pass filters that introduce large surrogate bias. The large blur makes the surrogate a much weaker classifier, which is quite easy to fool at train-time, but when the blurring is removed from the preprocessing pipeline at test-time, the model becomes stronger again and isn't fooled by the adversarial image produced on the weak surrogate.
 
-Figure \ref{fig:apgd_box_blur_sample} shows the effect of increasing the kernel size of the box-blur on the frequency of the adversarial pertubation.
+Figure \ref{fig:apgd_box_blur_sample} shows the effect of increasing the kernel size of the box-blur on the frequency of the adversarial pertubation. Bigger blurring kernels lower the pertubation frequency, because the high-freqency information cannot pass through the blur averaging effectively.
 
 
 \begin{figure}
