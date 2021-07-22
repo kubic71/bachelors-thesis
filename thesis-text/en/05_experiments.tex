@@ -2,7 +2,7 @@
 \label{experiments_chap}
 
 \section{Blackbox PoC on Google Cloud Vision API}
-Here we go into more technical details about previously mentioned blackbox attacks we initially tried.
+Here we show the attack results of the previously mentioned blackbox attacks we initially tried running against Google Cloud Vision.
 
 \begin{itemize}
     \item TREMBA
@@ -42,14 +42,50 @@ Here's how \href{https://cloud.google.com/vision}{Google Cloud Vision API} class
 \label{fig:cat_shark_gvision_baseline}
 \end{figure}
 
+
 \subsection{TREMBA}
+\label{tremba_poc}
+
+
+\cite{Huang2020BlackBoxAA}
+
 
 \subsection{RayS}
+\label{rays_poc}
+
+RayS attack (\cite{Chen2020RaySAR}) is a hard-label attack, which means it uses only a binary information to guide its pertubation search. The fact that it doesn't use the continuos loss from GVision certainly makes it less query-efficient. The pertubations are much more visible compared to the other attacks. The only thing we can tweak is the binary objective. The binary objective we use is that the correct label (cat in this example) cannot appear in the top-k result labels. In figures \ref{fig:rays_results_cat} and \ref{fig:rays_results_shark} we show the effect of different $k$ on the size of the pertubation.
+
+
+\begin{figure}
+\centering
+ \subfloat[$k = \infty$]{\includegraphics[width=0.6\textwidth]{ae_samples/rays_cat_0.1757.png}}\hfill
+ \subfloat[$k = 5$]{\includegraphics[width=0.6\textwidth]{ae_samples/rays_cat_0.121.png}}\hfill
+ \subfloat[$k = 1$]{\includegraphics[width=0.6\textwidth]{ae_samples/rays_cat_0.0666.png}}
+
+\caption{RayS GVision cat results}
+\label{fig:rays_results_cat}
+\end{figure}
+
+
+\begin{figure}
+\centering
+ \subfloat[$k = 5$]{\includegraphics[width=0.6\textwidth]{ae_samples/rays_shart_top5.png}}\hfill
+ \subfloat[$k = 1$]{\includegraphics[width=0.6\textwidth]{ae_samples/rays_shart_top1.png}}
+
+\caption{RayS GVision shark results}
+\label{fig:rays_results_shark}
+\end{figure}
+
+\subsection{Sparse-RS}
+\label{rays_poc}
 This one is hard label attack and doesn't use the continuos loss from GVision.
+\cite{Croce2020SparseRSAV}
+
 
 \subsection{SquareAttack}
+\label{square_poc}
 Because of high query intensity, we have only tested the "cat" sample image.
-
+\cite{Andriushchenko2020SquareAA}
 
 \subsubsection{SquareAttack L2}
 \begin{figure}[!htb]
