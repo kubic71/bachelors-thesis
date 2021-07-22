@@ -595,7 +595,7 @@ As the objective used to guide the whitebox optimization doesn't illustrate prop
 
 In figure \ref{fig:wordcloud_baseline} and \ref{fig:wordcloud_ensemble} we use a wordcloud visualization to show how the top-1 label assigned by the Google Cloud Vision changes when the ImageNet organism validation images are pertubed by our augmented ensemble transfer attack.
 
-As we can see, the cheapest option for the attack is to make the prevailing dogs nd birds look like a "Plant". This is probably caused by the fact that animal images are often taken in a nutural environment with the "Plants" often being a part of the original image. The "Plant" semantic often appears in the clean image already and is thus the easiest category to target. The ImageNet dataset doesn't contain almost any plant species, so the whitebox optimization often doesn't have an any problems of making the adversarial images look like some kind of a plant species.
+As we can see, the cheapest option for the attack is to make the prevailing dogs nd birds look like a "Plant". This is probably caused by the fact that animal images are often taken in a nutural environment with the "Plants" often being a part of the original image. The "Plant" semantics often appears in the clean image already and is thus the easiest category to target. The ImageNet dataset doesn't contain almost any plant species, so the whitebox optimization often doesn't have an any problems of making the adversarial images look like some kind of a plant species.
 
 
 \begin{figure}

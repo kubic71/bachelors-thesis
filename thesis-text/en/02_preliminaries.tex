@@ -3,17 +3,21 @@
 
 In this section we briefly introduce and explain the necessary theoretical background, upon which we build later on.
 
-We first define the concepts of Machine learning (ML) and Deep neural networks (DNNs). We explain, how DNNs can learn patterns from data by using powerful gradient-based stochastic optimization algorithm called Stochastic gradient descent (SGD). Then we talk about a subset of DNNs that perform very well on image data called Convolutional neural networks (CNNs). Finally, we describe the systemic vulnerability of DNNs and we define and explain adversarial attacks and defenses, adversarial examples, adversarial robustness and different adversarial attack threat models. 
+We first define the concepts of Machine learning (ML) and Deep neural networks (DNNs). We explain, how DNNs can learn patterns from data by using powerful gradient-based stochastic optimization algorithm called Stochastic gradient descent (SGD). Then we talk about a subset of DNNs that perform very well on image data called Convolutional neural networks (CNNs).
+
+Finally, we describe the systemic vulnerability of DNNs and define an adversarial attack. Then we explain related terms like adversarial defenses, adversarial examples, adversarial robustness and different adversarial attack threat models and present current state of the field.
 
 
-\section{Machine learning}
+\section{Deep learning basics}
+
+\subsection{Machine learning}
 The topic of machine learning has been introduced many times over in other books and papers. \cite{10.5555/2380985}, \cite{10.5555/1162264} and \cite{Goodfellow-et-al-2016} all provide a comprehensive exposition to the field. Because of the abundance of many different kinds of resources, we don't feel the need to reinvent the wheel and come up with yet another machine learning introduction. 
 
 To put forward the most accepted definition of machine learning, the \cite{10.5555/2380985} lay it as follows: \\
 
 “A computer program is said to learn from experience $E$ with respect to some class of tasks $T$ and performance measure $P$, if its performance at tasks in $T$, as measured by $P$, improves with experience $E$.”
 
-\section{Deep neural networks}
+\subsection{Deep neural networks}
 In our case the "computer program learning from experience" will be in most cases a deep neural network (DNN). We will introduce neural networks only very briefly at a high level as more details can be easily found in \cite{Goodfellow-et-al-2016}.
 
 DNN is in its essence a parametrized mapping $y = f(x;\theta)$, where $x$ are the network inputs, $\theta$ are the parameters and $y$ are the outputs of the network. The "network" in its name comes from the fact that the function computation is described as an evaluation of a computational directed acyclic graph (DAG), the structure of which depends on the exact network architecture.
@@ -24,7 +28,7 @@ The nodes in the DAG are sometimes referred to as "neurons", as there is an anal
 
 The function $f(x;\theta)$ can be often decomposed into several computational steps: $f(x;\theta) = f_n(f_{n-1}(...f_2(f_1(x; \theta_1);\theta_2)...;\theta_{n-1});\theta_n)$. In this decomposition the individual functions $f_i(x_i; \theta_i)$ are called "layers". When the number of layers is large, the network is said to be deep. The successive computations of $f_1(x_1, \theta_1)$, $f_2(x_2, \theta_2)$ up to $f_n(x_n, \theta_n)$ is called a "forward pass".
 
-\section{Network training}
+\subsection{Network training}
 If we have a dataset $D$ consisting of input datapoints $x_i$ and their corresponding $y_i$ values called "labels", we want the neural network function $f(x, \theta)$ to express the relationship between $x_i$ and $y_i$. Depending on the complexity of the network, the parameters $\theta$ can be often set accordingly, such that $f(x_i, \theta) \approx y_i$. This ability to approximate the data well with the right $\theta$ is called "network's capacity". How good is the neural network's approximation is measured by a loss function $\mathcal{L}(D, f(x, \theta))$. Because the network models the relationship between $x_i$ and $y_i$, it is sometimes just called a "model".
 
 The process of training a neural network tries to minimize the training loss by optimizing the parameters. Formally, we search for $\theta$ = $\argmin{\theta}[ \mathcal{L}(D, f(x, \theta))]$.
@@ -33,8 +37,13 @@ This optimization is in practice done iteratively using an algorithm called stoc
 
 The partial derivates $\frac{\partial \mathcal{L}(D, f(x, \theta))}{\partial \theta_i}$ can be efficiently computed by an algorithm called "backpropagation". It is very similar to a forward pass, but starts from the loss and proceeds in the opposite direction of the DAG. It is explained icredibly well in the \href{https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi}{YouTube video series about neural networks} by 3Blue1Brown (Grant Sanderson)
 
-\section{Convolutional neural networks}
+\subsection{Convolutional neural networks}
+Convolutional neural network (CNN) is a network using a special type of layers called "convolutional layers". CNNs were invented more than 20 years ago (\cite{LeCun1998ConvolutionalNF}). They are used mainly when dealling with images, but in general, convolutions are useful for any type of spatial data with translational invarience property. When a network is asked to perform an image classification, it is often desireable for an object in the left part of the image to be detected in the same way as an object on the right side. Convolutional layer achives this by convolving each part of the input image with the same kernel, thus sharing weights and greatly reducing the parameter count.
 
-\section{Adversarial attacks on DNNs}
 
-\section{Threat models}
+\section{Related Work}
+\label{related_work}
+
+\subsection{Adversarial attacks on DNNs}
+
+\subsection{Threat models}
