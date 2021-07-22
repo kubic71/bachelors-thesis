@@ -1,2 +1,27 @@
 \chapter{Conclusion}
 \label{conclusion}
+In this work we investigated the viability of real-world adversarial attack against commercial image classifier Google Cloud Vision API. 
+
+We have conducted several proof of concept experiments with off-the-shelf blackbox attacks, which we had to slightly adjust to fit the variable-lenght output format of the Google Vision classifier. We have analyzed the difficulties of using these iterative blackbox attacks and suggested an alternative pipeline solution AdvPipe to partially mitigate the high query intensity. Our local experiments with organism images from ImageNet validation dataset showed a significant potential of leveraging the transferability property of neural netorks. We have used this gained knowledge to successfully decieve the Google Cloud Vision and paved a new way in this research direction.
+
+
+\section{Future work}
+\label{future_work}
+
+\subsection{Hybrid attacks}
+Explore the combination of transfer-based attack with iterative methods mentioned in \ref{transfer_attack_seeds}
+
+\subsubsection{Finetuning the surrogate during the attack}
+Some blackbox attacks train their surrogates to mimick the outputs of a target blackbox. The way this is usually done is that the target is queried multiple times with synthetic data and the outputs are collected to form a training set. Surrogates are then trained on this synthetic dataset and as a result their gradient are more alinged with the target. \cite{papernot2017practical}
+
+The problem with this approach is that to clone the target in this way requires way too much queries.
+
+Alternative approach can be to only tune the voting weights in ensemble. This parameter space is orders of magnitude smaller than the space of all model weights. The hope is that this could achive fast ensemble adaptation with only a few queries.
+
+\subsection{Combining augmentations}
+As we have said in \ref{affine_transform}, the particular configuration of the augmentation pipeline definitely isn't optimal, but we simply didn't have enough time to make further experiments. We especially didn't experimented with multiple augmentations stacked on top of each other, which may be a promising direction for the future.
+
+\subsection{Stronger models in the ensemble}
+To keep the local experiments comparable we have sticked to the model selection made in the beginning. That said, the only adversarially robust model in the pool is the EfficientNet-b0-advtrain. It might be interesting to see the difference of having an ensemble of only adversarially trained models for example.
+
+Stronger surrogate could be also achived with the use of technique described in \cite{li2019learning}, where they make up for the low surrogate ensemble diversity by creating a group of dynamically generated "ghost-networks". Similarly to dropout regularization, which can be interpreted as a regularization method creating an always-changing ensemble with randomly dropped feed-forward connections, these "ghost-networks" take this idea a step further. They randomly drop (amongst other connetions) the skip-connections that are frequent in the ResNet style networks, generating diverse ensemble of surrogates on the fly without any additional resource requirements.
