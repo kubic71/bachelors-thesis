@@ -144,30 +144,13 @@ FoolBox (\cite{Rauber2020FoolboxNF}) or AutoAttack (\cite{croce2020reliable}).
 Although they are excellent at testing the robustness of local models, they don't give us the flexibility we need to implement all the pipeline features mentioned previously. They cannot be used without some modification to attack cloud models and their optimization attacks cannot be cooperatively scheduled step by step, which is what would be required for effective multi-attack orchestration.
 
 \section{AdvPipe}
+AdvPipe is a adversarial pipeline framework is implemented in Python 3.8 and uses primarily PyTorch 1.9.0 (\cite{paszke2019pytorch}) and NVIDIA Cuda as the computational backend.
 
-\subsection{The vision}
-Solves all our problems. At least in theory.
+It is meant to provide flexible modular architecture for an easy plug-and-play combination of various attack regimes, attack algorithms and target models.
 
-\subsection{The reality}
-Solves some of our problems. Like 10\%.
+\subsection{AdvPipe source code}
+The implementation is open source and the sources can be found at \href{https://github.com/kubic71/bachelors-thesis}{github.com/kubic71/bachelors-thesis}.
 
-TODO: Make some excuses why you didn't make it in time.
-
-TODO: Make some flowchart of what is actually working.
-
-
-\section{Implementation}
-AdvPipe is implemented in Python 3.8 and uses primarily PyTorch 1.9.0 (\cite{paszke2019pytorch}) and NVIDIA Cuda as the computational backend.
-
-\subsection{Attack regimes}
-\subsubsection{Cooperative iterative regime}
-\subsubsection{Transfer regime}
-\subsubsection{Transfer regime with multiple targets}
-
-
-\subsection{Attack algorithms}
-\subsubsection{Whitebox}
-\subsubsection{Blackbox}
 
 \subsection{Wrapping whitebox and blackbox models}
 All models (cloud, local) are wrapped as PyTorch \codeword{torch.nn.Modules}. This way they can be used in a plug-and-play manner and passed easily to existing attack algorithms or frameworks like FoolBox (\cite{Rauber2020FoolboxNF}). Model outputs are mapped to a 2-D score vector using the mapping discussed in \ref{label_mapping}, which allows us to optimize our custom binary objective.
