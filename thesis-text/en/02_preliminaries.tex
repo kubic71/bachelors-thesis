@@ -86,4 +86,23 @@ In the same year \cite{szegedy2014intriguing} use an L-BFGS optimization algorit
 $$\min \lVert x - x_{adv} \rVert_2^2 \quad \text{s.t.} \quad f(x_{adv}) = t \quad \text{and} \quad x_{adv} \in [0, 1]^m$$
 
 
-In 2014 \cite{goodfellow2015explaining} introduce the Fast gradient sign method (FGSM) which we use in \ref{fgsm_exp}. It involves doing only one backpropagation, so it is very efficient and is often use for an adversarial training. Adversarial training is a method of dynamicaly extending the training dataset by adversarial examples generated on the fly. FGSM is suited for this, because it's fast.
+In 2014 \cite{goodfellow2015explaining} introduced the Fast gradient sign method (FGSM) which we use in \ref{fgsm_exp}. It involves doing only one backpropagation, so it is very efficient and is often use for an adversarial training. Adversarial training is a method of dynamicaly extending the training dataset by adversarial examples generated on the fly. FGSM is suited for this, because it's fast.
+
+In 2015 Jacobian-based saliency map attack (JSMA) is proposed by \cite{papernot2015limitations}.
+
+Various methods trying to reduce the susceptibility of neural networks to adversarial examples are being proposed around this time. These methods are called "adversarial defences". One of those is the the previously mentioned adversarial training. Few others are for example JPG compression, stochastic augmentations, feature distilation etc.
+
+As as attempt to break a specific "distilation defense", \cite{carlini2017evaluating} create their C\&W attack. FGSM and L-BFGS not strong-enough against the distilation defense, because the gradients are orders of magnitude smaller than in the case of an undefended target.
+
+They reframe the optimization problem as:
+$$\min \lVert x - x_{adv} \rVert^2_2 + c \cdot f(x', t) \quad \text{s.t.} \quad x' \in [0, 1]^m \quad \text{where} \quad f(x', t) = (max_{i \neq t} Z(x')_i - Z(x')_t)^+$$
+
+    % - maximizes classification for t and minimizes classification for all other classes
+    % - so called **"margin loss"**
+    % - there are many different ways to define valid loss function, but margin loss seems to work the best (probably)
+%   - only difference in formulation is that L-BFGS  uses **cross-entropy** instead of **margin loss**
+    % - this formulation has a nice property, that when $C(x') = t$, then $f(x', t) = 0$, and the algorithm switches to optimizing only the **distance part of the objective**
+    % - efficient for finding the minimally distorted adversarial example
+% - quite very strong attack, useful for benchmarking
+
+
