@@ -203,6 +203,7 @@ In the whitebox setting we tried the following whitebox optimization algorithms:
 
 
 \subsubsection{Fast gradient sign method (FGSM)}
+\label{fgsm_exp}
 Fast gradient sign method is basically one-step gradient ascent on the sign of the cross-entropy loss $J(x)$, which would be normally used to train the classifier.
 
 $$x_{adv} = clip(x + \epsilon \cdot sign(\nabla J(x)))$$

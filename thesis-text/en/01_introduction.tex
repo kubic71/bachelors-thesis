@@ -40,32 +40,22 @@ Deployment attacks deal with real black-box AI systems, where the exact details 
 
 The purpose of this thesis is to explore the applicability of certain classes of testing attacks on real-world deployed AI systems. For simplicity, many kinds of State-of-the-art (SoTA) adversarial attacks have only been explored in the testing regime but have not been applied to truly black-box systems. 
 
-The main aim of the thesis will be to test different types of testing attacks against Google Cloud Vision API, which provides its image labeling capabilities as Software-as-a-service (SaaS). Understandably, attacking an unknown system will be more challenging than attacking a known neural network in the testing stage. We will try to measure this attack difficulty increase. This information could prove helpful in selecting the most promising attack to a specific situation. 
+The main aim of the thesis will be to test different types of testing attacks against Google Cloud Vision API, which provides its image labeling capabilities as Software-as-a-service (SaaS). Understandably, attacking an unknown system will be more challenging than attacking a known neural network in the testing stage. We will try to compare these two attack scenarios and come up with a reasonable attack performance metric. This information could prove helpful in selecting the most promising attack to a specific situation. 
 
 Many SoTA testing attacks were not designed to attack specific deployed systems, so some attacks will need to be slightly changed to be used. We will explore different ways to modify existing attacks and evaluate them.
 
-If service like Google Cloud Vision is found to be vulnerable, it's very likely that other SaaS providers like Amazon Rekognition or Clarifai would be as well. This fact could have a massive impact on all downstream applications using those SaaS APIs. For instance, content moderation mechanisms, which rely mainly on automatic detection, could be circumvented. \\
+If service like Google Cloud Vision is found to be vulnerable, it's very likely that other SaaS providers like Amazon Rekognition or Clarifai would be as well. This fact could have a massive impact on all downstream applications using those SaaS APIs. For instance, content moderation mechanisms, which rely mainly on automatic detection, could be circumvented.
+
+Finally, a better understanding of the failure modes of current AI systems may help us create better ones in the future. \\
 
 
 The structure of this work is as follows:
 
-\begin{itemize}
-    \item \ref{preliminaries} Preliminaries
-    \item \ref{related_work} Related Work
-    \item \ref{our_approach} Our approach
-    \item \ref{experiments_chap} Experiments
-    \item \ref{future_work} Future Work
-    \item \ref{conclusion} Conclusion
+In Preliminaries and related work \ref{preliminaries} we explain the most important concepts of machine and deep learning. We introduce the phenomenon of adversarial attacks and review the current progress made in the whitebox and blackbox adversarial attacks relevant to our goal.
 
-\end{itemize}
+In chapter Our approach \ref{our_approach} we put forward the motivations behind our solution and experiments. We suggest possible ways of combining current whitebox and blackbox attack methods with a goal of ultimately targeting the cloud blackbox classifier.
 
-Preliminaries \ref{preliminaries} explain the most important concepts of machine learning, deep learning and introduce the phenomenon of adversarial attacks.
-
-Related work section \ref{related_work} aims to briefly review the current progress made in the whitebox and blackbox adversarial attacks that is relevant to our goal.
-
-In Our approach \ref{our_approach} we put forward the motivations behind our solution and experiments. We suggest possible ways of combining current whitebox and blackbox attack methods with a goal of ultimately targeting the cloud blackbox classifier.
-
-In \ref{experiments_chap} we present the detailed results of the conducted experiments, which are motivated in \ref{our_approach}. We focus mostly on transferability of adversarial images, which will be explained in \ref{related_work}, as it is one of the best ways to significantly reduce queries to the attacked target and increas the chances of staying undetected in a real-world scenario.
+In chapter Experiments \ref{experiments_chap} we present the detailed results of the conducted experiments, which are motivated in chapter \ref{our_approach}. We focus mostly on transferability of adversarial images, which will be explained in chapter \ref{related_work}, as it is one of the best ways to significantly reduce queries to the attacked target and increas the chances of staying undetected in a real-world scenario.
 
 In Future work \ref{future_work} we propose a handful of potentially promising directions to explore in the future based on our results from \ref{experiments_chap}.
 

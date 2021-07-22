@@ -1,4 +1,4 @@
-\chapter{Preliminaries}
+\chapter{Preliminaries and related work}
 \label{preliminaries}
 
 In this section we briefly introduce and explain the necessary theoretical background, upon which we build later on.
@@ -44,6 +44,46 @@ Convolutional neural network (CNN) is a network using a special type of layers c
 \section{Related Work}
 \label{related_work}
 
-\subsection{Adversarial attacks on DNNs}
+\subsection{Definitions}
+As it was outlined in chapter \ref{introduction}, adversarial attacks are methods of producing adversarial examples. Given an original input $x$ and a classifier model $y = f(x), y \in C$, an adversarial example $x_{adv} = x + \delta$ is a slightly pertubed version of $x$, such that $f(x_{adv}) \neq y$. By "slightly" we mean $\lVert \delta \rVert < \epsilon$. In this work we focus on image adversarial examples achieving misclasification on image classification models, albeit the concept of adversarial attacks is applicable across different types of neural networks and different types of input data.
 
-\subsection{Threat models}
+One can be also interested in the minimal pertubation $\delta_{min}$ needed to change the model classification:
+
+$$\delta_{min} = \argmin{\delta} \lVert \delta \rVert \quad \text{such that} \quad f(x + \delta) \neq y$$
+
+This brings us to the definition of robustness $r(x, f)$ given an input $x$:
+$$r(x, f) = \lVert \delta_{min} \rVert$$
+
+More informative can be the expected robustness across all of our data $D$, the global robustness of a model:
+
+$$\rho (f) = \underset{x \sim \mathcal D}{\mathbb E} r(x, f)$$
+
+Whether we do or do not care about the nature of misclassification distinguishes the targeted and untargeted attacks:
+
+\begin{itemize}
+    \item targeted attacks require that $f(x_{adv}) = t, t \in C$
+    \item untargeted attacks only aim for unspecified misclasification - $f(x_{adv}) \neq y$
+\end{itemize}
+
+
+The constraint on pertuation size $\lVert \delta \rVert$ makes sure, that the adversarial example $x_{adv}$ looks almost the same as the original $x$. That said, there are many valid choices for the metric $\lVert \cdot \rVert$ that are commonly used:
+
+\begin{itemize}
+    \item $l_{0}$ - the number of non-zero components of $\delta$.
+    \item $l_{1}$ - $\lVert \delta \rVert = \underset{i}{\sum} \lvert \delta_{i} \rvert$
+    \item $l_{2}$ - $\lVert \delta \rVert = \sqrt{\sum \delta_{i}^2}$
+    \item $l_{inf}$ - $\lVert \delta \rVert = \underset{i}{\max \delta_{i}}$
+\end{itemize}
+
+
+
+\subsection{Whitebox attacks}
+
+\cite{Biggio2013EvasionAA} was the first to point out the inherent vulnerability of machine learning model by attacking SVMs and multi-layer perceptrons.
+
+
+In the same year \cite{szegedy2014intriguing} use an L-BFGS optimization algorithm that leverages estimates of second order partial derivates information to find minimally distorted adversarial example $x$ by solving the following:
+$$\min \lVert x - x_{adv} \rVert_2^2 \quad \text{s.t.} \quad f(x_{adv}) = t \quad \text{and} \quad x_{adv} \in [0, 1]^m$$
+
+
+In 2014 \cite{goodfellow2015explaining} introduce the Fast gradient sign method (FGSM) which we use in \ref{fgsm_exp}. It involves doing only one backpropagation, so it is very efficient and is often use for an adversarial training. Adversarial training is a method of dynamicaly extending the training dataset by adversarial examples generated on the fly. FGSM is suited for this, because it's fast.
