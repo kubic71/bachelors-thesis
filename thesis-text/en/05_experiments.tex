@@ -86,9 +86,17 @@ RayS attack (\cite{Chen2020RaySAR}) is a hard-label attack, which means it uses 
 \end{figure}
 
 \subsection{Sparse-RS}
-\label{rays_poc}
-This one is hard label attack and doesn't use the continuos loss from GVision.
-\cite{Croce2020SparseRSAV}
+\label{sparse_rs_poc}
+Sparse-RS (\cite{Croce2020SparseRSAV}) is an $l_0$ attack, which means that the pertubation is bound by the number of non-zero elements. The authors suggest 2 versions: frame and noise. The results are are shown in figure \ref{fig:sparse_rs_cat}.
+
+\begin{figure}
+\centering
+ \subfloat[Sparse-RS frame, width=10px]{\includegraphics[width=0.6\textwidth]{ae_samples/sparse_cat_frame.png}}\hfill
+ \subfloat[Sparse-RS noise, $l_0 = 2000$]{\includegraphics[width=0.6\textwidth]{ae_samples/sparse_cat_noise.png}}
+
+\caption{Sparse-RS Gvision cat results}
+\label{fig:sparse_rs_cat}
+\end{figure}
 
 
 \subsection{SquareAttack}
