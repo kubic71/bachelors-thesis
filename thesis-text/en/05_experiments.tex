@@ -45,10 +45,19 @@ Here's how \href{https://cloud.google.com/vision}{Google Cloud Vision API} class
 
 \subsection{TREMBA}
 \label{tremba_poc}
+In Black-Box Adversarial Attack with Transferable Model-based Embedding (\cite{Huang2020BlackBoxAA}) the authors train an auto-encoder-style generator that given an original image tries to produce an adversarial pertubation. Then during the attack they suggest to search for the best pertubation in the latent space of the autoencoder as a method to reduce the dimensionality of the searchspace.
 
 
-\cite{Huang2020BlackBoxAA}
+\begin{figure}
+\centering
+ \subfloat[$k = 5$]{\includegraphics[width=\textwidth]{ae_samples/tremba_cat.png}}\hfill
+ \subfloat[$k = 1$]{\includegraphics[width=\textwidth]{ae_samples/tremba_shark.png}}
 
+\caption{TREMBA GVision results}
+\label{fig:tremba_gvision_results}
+\end{figure}
+
+Figure \ref{fig:tremba_gvision_results} shows two successful attacks with L-inf norm $l_{inf} = 0.05$.
 
 \subsection{RayS}
 \label{rays_poc}
