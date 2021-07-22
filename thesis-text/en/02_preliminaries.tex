@@ -7,11 +7,31 @@ We first define the concepts of Machine learning (ML) and Deep neural networks (
 
 
 \section{Machine learning}
-\cite{Goodfellow-et-al-2016}
+The topic of machine learning has been introduced many times over in other books and papers. \cite{10.5555/2380985}, \cite{10.5555/1162264} and \cite{Goodfellow-et-al-2016} all provide a comprehensive exposition to the field. Because of the abundance of many different kinds of resources, we don't feel the need to reinvent the wheel and come up with yet another machine learning introduction. 
+
+To put forward the most accepted definition of machine learning, the \cite{10.5555/2380985} lay it as follows: \\
+
+“A computer program is said to learn from experience $E$ with respect to some class of tasks $T$ and performance measure $P$, if its performance at tasks in $T$, as measured by $P$, improves with experience $E$.”
 
 \section{Deep neural networks}
+In our case the "computer program learning from experience" will be in most cases a deep neural network (DNN). We will introduce neural networks only very briefly at a high level as more details can be easily found in \cite{Goodfellow-et-al-2016}.
 
-\section{DNN training}
+DNN is in its essence a parametrized mapping $y = f(x;\theta)$, where $x$ are the network inputs, $\theta$ are the parameters and $y$ are the outputs of the network. The "network" in its name comes from the fact that the function computation is described as an evaluation of a computational directed acyclic graph (DAG), the structure of which depends on the exact network architecture.
+
+During evaluation, each node in the graph is asociated with a number called "activation", This activation value is computed from the values of other nodes and from the relevant parameters $\theta$. It is then passed through a non-linear activation function $a(x)$. For a long time the $sigmoid(x)$ activation function was very popular. Nowdays $ReLU(x) = \max(0, x)$ (Rectified Linear Unit) is used more often as it is better suited for deeper networks.
+
+The nodes in the DAG are sometimes referred to as "neurons", as there is an analogy to the functioning of biological neurons.
+
+The function $f(x;\theta)$ can be often decomposed into several computational steps: $f(x;\theta) = f_n(f_{n-1}(...f_2(f_1(x; \theta_1);\theta_2)...;\theta_{n-1});\theta_n)$. In this decomposition the individual functions $f_i(x_i; \theta_i)$ are called "layers". When the number of layers is large, the network is said to be deep. The successive computations of $f_1(x_1, \theta_1)$, $f_2(x_2, \theta_2)$ up to $f_n(x_n, \theta_n)$ is called a "forward pass".
+
+\section{Network training}
+If we have a dataset $D$ consisting of input datapoints $x_i$ and their corresponding $y_i$ values called "labels", we want the neural network function $f(x, \theta)$ to express the relationship between $x_i$ and $y_i$. Depending on the complexity of the network, the parameters $\theta$ can be often set accordingly, such that $f(x_i, \theta) \approx y_i$. This ability to approximate the data well with the right $\theta$ is called "network's capacity". How good is the neural network's approximation is measured by a loss function $\mathcal{L}(D, f(x, \theta))$. Because the network models the relationship between $x_i$ and $y_i$, it is sometimes just called a "model".
+
+The process of training a neural network tries to minimize the training loss by optimizing the parameters. Formally, we search for $\theta$ = $\argmin{\theta}[ \mathcal{L}(D, f(x, \theta))]$.
+
+This optimization is in practice done iteratively using an algorithm called stochastic gradient descent (SGD). It involves computing the gradient of the loss with respect to the parameters $\theta$: $\nabla_{\theta} \mathcal{L}(D, f(x, \theta))$. It then updates the parameters in the opposite direction of the gradient to hopefully lower the loss.
+
+The partial derivates $\frac{\partial \mathcal{L}(D, f(x, \theta))}{\partial \theta_i}$ can be efficiently computed by an algorithm called "backpropagation". It is very similar to a forward pass, but starts from the loss and proceeds in the opposite direction of the DAG. It is explained icredibly well in the \href{https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi}{YouTube video series about neural networks} by 3Blue1Brown (Grant Sanderson)
 
 \section{Convolutional neural networks}
 

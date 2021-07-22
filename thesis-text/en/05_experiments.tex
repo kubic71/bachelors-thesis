@@ -554,11 +554,12 @@ This crude experiment shows there is difinitely a large room for improvement. Th
 
 The unreasonable effectiveness of the random shift suggests that Random Sized Padding Affine (RSPA) augmentation (\cite{qiu2020fencebox}) might be worth trying in the future.
 
+\pagebreak
 \subsubsection{Ensemble}
 \label{ensemble}
-To put it all together, we created an ensemble of Wide-ResNet-50-2, EfficientNet-b0 and Squeezenet with equal voting weights as our surrogate. Their scores were combined by summing their output logits. We chose these 3 models because they appear to be complemenary in their transfer performance. We've added the Guassian noise augmentation with $\sigma = 32$, box-blur with kernel size = 2, and the elastic augmentation with $\alpha = 3.2$ to the mix.
+To put it all together, we have created an ensemble of Wide-ResNet-50-2, EfficientNet-b0 and Squeezenet with equal voting weights as our surrogate. Their scores were combined by summing their output logits. We chose these 3 models because they appear to be complemenary in their transfer performance. We've added the Guassian noise augmentation with $\sigma = 32$, box-blur with kernel size = 2, and the elastic augmentation with $\alpha = 3.2$ to the mix, as those augmentations seemed to perform well.
 
-The 2 random augmentations in the pipeline meant higher noise in the gradient, so we've also increased the $N_{EoT}$ to 20 and 100 respectively.
+The gaussian noise and the random elastic transform in the pipeline meant higher noise in the gradient, so we've also increased the $N_{EoT}$ to 20 and 100 respectively.
 
 \begin{figure}
     \centering
@@ -567,9 +568,9 @@ The 2 random augmentations in the pipeline meant higher noise in the gradient, s
     \label{fig:ensemble_augment}
 \end{figure}
 
-Figure \ref{fig:ensemble_augment} shows the results, which are all above 90\% the $N_{EoT}=20$ version that compansates for the lower number of $N_{EoT}$ by more APGD iterations. The version with extensive gradient sampling was run only for 16 iterations, which still adds up to more total ensemble queries. The performance difference shouldn't be compared too much, because we were forced to stop the 16-iteration experiment only after 192 validation images.
+Figure \ref{fig:ensemble_augment} shows the results, which are all above 90\%. The $N_{EoT}=20$ version compensates for the lower number of $N_{EoT}$ by more APGD iterations. The version with extensive gradient sampling was run only for 16 iterations, which still adds up to more total ensemble queries. The performance difference shouldn't be compared too much, because we were forced to stop the 16-iteration experiment only after 192 validation images.
 
-The attachment \ref{ensemble_sample_images} contains a couple of randomly chosen example adversarial images. Some of them are really creepy (\ref{fig:bane_dog})
+The attachment \ref{ensemble_sample_images} contains a couple of randomly chosen example adversarial images. Some of them are really creepy as can be seen in the case of a dog having a mask clearly inspired by the adversary Bane from the Batman movie (\ref{fig:bane_dog}).
 
 \begin{figure}
     \centering
@@ -580,13 +581,22 @@ The attachment \ref{ensemble_sample_images} contains a couple of randomly chosen
 \pagebreak
 
 
-\section{Transferability evaluation on GVision}
-TODO: just run the images against GVision
+\section{Transferability evaluation on Google Cloud Vision}
+In this section we take the adversarial images that had good transferability across all of our local models and send them to the Google Cloud Vision for a final evaluation. More precisely, we take the 500 output images of the $N_{EoT} = 20$ version of \ref{fig:ensemble_augment} and compare the top-1 labels to the top-1 labels of the clean images
 
 \subsection{Choice of evaluation metrics}
+As it turns out, evaluating the transferability using the objective from \ref{label_mapping} may not be the most informative evaluation metric. ImageNet dataset with its numerous dog breeds could be better decribed as a "pet dataset". What happened was that many adversarial animal images, which were successfully misclassified as "not animals" were in many cases assigned the top-1 Google Cloud Vision label "Plant". Our initial binary objective choice of "organism" vs. "object" meant that this misclassification wouldn't show up in the stats as successful a attack, because "Plant" is also an organism. That's why we chose to evaluate the transfer results on Google Cloud Vision differently. More details about the evaluation are described in the next section (\ref{gvision_wordcloud})
+
 
 \pagebreak
 \subsection{Wordcloud}
+\label{gvision_wordcloud}
+As the objective used to guide the whitebox optimization doesn't illustrate properly the transferability success we have made, we have decided to use maybe a little unorthodox evaluation criteria.
+
+In figure \ref{fig:wordcloud_baseline} and \ref{fig:wordcloud_ensemble} we use a wordcloud visualization to show how the top-1 label assigned by the Google Cloud Vision changes when the ImageNet organism validation images are pertubed by our augmented ensemble transfer attack.
+
+As we can see, the cheapest option for the attack is to make the prevailing dogs nd birds look like a "Plant". This is probably caused by the fact that animal images are often taken in a nutural environment with the "Plants" often being a part of the original image. The "Plant" semantic often appears in the clean image already and is thus the easiest category to target. The ImageNet dataset doesn't contain almost any plant species, so the whitebox optimization often doesn't have an any problems of making the adversarial images look like some kind of a plant species.
+
 
 \begin{figure}
     \centering
@@ -598,6 +608,6 @@ TODO: just run the images against GVision
 \begin{figure}
     \centering
     \includegraphics[width=0.80\textwidth]{scripts/wordcloud_ensemble.png}
-    \caption{Top-1 labels of adversarial images produced by the ensemble with augmentations}
+    \caption{Top-1 labels of adversarial images produced by our ensemble with augmentations (\ref{ensemble})}
     \label{fig:wordcloud_ensemble}
 \end{figure}
