@@ -35,10 +35,10 @@ The process of training a neural network tries to minimize the training loss by 
 
 This optimization is in practice done iteratively using an algorithm called stochastic gradient descent (SGD). It involves computing the gradient of the loss with respect to the parameters $\theta$: $\nabla_{\theta} \mathcal{L}(D, f(x, \theta))$. It then updates the parameters in the opposite direction of the gradient to hopefully lower the loss.
 
-The partial derivates $\frac{\partial \mathcal{L}(D, f(x, \theta))}{\partial \theta_i}$ can be efficiently computed by an algorithm called "backpropagation". It is very similar to a forward pass, but starts from the loss and proceeds in the opposite direction of the DAG. It is explained icredibly well in the \href{https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi}{YouTube video series about neural networks} by 3Blue1Brown (Grant Sanderson)
+The partial derivates $\frac{\partial \mathcal{L}(D, f(x, \theta))}{\partial \theta_i}$ can be efficiently computed by an algorithm called "backpropagation". It is very similar to a forward pass, but it starts from the loss and proceeds in the opposite direction of the DAG. Detailed explanation can be again found in \cite{Goodfellow-et-al-2016}. It is also icredibly well explained in the \href{https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi}{YouTube video series about neural networks} by 3Blue1Brown (Grant Sanderson)
 
 \subsection{Convolutional neural networks}
-Convolutional neural network (CNN) is a network using a special type of layers called "convolutional layers". CNNs were invented more than 20 years ago (\cite{LeCun1998ConvolutionalNF}). They are used mainly when dealling with images, but in general, convolutions are useful for any type of spatial data with translational invarience property. When a network is asked to perform an image classification, it is often desireable for an object in the left part of the image to be detected in the same way as an object on the right side. Convolutional layer achives this by convolving each part of the input image with the same kernel, thus sharing weights and greatly reducing the parameter count.
+Convolutional neural network (CNN) is a network using a special type of layers called "convolutional layers". CNNs were invented more than 20 years ago (\cite{LeCun1998ConvolutionalNF}) and they are powerful feature extractors compressing highly dimensional spatial inputs to a smaller feature vector. They are used mainly when dealling with images, but in general, convolutions are useful for any type of spatial data with translational invarience property. When a network is asked to perform an image classification, it is often desireable for an object in the left part of the image to be detected in the same way as an object on the right side. Convolutional layer achives this by convolving each part of the input image with the same kernel, thus sharing weights and greatly reducing the parameter count. Each convolutional kernel is sometimes referred to as "filter", because the kernel convolution operation resembles a sobol operator used in classical computer vision and image processing. CNNs usually stack multiple convolutional layers on top of each other with each subsequent layer having more filters, but reducing the spatial dimension. The spatial dimension reduction is achived by an average or max pooling layers that follow periodically after each set of convolutional layers. The final convolution outputs are either pooled together to reduce the spatial dimension to 1x1, or they are passed through a one or two densely connected layers to produce the extracted features.
 
 
 \section{Related Work}
@@ -96,6 +96,14 @@ As as attempt to break a specific "distilation defense", \cite{carlini2017evalua
 
 They reframe the optimization problem as:
 $$\min \lVert x - x_{adv} \rVert^2_2 + c \cdot f(x', t) \quad \text{s.t.} \quad x' \in [0, 1]^m \quad \text{where} \quad f(x', t) = (max_{i \neq t} Z(x')_i - Z(x')_t)^+$$
+
+For a more comprehensive overview of whitebox attacks and adversarial attacks in general we will point the reader to the review paper \cite{xu2019adversarial}.
+
+
+\subsection{Blackbox attacks}
+
+
+
 
     % - maximizes classification for t and minimizes classification for all other classes
     % - so called **"margin loss"**
